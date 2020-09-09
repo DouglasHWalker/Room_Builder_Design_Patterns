@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.12.2, 2020-09-05T14:29:24. -->
+<!-- Written by QtCreator 4.12.2, 2020-09-09T13:17:31. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -308,8 +308,8 @@
     </valuelist>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:E:/DHW/Academic/Bachelor of Software Engineering/20_S2/7SDC/Assignment/DungeonBuilder/DungeonBuilder.pro</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">E:/DHW/Academic/Bachelor of Software Engineering/20_S2/7SDC/Assignment/DungeonBuilder/DungeonBuilder.pro</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:E:/DHW/Academic/Bachelor of Software Engineering/20_S2/7SDC/Assignment/DungeonBuilder/DungeonBuilder/DungeonBuilder.pro</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">E:/DHW/Academic/Bachelor of Software Engineering/20_S2/7SDC/Assignment/DungeonBuilder/DungeonBuilder/DungeonBuilder.pro</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
