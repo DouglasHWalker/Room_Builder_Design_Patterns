@@ -20,6 +20,8 @@ public:
 
     enum class Direction : unsigned int { North, South, East, West };
 
+    // TODO: Override description or otherwise support a different description for each type of room
+
 private:
     int _id;
     Item _item;

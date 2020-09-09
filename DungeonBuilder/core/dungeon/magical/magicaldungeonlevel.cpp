@@ -1,0 +1,2 @@
+#include "magicaldungeonlevel.h"
+

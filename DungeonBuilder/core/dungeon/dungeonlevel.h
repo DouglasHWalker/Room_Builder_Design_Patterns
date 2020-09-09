@@ -15,10 +15,16 @@ public:
     int height();
     std::string name();
     std::string description();
-    std::vector<std::string> display(); // TODO: could use vector instead
+    std::vector<std::string> display(); // TODO: should I be using vector here
 
     int numberOfRooms;
 
+private:
+    Room _room;
+    int _width;
+    int _height;
+    std::string _name;
+    std::string _description;
 };
 
 #endif // DUNGEONLEVEL_H
