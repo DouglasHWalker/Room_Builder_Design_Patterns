@@ -2,7 +2,7 @@
 #define DOORWAY_H
 #include "roomedge.h"
 
-class Doorway : RoomEdge
+class Doorway : public RoomEdge
 {
 public:
     Doorway();

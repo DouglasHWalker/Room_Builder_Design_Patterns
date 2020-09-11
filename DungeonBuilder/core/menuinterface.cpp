@@ -215,7 +215,7 @@ void MenuInterface::displayExplorationMenu(){
     } while (not exit);
 }
 void MenuInterface::describeRoom(){
-    _display << "\nWhich room would you like to describe? " << "(1-4)" << std::endl; // TODO: Number of rooms?
+    _display << "\nWhich room would you like to describe? " << "(1-4)" << std::endl; // TODO: Max number of rooms: Add to Game class?
     int roomNumber{0};
     for(_input >> roomNumber; _input.fail() or roomNumber < 1 or roomNumber > 4; _input >> roomNumber){
         _input.clear();

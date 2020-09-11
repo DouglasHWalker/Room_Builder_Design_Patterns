@@ -4,6 +4,7 @@
 #include "room.h"
 #include "dungeonlevel.h"
 
+// abstract class
 class DungeonLevelBuilder
 {
 public:
@@ -18,18 +19,20 @@ public:
         DestinationLocked = 8
     };
 
-    void buildDungeonLevel(std::string name, int width, int height);
-    void buildRoom(int id);
-    void buildDoorway(Room origin, Room destination, Room::Direction direction, MoveConstraints constraints);
-    void buildEntrance(Room room, Room::Direction direction);
-    void buildExit(Room room, Room::Direction direction);
-    void buildItem(Room room);
-    void buildCreature(Room room);
-    DungeonLevel getDungeonLevel();
+    virtual void buildDungeonLevel(std::string name, int width, int height);
+    virtual void buildRoom(int id);
+    virtual void buildDoorway(Room origin, Room destination, Room::Direction direction, MoveConstraints constraints);
+    virtual void buildEntrance(Room room, Room::Direction direction);
+    virtual void buildExit(Room *room, Room::Direction direction);
+    virtual void buildItem(Room *room);
+    virtual void buildCreature(Room *room);
+    DungeonLevel* getDungeonLevel(){
+        return _dungeonLevel;
+    }
 
 
-private:
-    DungeonLevel _dungeonLevel;
+protected:
+    DungeonLevel* _dungeonLevel;
 };
 
 #endif // DUNGEONLEVELBUILDER_H

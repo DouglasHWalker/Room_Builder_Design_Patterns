@@ -6,9 +6,9 @@ class RoomEdge
 {
 public:
     RoomEdge();
-    std::string description();
-    char displayCharacter();
-    bool isPassage();
+    virtual std::string description();
+    virtual char displayCharacter();
+    virtual bool isPassage();
 
 private:
     std::string _description;

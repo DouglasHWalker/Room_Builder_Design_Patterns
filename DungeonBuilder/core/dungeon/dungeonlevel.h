@@ -9,21 +9,20 @@ class DungeonLevel
 public:
     DungeonLevel(std::string name, int width, int height);
 
-    void addRoom(Room room);
+    void addRoom(Room *room);
     Room retrieveRoom(int);
     int width();
     int height();
     std::string name();
-    std::string description();
+    virtual std::string description();
     std::vector<std::string> display(); // TODO: should I be using vector here
 
     int numberOfRooms;
 
 private:
-    Room _room;
+    std::string _name;
     int _width;
     int _height;
-    std::string _name;
     std::string _description;
 };
 

@@ -1,11 +1,12 @@
 #ifndef BASICDUNGEONLEVEL_H
 #define BASICDUNGEONLEVEL_H
 #include <iostream>
+#include "core/dungeon/dungeonlevel.h"
 
-class BasicDungeonLevel
+class BasicDungeonLevel : public DungeonLevel
 {
 public:
-    BasicDungeonLevel();
+    BasicDungeonLevel(std::string name, int width, int height);
     std::string description();
 };
 
