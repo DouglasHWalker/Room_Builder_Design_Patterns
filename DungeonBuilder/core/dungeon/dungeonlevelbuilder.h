@@ -20,14 +20,14 @@ public:
     };
 
     virtual void buildDungeonLevel(std::string name, int width, int height);
-    virtual void buildRoom(int id);
-    virtual void buildDoorway(Room origin, Room destination, Room::Direction direction, MoveConstraints constraints);
-    virtual void buildEntrance(Room room, Room::Direction direction);
+    virtual Room* buildRoom(int id);
+    virtual void buildDoorway(Room *origin, Room *destination, Room::Direction direction, MoveConstraints constraints);
+    virtual void buildEntrance(Room *room, Room::Direction direction);
     virtual void buildExit(Room *room, Room::Direction direction);
     virtual void buildItem(Room *room);
     virtual void buildCreature(Room *room);
     DungeonLevel* getDungeonLevel(){
-        return _dungeonLevel;
+        return _dungeonLevel; // TODO: change to smart pointer, method indicates tranfer of ownership
     }
 
 

@@ -2,10 +2,10 @@
 #define QUARTZCHAMBER_H
 #include "core/dungeon/room.h"
 
-class QuartzChamber : Room
+class QuartzChamber : public Room
 {
 public:
-    QuartzChamber();
+    QuartzChamber(int id) : Room(id) {}
     std::string description();
 };
 

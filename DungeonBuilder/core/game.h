@@ -13,14 +13,16 @@ public:
     Game(Game &other) = delete;
     Game operator=(Game &other) = delete;
 
-    void setDungeonType(DungeonLevelBuilder dungeonLevelBuilder);
+    void setDungeonType(DungeonLevelBuilder *dungeonLevelBuilder);
     void createExampleLevel();
     void createRandomLevel(std::string name, int width, int height);
-    void displayLevel();
+    std::vector<std::string> displayLevel();
     double randomDouble();
 private:
     Game();
     static Game theInstance;
+    DungeonLevelBuilder* _dungeonBuilder;
+    DungeonLevel* _dungeonLevel;
 
     std::mt19937 _randomGenerator{uint32_t(time(nullptr))};
     std::uniform_real_distribution<double> _realDistribution{0.0, 1.0};

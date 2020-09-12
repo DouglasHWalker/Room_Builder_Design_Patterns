@@ -10,13 +10,13 @@ class Room
 public:
     Room(int id);
 
-    std::string description();
+    virtual std::string description();
     std::vector<std::string> display();
     int id();
     Item item();
-    void setItem(Item newItem);
+    void setItem(Item *newItem);
     AbstractCreature creature();
-    void setCreature(AbstractCreature newCreature);
+    void setCreature(AbstractCreature *newCreature);
 
     enum class Direction : unsigned int { North, South, East, West };
 

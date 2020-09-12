@@ -7,7 +7,7 @@ class BasicDungeonLevel : public DungeonLevel
 {
 public:
     BasicDungeonLevel(std::string name, int width, int height);
-    std::string description();
+    virtual std::string description();
 };
 
 #endif // BASICDUNGEONLEVEL_H

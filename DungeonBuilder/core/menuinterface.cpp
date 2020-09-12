@@ -1,7 +1,9 @@
 #include <iostream>
 #include <cctype>
+#include <vector>
 #include "menuinterface.h"
-
+#include "game.h"
+#include "dungeon/basic/basicdungeonlevelbuilder.h"
 
 MenuInterface::MenuInterface(std::ostream &display, std::istream &input) : _display(display), _input(input) {}
 
@@ -67,7 +69,9 @@ bool MenuInterface::yesNoConfirmation(){
 
 void MenuInterface::generateExampleLevel(){
     _display << "\nCreating Example Dungeon Level..." << std::endl;
-
+    BasicDungeonLevelBuilder *dungeon = new BasicDungeonLevelBuilder();
+    Game::instance().setDungeonType(dungeon);
+    Game::instance().createExampleLevel();
     _display << "\nDungeon level created!" << std::endl;
 }
 
@@ -187,7 +191,10 @@ void MenuInterface::describeLevel(){
 
 void MenuInterface::displayLevel(){
     _display << "\nName:\t" << std::endl;
-    // TODO: output map of dungeon
+    std::vector<std::string> vect = Game::instance().displayLevel();
+    for (int i = 0; i < int(vect.size()); i++){
+        _display << vect[i];
+    }
     _display << "\nPress Enter to continue...\t" << std::endl;
     // TODO: prompt for 'enter'
 }

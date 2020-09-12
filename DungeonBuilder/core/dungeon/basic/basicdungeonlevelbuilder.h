@@ -9,7 +9,7 @@ class BasicDungeonLevelBuilder : public DungeonLevelBuilder
 {
 public:
     void buildDungeonLevel(std::string name, int width, int height);
-    void buildRoom(int id);
+    Room buildRoom(int id);
     void buildDoorway(Room origin, Room destination, Room::Direction direction, MoveConstraints constraints);
     void buildEntrance(Room room, Room::Direction direction);
     void buildExit(Room room, Room::Direction direction);

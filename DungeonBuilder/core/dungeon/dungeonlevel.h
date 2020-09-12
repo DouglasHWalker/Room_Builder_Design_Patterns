@@ -24,6 +24,7 @@ private:
     int _width;
     int _height;
     std::string _description;
+    std::vector<Room> _rooms;
 };
 
 #endif // DUNGEONLEVEL_H

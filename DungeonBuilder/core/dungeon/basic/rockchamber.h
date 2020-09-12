@@ -2,10 +2,10 @@
 #define ROCKCHAMBER_H
 #include "core/dungeon/room.h"
 
-class RockChamber : Room
+class RockChamber : public Room
 {
 public:
-    RockChamber();
+    RockChamber(int id) : Room(id) {}
     std::string description();
 };
 
