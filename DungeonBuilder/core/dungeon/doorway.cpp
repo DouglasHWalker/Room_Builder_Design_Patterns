@@ -14,8 +14,3 @@ bool Doorway::isEntrance(){
 bool Doorway::isExit(){
     return _isExit;
 }
-
-std::ostream& operator<<(std::ostream& os, const Doorway& doorway){
-    os << doorway._description;
-    return os;
-}

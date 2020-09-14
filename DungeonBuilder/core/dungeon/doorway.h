@@ -17,8 +17,6 @@ public:
     bool isEntrance();
     bool isExit();
 
-    friend std::ostream& operator <<(std::ostream& os, const Doorway& doorway);
-
 protected:
     bool _isEntry = false;
     bool _isExit = false; // WARNING: revise entry exit

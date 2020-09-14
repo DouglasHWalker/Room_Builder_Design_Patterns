@@ -11,6 +11,8 @@ public:
     virtual char displayCharacter();
     virtual bool isPassage();
 
+    friend std::ostream& operator <<(std::ostream& os, const RoomEdge& edge);
+
 protected:
     std::string _description;
     char _displayCharacter;
