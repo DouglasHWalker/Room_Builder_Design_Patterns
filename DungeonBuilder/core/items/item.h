@@ -10,6 +10,8 @@ public:
     std::string name();
     char displayCharacter();
 
+    friend std::ostream& operator <<(std::ostream& os, const Item& item);
+
 private:
     std::string _name;
     char _displayCharacter;

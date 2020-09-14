@@ -8,3 +8,7 @@ std::string Item::name(){
 char Item::displayCharacter(){
     return _displayCharacter;
 }
+
+std::ostream & operator << (std::ostream & os, const Item & item){
+    return os << item._name;
+}
