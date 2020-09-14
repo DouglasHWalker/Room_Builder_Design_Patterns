@@ -1,9 +1,9 @@
 #include <random>
 #include <ctime>
 #include "game.h"
-std::shared_ptr<Game> Game::theInstance = nullptr;
+Game* Game::theInstance = nullptr;
 void Game::setDungeonType(std::shared_ptr<DungeonLevelBuilder> dungeonLevelBuilder){
-
+    _dungeonBuilder = dungeonLevelBuilder;
 }
 void Game::createExampleLevel(){
     std::string title = "Example Dungeon Level";
@@ -77,8 +77,7 @@ void Game::createExampleLevel(){
 }
 void Game::createRandomLevel(std::string name, int width, int height){}
 std::vector<std::string> Game::displayLevel(){
-    // turn the level into the strings for the map
-
+    return _dungeonLevel->display();
 }
 double Game::randomDouble(){
     return _realDistribution(_randomGenerator);

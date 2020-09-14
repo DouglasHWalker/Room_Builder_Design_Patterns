@@ -9,7 +9,10 @@
 class Game
 {
 public:
-    static std::shared_ptr<Game> instance(){
+    static Game* instance(){
+        if(theInstance == nullptr){
+            theInstance = new Game;
+        }
         return theInstance; // TODO: should this be a smart pointer
     }
     Game(Game &other) = delete;
@@ -25,8 +28,8 @@ public:
     double randomDouble();
 private:
     Game() { std::cout << "Game created"; };
-    static std::shared_ptr<Game> theInstance;
-    DungeonLevelBuilder* _dungeonBuilder;
+    static Game* theInstance;
+    std::shared_ptr<DungeonLevelBuilder> _dungeonBuilder;
     DungeonLevel* _dungeonLevel;
 
     std::mt19937 _randomGenerator{uint32_t(time(nullptr))};

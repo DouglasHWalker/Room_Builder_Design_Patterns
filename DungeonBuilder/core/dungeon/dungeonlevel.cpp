@@ -22,7 +22,7 @@ std::vector<std::string> DungeonLevel::display(){
     int numberOfRowsInRoom = 6; // including space below
     int numRowsInOutputString = (height() * numberOfRowsInRoom) - 1;
     for(int i{0}; i < numRowsInOutputString; i++){
-        dungeonLevelString.at(i) = "";
+        dungeonLevelString.push_back("");
     }
     // for each row of rooms (height)
     for (int r{0}; r < _height; r++){
@@ -30,16 +30,21 @@ std::vector<std::string> DungeonLevel::display(){
         for (int c{0}; c < _width; c++) {
             // retrieve the next room, add display to output
             // for every row of chars in the room
-            for(int roomCol{0}; roomCol < 4; roomCol++){ // 4 = room height -1
+            for(int roomCol{0}; roomCol < 5; roomCol++){ // 4 = room height -1
                 // add the row of chars to the appropriate row in output string
                 dungeonLevelString.at(roomCol + (r * numberOfRowsInRoom)) += _rooms[c + (r * _width)]->display()[roomCol];
                 // if we are at the middle row, add a dashed line bewteen the rooms, otherwise add space
-                dungeonLevelString.at(roomCol + (r * numberOfRowsInRoom)) += roomCol == 2 ? "--" : "  ";
+                if(c != _width -1){
+                    dungeonLevelString.at(roomCol + (r * numberOfRowsInRoom)) += roomCol == 2 ? "--" : "  ";
+                }
             }
         }
         // add the seperator row between rows of rooms, unless we just printed the last row
-        if(r + 1 != _height){
-            dungeonLevelString.at(r * numberOfRowsInRoom) += "     |     "; // FIXME: adding the spaces bewteen the rooms
+        if(r != _height -1){
+            for(int i{0}; i < _width; i++){
+                dungeonLevelString.at((r + 1)* (numberOfRowsInRoom) - 1) += "     |       "; // FIXME: adding the spaces bewteen the rooms
+            }
+
         }
     }
     // add a space

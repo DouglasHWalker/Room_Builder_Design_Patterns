@@ -5,34 +5,35 @@ Room::Room(int id) : _id{id} {
 }
 
 std::array<std::string, 5> Room::display(){
-     std::array<std::string, 5> output = std::array<std::string, 5>(); // TODO: should this be using pointers
-     // Create North Row string
-     std::string northRow{"+----"};
-     northRow += edgeAt(Room::Direction::North)->displayCharacter();
-     northRow += "----+";
-     // Create Middle Row
-     std::string middleRow{};
-     middleRow += edgeAt(Room::Direction::West)->displayCharacter();
-     middleRow += "   ";
-     middleRow += _creature->displayCharacter();
-     middleRow += _item->displayCharacter();
-     middleRow +=  "   ";
-     middleRow += edgeAt(Room::Direction::East)->displayCharacter();
-     // Create South Row
-     std::string southRow{"+----"};
-     southRow += edgeAt(Room::Direction::South)->displayCharacter();
-     southRow += "----+";
-     // Create Blank Row
-     std::string blankRow{"|         |"};
+    std::array<std::string, 5> output = std::array<std::string, 5>(); // TODO: should this be using pointers
+    // Create North Row string
+    std::string northRow{"+----"};
+    northRow += edgeAt(Room::Direction::North)->displayCharacter();
+    northRow += "----+";
+    // Create Middle Row
+    std::string middleRow{};
+    middleRow += edgeAt(Room::Direction::West)->displayCharacter();
+    middleRow += "   ";
+    if(_creature == nullptr){middleRow += "  ";}
+    else {middleRow += _creature->displayCharacter(); }
+    middleRow += _item != nullptr ? _item->displayCharacter() : ' ';
+    middleRow +=  "   ";
+    middleRow += edgeAt(Room::Direction::East)->displayCharacter();
+    // Create South Row
+    std::string southRow{"+----"};
+    southRow += edgeAt(Room::Direction::South)->displayCharacter();
+    southRow += "----+";
+    // Create Blank Row
+    std::string blankRow{"|         |"};
 
-     // Add strings to output
-     output[0] = northRow;
-     output[1] = blankRow;
-     output[2] = middleRow;
-     output[3] = blankRow;
-     output[4] = southRow;
+    // Add strings to output
+    output[0] = northRow;
+    output[1] = blankRow;
+    output[2] = middleRow;
+    output[3] = blankRow;
+    output[4] = southRow;
 
-     return output;
+    return output;
 }
 
 int Room::id(){

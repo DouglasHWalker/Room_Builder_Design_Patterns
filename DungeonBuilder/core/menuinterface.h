@@ -31,6 +31,7 @@ private:
     // additonal helper functions
     bool getInputNumber(int &number);
     bool inputLevelType(char &levelType);
+    bool inputLevelName(std::string &levelName);
 };
 
 #endif // MENUINTERFACE_H

@@ -13,7 +13,7 @@ public:
     friend std::ostream& operator<< (std::ostream& os, const AbstractCreature& creature);
 protected:
     std::string _name;
-    char _displayCharacter;
+    char _displayCharacter = 'M';
 
     void setToBoss();
 

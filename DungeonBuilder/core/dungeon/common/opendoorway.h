@@ -5,8 +5,6 @@
 class OpenDoorway : public Doorway
 {
 public:
-    OpenDoorway() : Doorway() {}
-
     std::string description() override;
     char displayCharacter() override;
 

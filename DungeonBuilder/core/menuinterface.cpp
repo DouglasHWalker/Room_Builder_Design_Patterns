@@ -4,6 +4,7 @@
 #include "menuinterface.h"
 #include "game.h"
 #include "dungeon/basic/basicdungeonlevelbuilder.h"
+#include "dungeon/magical/magicaldungeonlevelbuilder.h"
 
 MenuInterface::MenuInterface(std::ostream &display, std::istream &input) : _display(display), _input(input) {}
 
@@ -83,11 +84,12 @@ void MenuInterface::generateRandomLevel(){
 
     // input validation flag
     bool validInput = false;
-
-    // Level Name
-    _display << "\nWhat would you like to call the level?" << std::endl;
     _input.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    std::getline(_input, levelName);
+    // Level Name
+    do{
+        _display << "\nWhat would you like to call the level?" << std::endl;
+        validInput = inputLevelName(levelName);
+    } while(not validInput);
 
     // Rows
     do{
@@ -107,11 +109,34 @@ void MenuInterface::generateRandomLevel(){
         validInput = inputLevelType(levelType);
     } while(not validInput);
 
-    _display << "\nCreating" << levelName << "..." << std::endl;
+    _display << "\nCreating " << levelName << "..." << std::endl;
     // TODO: Create Level using gathered settings
-    _display << "\nName:\t" << levelName << "\nRows:\t" << rows << "\nCols:\t" << cols << "\nType:\t" << levelType << std::endl;
+    _display << "\nName:\t" << levelName << "\nRows:\t" << rows << "\nCols:\t" << cols << "\nType:\t" << ((levelType == 'b') ? "Basic" : "Magical") << std::endl;
+
+    if(levelType == 'b'){
+        Game::instance()->setDungeonType(std::make_shared<BasicDungeonLevelBuilder>());
+    } else {
+        Game::instance()->setDungeonType(std::make_shared<MagicalDungeonLevelBuilder>());
+    }
+    Game::instance()->createRandomLevel(levelName, cols, rows);
 
     _display << "\nDungeon level created!" << std::endl;
+}
+
+/**
+ * @brief MenuInterface::inputLevelType recieves input from the user and determines
+ * whther the input is a valid character for dungeon type. Returns boolean
+ * @param levelType a reference to where the input will be saved
+ * @return true if valid, false otherwise
+ */
+bool MenuInterface::inputLevelName(std::string &levelName){
+    // check is valid.
+    std::getline(_input, levelName);
+    if(levelName == ""){
+        _display << "\nInput Invalid, Name cannot be blank." << std::endl;
+        return false;
+    }
+    return true;
 }
 
 /**
@@ -143,8 +168,8 @@ bool MenuInterface::inputLevelType(char &levelType){
  */
 bool MenuInterface::getInputNumber(int &number){
     // check is valid.
-    if(!(_input >> number)){
-        _display << "\nInput Invalid, Please enter a number." << std::endl;
+    if(!(_input >> number) || number < 1 || number > 4){
+        _display << "\nInput Invalid, Please enter a number between 1 & 4." << std::endl;
         // clear input screen discard previous input
         _input.clear();
         _input.ignore(123, '\n');
@@ -172,7 +197,7 @@ void MenuInterface::displayViewMenu(){
             displayLevel();
             break;
         case 'r':
-            _display << "\nReturn to main menu?" << std::endl;
+            _display << "\nReturn to main menu? (y/n)" << std::endl;
             exit = yesNoConfirmation();
             break;
         default:
@@ -192,7 +217,7 @@ void MenuInterface::displayLevel(){
     _display << "\nName:\t" << std::endl;
     std::vector<std::string> vect = Game::instance()->displayLevel();
     for (int i = 0; i < int(vect.size()); i++){
-        _display << vect[i];
+        _display << vect[i] << std::endl;
     }
     _display << "\nPress Enter to continue...\t" << std::endl;
     // TODO: prompt for 'enter'
@@ -212,7 +237,7 @@ void MenuInterface::displayExplorationMenu(){
             describeRoom();
             break;
         case 'r':
-            _display << "\nReturn to previous menu?" << std::endl;
+            _display << "\nReturn to previous menu? (y/n)" << std::endl;
             exit = yesNoConfirmation();
             break;
         default:

@@ -4,5 +4,5 @@ std::string BlockedDoorway::description(){
     return "Blocked Doorway"; // TODO: could implement this to cover the entire description
 }
 char BlockedDoorway::displayCharacter(){
-    return _DISPLAY_CHAR;
+    return 'X';
 }

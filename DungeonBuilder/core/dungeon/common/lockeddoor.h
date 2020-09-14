@@ -8,8 +8,6 @@ class LockedDoor : public Doorway
 public:    
     std::string description() override;
     char displayCharacter() override;
-private:
-    const char& _DISPLAY_CHAR = 'X';
 };
 
 #endif // LOCKEDDOOR_H

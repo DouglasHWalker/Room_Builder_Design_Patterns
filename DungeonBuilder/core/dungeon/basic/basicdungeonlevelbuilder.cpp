@@ -1,10 +1,11 @@
 #include "basicdungeonlevelbuilder.h"
+#include "core/game.h"
 #include "core/dungeon/doorway.h"
 #include "core/dungeon/common/opendoorway.h"
-#include "core/creatures/monster.h"
-#include "core/game.h"
 #include "core/dungeon/basic/quartzchamber.h"
 #include "core/dungeon/basic/rockchamber.h"
+#include "core/dungeon/basic/rockwall.h"
+#include "core/creatures/monster.h"
 
 /**
  * @brief BasicDungeonLevelBuilder::buildDungeonLevel (name, width, height)—creates the appropriate concrete DungeonLevel object with the
@@ -32,6 +33,11 @@ std::shared_ptr<Room> BasicDungeonLevelBuilder::buildRoom(int id){
     } else {
         room = std::make_shared<QuartzChamber>(id);
     }
+    // build the walls of the room
+    room->setEdge(std::make_shared<RockWall>(), Room::Direction::North);
+    room->setEdge(std::make_shared<RockWall>(), Room::Direction::South);
+    room->setEdge(std::make_shared<RockWall>(), Room::Direction::East);
+    room->setEdge(std::make_shared<RockWall>(), Room::Direction::West);
     // add the room to the dungeon level
     _dungeonLevel->addRoom(room);
 
@@ -44,38 +50,40 @@ void BasicDungeonLevelBuilder::buildDoorway(std::shared_ptr<Room> origin, std::s
     std::shared_ptr<Doorway> originDoorway; // origin
     std::shared_ptr<Doorway> destinationDoorway; // destination, in opposite direction
     // determine the door type
-    switch (constraints) {
-    case MoveConstraints::None:
-        // Open doorway
-        // origin
-        originDoorway = std::make_shared<OpenDoorway>();
-        destinationDoorway = std::make_shared<OpenDoorway>();
-        break;
-    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::DestinationImpassable)):
-        // one way door going from origin
-        // BUG: Must fix soon.
-        break;
-    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginImpassable)):
-        // One way door going from destination
+    originDoorway = std::make_shared<OpenDoorway>();
+    destinationDoorway = std::make_shared<OpenDoorway>();
+//    switch (constraints) {
+//    case MoveConstraints::None:
+//        // Open doorway
+//        // origin
+//        originDoorway = std::make_shared<OpenDoorway>();
+//        destinationDoorway = std::make_shared<OpenDoorway>();
+//        break;
+//    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::DestinationImpassable)):
+//        // one way door going from origin
+//        // BUG: Must fix soon.
+//        break;
+//    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginImpassable)):
+//        // One way door going from destination
 
-        break;
-    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginImpassable) | static_cast<unsigned>(MoveConstraints::DestinationImpassable)):
-        //  Blocked doorway
+//        break;
+//    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginImpassable) | static_cast<unsigned>(MoveConstraints::DestinationImpassable)):
+//        //  Blocked doorway
 
-        break;
-    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginLocked)):
-    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginLocked) | static_cast<unsigned>(MoveConstraints::DestinationImpassable)):
-        // Locked door on origin
+//        break;
+//    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginLocked)):
+//    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginLocked) | static_cast<unsigned>(MoveConstraints::DestinationImpassable)):
+//        // Locked door on origin
 
-    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::DestinationLocked)):
-    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginLocked) | static_cast<unsigned>(MoveConstraints::DestinationLocked)):
-        // Locked Door
+//    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::DestinationLocked)):
+//    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginLocked) | static_cast<unsigned>(MoveConstraints::DestinationLocked)):
+//        // Locked Door
 
-        break;
+//        break;
 
-        case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginImpassable) | static_cast<unsigned>(MoveConstraints::DestinationLocked)):
-        break;
-    }
+//        case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginImpassable) | static_cast<unsigned>(MoveConstraints::DestinationLocked)):
+//        break;
+//    }
 
     // connect doorways
     originDoorway->connect(destinationDoorway);

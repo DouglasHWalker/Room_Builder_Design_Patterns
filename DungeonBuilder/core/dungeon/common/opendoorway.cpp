@@ -5,5 +5,5 @@ std::string OpenDoorway::description(){
 }
 char OpenDoorway::displayCharacter(){
     // TODO: depends on direction
-    return _displayCharacter;
+    return '>';
 }
