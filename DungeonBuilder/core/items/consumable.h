@@ -2,12 +2,13 @@
 #define CONSUMABLE_H
 #include "item.h"
 
-class Consumable : Item
+class Consumable : public Item
 {
 public:
-    Consumable();
-
-    Consumable clone(); // TODO: override, return deep copy of self
+    Consumable(std::string name) : Item(name) {}; // TODO: intatiate values
+    Consumable *clone(){
+        return new Consumable(*this);
+    };
 };
 
 #endif // CONSUMABLE_H

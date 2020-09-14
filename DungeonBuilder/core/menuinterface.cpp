@@ -69,8 +69,8 @@ bool MenuInterface::yesNoConfirmation(){
 
 void MenuInterface::generateExampleLevel(){
     _display << "\nCreating Example Dungeon Level..." << std::endl;
-    Game::instance().setDungeonType(new BasicDungeonLevelBuilder());
-    Game::instance().createExampleLevel();
+    Game::instance()->setDungeonType(std::make_shared<BasicDungeonLevelBuilder>());
+    Game::instance()->createExampleLevel();
     _display << "\nDungeon level created!" << std::endl;
 }
 
@@ -190,7 +190,7 @@ void MenuInterface::describeLevel(){
 
 void MenuInterface::displayLevel(){
     _display << "\nName:\t" << std::endl;
-    std::vector<std::string> vect = Game::instance().displayLevel();
+    std::vector<std::string> vect = Game::instance()->displayLevel();
     for (int i = 0; i < int(vect.size()); i++){
         _display << vect[i];
     }

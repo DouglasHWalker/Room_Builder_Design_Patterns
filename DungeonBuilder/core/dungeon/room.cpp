@@ -1,8 +1,6 @@
 #include "room.h"
 
 Room::Room(int id) : _id{id} {
-    _item = std::make_unique<Item>();
-    _creature = std::make_unique<AbstractCreature>();
     _edges = std::array<std::shared_ptr<RoomEdge>, 4>(); // TODO: make the edges and edge array smart pointers?
 }
 

@@ -16,7 +16,7 @@ public:
 
     enum class Direction : unsigned int { North, South, East, West }; // WARNING: enum overload operator to reverse direction
 
-    virtual std::string description();
+    virtual std::string description() = 0;
     std::vector<std::string> display();
     int id();
     std::unique_ptr<Item> item();

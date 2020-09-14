@@ -7,9 +7,9 @@
 class RoomEdge
 {
 public:
-    virtual std::string description();
-    virtual char displayCharacter();
-    virtual bool isPassage();
+    virtual std::string description() = 0;
+    virtual char displayCharacter() = 0;
+    virtual bool isPassage() = 0;
 
     friend std::ostream& operator <<(std::ostream& os, const RoomEdge& edge);
 

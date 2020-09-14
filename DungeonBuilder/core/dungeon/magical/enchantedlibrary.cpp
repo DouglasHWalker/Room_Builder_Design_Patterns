@@ -1,6 +1,5 @@
 #include "enchantedlibrary.h"
 
-EnchantedLibrary::EnchantedLibrary()
-{
-
+std::string EnchantedLibrary::description(){
+    return "Enchanted Library";
 }

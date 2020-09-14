@@ -1,14 +1,10 @@
 #include <random>
 #include <ctime>
 #include "game.h"
+std::shared_ptr<Game> Game::theInstance = nullptr;
+void Game::setDungeonType(std::shared_ptr<DungeonLevelBuilder> dungeonLevelBuilder){
 
-Game::Game(){}
-
- Game& Game::instance(){
-    return theInstance;
 }
-
-void setDungeonType(DungeonLevelBuilder dungeonLevelBuilder){}
 void Game::createExampleLevel(){
     std::string title = "Example Dungeon Level";
     int width = 3;
@@ -76,7 +72,7 @@ void Game::createExampleLevel(){
     _dungeonBuilder->buildCreature(room9);
 
     // get dungeon level, return to display
-    _dungeonLevel = _dungeonBuilder->getDungeonLevel().get(); // FIXME: bare pointer requires .get() this may be very wrong
+    _dungeonLevel = _dungeonBuilder->getDungeonLevel(); // FIXME: bare pointer requires .get() this may be very wrong
 
 }
 void Game::createRandomLevel(std::string name, int width, int height){}

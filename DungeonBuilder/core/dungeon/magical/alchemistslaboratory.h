@@ -2,11 +2,11 @@
 #define ALCHEMISTSLABORATORY_H
 #include "core/dungeon/room.h"
 
-class AlchemistsLaboratory : Room
+class AlchemistsLaboratory : public Room
 {
 public:
-    AlchemistsLaboratory();
-    std::string description();
+    AlchemistsLaboratory(int id) : Room(id){}
+    std::string description() override;
 };
 
 #endif // ALCHEMISTSLABORATORY_H

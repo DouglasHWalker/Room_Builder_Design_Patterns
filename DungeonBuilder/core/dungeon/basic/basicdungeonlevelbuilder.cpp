@@ -15,7 +15,7 @@
  * @param height
  */
 void BasicDungeonLevelBuilder::buildDungeonLevel(std::string name, int width, int height){
-    _dungeonLevel = std::make_unique<DungeonLevel>(name, width, height);
+    _dungeonLevel = new BasicDungeonLevel(name, width, height); // NOTE: Must use bare pointer
 }
 
 /**
@@ -24,10 +24,10 @@ void BasicDungeonLevelBuilder::buildDungeonLevel(std::string name, int width, in
  * @param id
  */
 std::shared_ptr<Room> BasicDungeonLevelBuilder::buildRoom(int id){
-    double rand = Game::instance().randomDouble();
+    double rand = Game::instance()->randomDouble();
     std::shared_ptr<Room> room;
     // create a random room from the valid room types avaliable for the type of dungeon(basic)
-    if(rand <= 0.7){
+    if(rand <= _CHAMBER_RARITY){
         room = std::make_shared<RockChamber>(id);
     } else {
         room = std::make_shared<QuartzChamber>(id);
@@ -37,7 +37,7 @@ std::shared_ptr<Room> BasicDungeonLevelBuilder::buildRoom(int id){
 
     return room;
 }
-void BasicDungeonLevelBuilder::buildDoorway(Room origin, Room destination, Room::Direction direction, MoveConstraints constraints){
+void BasicDungeonLevelBuilder::buildDoorway(std::shared_ptr<Room> origin, std::shared_ptr<Room> destination, Room::Direction direction, MoveConstraints constraints){
     // TODO: connect the doors to the rooms
 
     // create the doorways
@@ -74,13 +74,14 @@ void BasicDungeonLevelBuilder::buildDoorway(Room origin, Room destination, Room:
         break;
 
         case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginImpassable) | static_cast<unsigned>(MoveConstraints::DestinationLocked)):
+        break;
     }
 
     // connect doorways
     originDoorway->connect(destinationDoorway);
     destinationDoorway->connect(originDoorway);
     // set edges
-    origin.setEdge(originDoorway, direction);
+    origin->setEdge(originDoorway, direction);
     // determine the opposite direction
     Room::Direction opDirection;
     switch(direction){
@@ -93,31 +94,31 @@ void BasicDungeonLevelBuilder::buildDoorway(Room origin, Room destination, Room:
     case Room::Direction::West:
         opDirection = Room::Direction::North;
     }
-    destination.setEdge(destinationDoorway, opDirection);
+    destination->setEdge(destinationDoorway, opDirection);
 
 
 }
-void BasicDungeonLevelBuilder::buildEntrance(Room room, Room::Direction direction){
+void BasicDungeonLevelBuilder::buildEntrance(std::shared_ptr<Room>  room, Room::Direction direction){
     // TODO: connect the doors to the rooms
     buildDoorway(room, room, direction, MoveConstraints::OriginLocked);
 
 }
-void BasicDungeonLevelBuilder::buildExit(Room room, Room::Direction direction){
+void BasicDungeonLevelBuilder::buildExit(std::shared_ptr<Room> room, Room::Direction direction){
     // TODO: connect the doors to the rooms
     buildDoorway(room, room, direction, MoveConstraints::DestinationLocked);
 }
-void BasicDungeonLevelBuilder::buildItem(Room room){
+void BasicDungeonLevelBuilder::buildItem(std::shared_ptr<Room> room){
     // TODO: prototype model Items
-    double rand = Game::instance().randomDouble();
-    Item *item;
-    if(rand <= 0.6){
+    double rand = Game::instance()->randomDouble();
+    std::unique_ptr<Item> item;
+    if(rand <= _ITEM_RARITY){
 //        item = new Weapon("");
     } else {
 //        item = new Consumable("");
     }
-    room.setItem(item);
+    room->setItem(item);
 }
-void BasicDungeonLevelBuilder::buildCreature(Room room){
+void BasicDungeonLevelBuilder::buildCreature(std::shared_ptr<Room> room){
     // TODO: prototype model Creatures
     // create a creatute selected randomly from the valid creature types avaliable for the type of dungeon(basic)
 //    AbstractCreature *monster = new Monster(); // TODO: concrete creature

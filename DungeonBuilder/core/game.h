@@ -9,21 +9,23 @@
 class Game
 {
 public:
-    static Game& instance();
+    static std::shared_ptr<Game> instance(){
+        return theInstance; // TODO: should this be a smart pointer
+    }
     Game(Game &other) = delete;
     Game operator=(Game &other) = delete;
     ~Game(){
         delete _dungeonLevel; // TODO: double check this is a correctly deleted bare pointer
     }
 
-    void setDungeonType(DungeonLevelBuilder *dungeonLevelBuilder);
+    void setDungeonType(std::shared_ptr<DungeonLevelBuilder> dungeonLevelBuilder);
     void createExampleLevel();
     void createRandomLevel(std::string name, int width, int height);
     std::vector<std::string> displayLevel();
     double randomDouble();
 private:
-    Game();
-    static Game theInstance;
+    Game() { std::cout << "Game created"; };
+    static std::shared_ptr<Game> theInstance;
     DungeonLevelBuilder* _dungeonBuilder;
     DungeonLevel* _dungeonLevel;
 

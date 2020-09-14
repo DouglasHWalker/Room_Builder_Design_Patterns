@@ -5,11 +5,11 @@
 class AbstractCreature
 {
 public:
-    AbstractCreature(std::string name);
-    AbstractCreature clone();
+    AbstractCreature(std::string name) : _name{name}{}
+    virtual AbstractCreature *clone() = 0;
     std::string name();
     char displayCharacter();
-private:
+protected:
     std::string _name;
     char _displayCharacter;
 };

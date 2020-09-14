@@ -2,7 +2,7 @@
 #define WALL_H
 #include "roomedge.h"
 
-class Wall : RoomEdge
+class Wall : public RoomEdge
 {
 public:
     Wall() : RoomEdge(){}

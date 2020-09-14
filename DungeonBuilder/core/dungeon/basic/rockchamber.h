@@ -5,8 +5,8 @@
 class RockChamber : public Room
 {
 public:
-    RockChamber(int id) : Room(id) {}
-    std::string description();
+    RockChamber(int id) : Room(id) {};
+    std::string description() override;
 };
 
 #endif // ROCKCHAMBER_H

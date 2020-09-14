@@ -2,12 +2,13 @@
 #define MONSTER_H
 #include "abstractcreature.h"
 
-class Monster : AbstractCreature
+class Monster : public AbstractCreature
 {
 public:
-    Monster();
-
-    Monster clone(); // TODO: override superclass. Return deep copy of self
+    Monster(std::string name) : AbstractCreature(name) {};
+    Monster* clone(){
+        return new Monster(*this);
+    }; // TODO: override superclass. Return deep copy of self
 };
 
 #endif // MONSTER_H

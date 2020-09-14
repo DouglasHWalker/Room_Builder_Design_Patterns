@@ -9,8 +9,8 @@ public:
         delete _opposite; // TODO: double check this is correct way to delete bare pointer, virtual?
     }
 
-    virtual std::string description() override; // TODO: should this be virtual again, override?
-    virtual char displayCharacter() override; // TODO: should this be virtual again, override?
+    virtual std::string description() override = 0; // TODO: should this be virtual again, override?
+    virtual char displayCharacter() override = 0; // TODO: should this be virtual again, override?
     bool isPassage() override; // TODO: override?
 
     void connect(std::shared_ptr<Doorway> opposite);

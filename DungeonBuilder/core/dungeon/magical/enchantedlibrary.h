@@ -2,11 +2,11 @@
 #define ENCHANTEDLIBRARY_H
 #include "core/dungeon/room.h"
 
-class EnchantedLibrary : Room
+class EnchantedLibrary : public Room
 {
 public:
-    EnchantedLibrary();
-    std::string description();
+    EnchantedLibrary(int id) : Room(id){}
+    std::string description() override;
 };
 
 #endif // ENCHANTEDLIBRARY_H

@@ -6,7 +6,7 @@ class Item
 {
 public:
     Item(std::string name);
-    Item clone(); // TODO: Make virtual
+    virtual Item* clone() = 0;
     std::string name();
     char displayCharacter();
 

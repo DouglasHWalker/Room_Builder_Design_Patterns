@@ -1,17 +1,24 @@
 #include <iostream>
 #include "dungeonlevel.h"
 
-
-DungeonLevel::DungeonLevel(std::string name, int width, int height) : _name{name}, _width{width}, _height{height} {}
-
-void DungeonLevel::addRoom(Room *room){
-    // rooms.add(room);...
+void DungeonLevel::addRoom(std::shared_ptr<Room> room){
+    _rooms.push_back(room);
 }
-Room DungeonLevel::retrieveRoom(int){}
-int DungeonLevel::width(){}
-int DungeonLevel::height(){}
-std::string DungeonLevel::name(){}
-std::vector<std::string> DungeonLevel::display(){ // TODO: should I be using vector here
-
+std::shared_ptr<Room> DungeonLevel::retrieveRoom(int id){
+    return _rooms[id];
+}
+int DungeonLevel::width(){
+    return _width;
+}
+int DungeonLevel::height(){
+    return _height;
+}
+std::string DungeonLevel::name(){
+    return _name;
+}
+std::vector<std::string> DungeonLevel::display(){
+    std::vector<std::string> vect = std::vector<std::string>();
+    vect.push_back("TO BE IMPLEMENTED, dungeonLevel.display()");
+    return vect;
 }
 

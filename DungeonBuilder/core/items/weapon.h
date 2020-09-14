@@ -2,11 +2,13 @@
 #define WEAPON_H
 #include "item.h"
 
-class Weapon : Item
+class Weapon : public Item
 {
 public:
-    Weapon();
-    Weapoon clone();  // TODO: override, return deep copy of self
+    Weapon(std::string name) : Item(name){}; // TODO: instatiate values
+    Weapon *clone(){
+        return new Weapon(*this);
+    };
 };
 
 #endif // WEAPON_H

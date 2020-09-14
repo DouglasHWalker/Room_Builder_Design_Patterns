@@ -5,8 +5,8 @@
 class QuartzChamber : public Room
 {
 public:
-    QuartzChamber(int id) : Room(id) {}
-    std::string description();
+    QuartzChamber(int id) : Room(id) {};
+    std::string description() override;
 };
 
 #endif // QUARTZCHAMBER_H

@@ -8,8 +8,10 @@
 class DungeonLevelBuilder
 {
 public:
-    DungeonLevelBuilder();
-    virtual ~DungeonLevelBuilder() = default;
+    DungeonLevelBuilder() = default;
+    virtual ~DungeonLevelBuilder(){ // TOOD: virtual on deconstructor, is this required for all descontructors
+        delete _dungeonLevel;
+    }
 
     enum class MoveConstraints : unsigned int
     {
@@ -22,22 +24,22 @@ public:
     // WARNING: add overloaded operators for the move constraints bitwise
 
 
-    virtual void buildDungeonLevel(std::string name, int width, int height) const;
-    virtual std::shared_ptr<Room> buildRoom(int id);
-    virtual void buildDoorway(std::shared_ptr<Room> origin, std::shared_ptr<Room> destination, Room::Direction direction, MoveConstraints constraints);
-    virtual void buildEntrance(std::shared_ptr<Room> room, Room::Direction direction);
-    virtual void buildExit(std::shared_ptr<Room> room, Room::Direction direction);
-    virtual void buildItem(std::shared_ptr<Room> room);
-    virtual void buildCreature(std::shared_ptr<Room> &room);
-    std::unique_ptr<DungeonLevel> getDungeonLevel(){
+    virtual void buildDungeonLevel(std::string name, int width, int height){}; // WARNING: is this const?
+    virtual std::shared_ptr<Room> buildRoom(int id){};
+    virtual void buildDoorway(std::shared_ptr<Room> origin, std::shared_ptr<Room> destination, Room::Direction direction, MoveConstraints constraints){};
+    virtual void buildEntrance(std::shared_ptr<Room> room, Room::Direction direction){};
+    virtual void buildExit(std::shared_ptr<Room> room, Room::Direction direction){};
+    virtual void buildItem(std::shared_ptr<Room> room){};
+    virtual void buildCreature(std::shared_ptr<Room> room){};
+    DungeonLevel* getDungeonLevel(){
         // transfer of ownership where dungeon level is bare pointer
         // TODO: change to smart pointer, method indicates tranfer of ownership
-        return std::move(_dungeonLevel);
+        return _dungeonLevel;
     }
 
 
 protected:
-    std::unique_ptr<DungeonLevel> _dungeonLevel;
+    DungeonLevel* _dungeonLevel;
 };
 
 #endif // DUNGEONLEVELBUILDER_H

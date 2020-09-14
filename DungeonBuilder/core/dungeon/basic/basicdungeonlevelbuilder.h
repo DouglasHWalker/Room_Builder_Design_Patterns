@@ -11,11 +11,14 @@ class BasicDungeonLevelBuilder : public DungeonLevelBuilder
 public:
     void buildDungeonLevel(std::string name, int width, int height);
     std::shared_ptr<Room> buildRoom(int id);
-    void buildDoorway(Room origin, Room destination, Room::Direction direction, MoveConstraints constraints);
-    void buildEntrance(Room room, Room::Direction direction);
-    void buildExit(Room room, Room::Direction direction);
-    void buildItem(Room room);
-    void buildCreature(Room room);
+    void buildDoorway(std::shared_ptr<Room> origin, std::shared_ptr<Room> destination, Room::Direction direction, MoveConstraints constraints);
+    void buildEntrance(std::shared_ptr<Room> room, Room::Direction direction);
+    void buildExit(std::shared_ptr<Room> room, Room::Direction direction);
+    void buildItem(std::shared_ptr<Room> room);
+    void buildCreature(std::shared_ptr<Room> room);
+private:
+    double _ITEM_RARITY = 0.6;
+    double _CHAMBER_RARITY = 0.7;
 };
 
 #endif // BASICDUNGEONLEVELBUILDER_H
