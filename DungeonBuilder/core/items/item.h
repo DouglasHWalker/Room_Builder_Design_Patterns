@@ -12,7 +12,7 @@ public:
 
     friend std::ostream& operator <<(std::ostream& os, const Item& item);
 
-private:
+protected:
     std::string _name;
     char _displayCharacter;
 };

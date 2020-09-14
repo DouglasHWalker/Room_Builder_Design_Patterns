@@ -4,6 +4,7 @@
 #include "core/dungeon/room.h"
 #include "core/dungeon/dungeonlevelbuilder.h"
 #include "core/dungeon/basic/basicdungeonlevel.h"
+#include "core/creatures/monster.h"
 
 
 class BasicDungeonLevelBuilder : public DungeonLevelBuilder
@@ -19,6 +20,13 @@ public:
 private:
     double _ITEM_RARITY = 0.6;
     double _CHAMBER_RARITY = 0.7;
+
+    std::unique_ptr<Monster> _goblin_proto = std::make_unique<Monster>("Goblin");
+    std::unique_ptr<Monster> _werewolf_proto = std::make_unique<Monster>("Werewolf");
+    std::unique_ptr<Monster> _evilWizard_proto = std::make_unique<Monster>("Evil Wizard");
+    std::unique_ptr<Monster> _dragon_proto = std::make_unique<Monster>("Dragon");
+    // FIXME: make boss prototype? may or may not
+
 };
 
 #endif // BASICDUNGEONLEVELBUILDER_H

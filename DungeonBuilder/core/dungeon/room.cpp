@@ -4,14 +4,12 @@ Room::Room(int id) : _id{id} {
     _edges = std::array<std::shared_ptr<RoomEdge>, 4>(); // TODO: make the edges and edge array smart pointers?
 }
 
-std::vector<std::string> Room::display(){
-     std::vector<std::string> output = std::vector<std::string>();
+std::array<std::string, 5> Room::display(){
+     std::array<std::string, 5> output = std::array<std::string, 5>(); // TODO: should this be using pointers
      // Create North Row string
      std::string northRow{"+----"};
      northRow += edgeAt(Room::Direction::North)->displayCharacter();
      northRow += "----+";
-     // Create Blank Row
-     std::string blankRow = "|         |";
      // Create Middle Row
      std::string middleRow{};
      middleRow += edgeAt(Room::Direction::West)->displayCharacter();
@@ -24,13 +22,15 @@ std::vector<std::string> Room::display(){
      std::string southRow{"+----"};
      southRow += edgeAt(Room::Direction::South)->displayCharacter();
      southRow += "----+";
+     // Create Blank Row
+     std::string blankRow{"|         |"};
 
      // Add strings to output
-     output.push_back(northRow);
-     output.push_back(blankRow);
-     output.push_back(middleRow);
-     output.push_back(blankRow);
-     output.push_back(southRow);
+     output[0] = northRow;
+     output[1] = blankRow;
+     output[2] = middleRow;
+     output[3] = blankRow;
+     output[4] = southRow;
 
      return output;
 }

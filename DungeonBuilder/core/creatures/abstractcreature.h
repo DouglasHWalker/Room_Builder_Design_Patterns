@@ -10,10 +10,13 @@ public:
     std::string name();
     char displayCharacter();
 
-    friend std::ostream& operator <<(std::ostream& os, const AbstractCreature& creature);
+    friend std::ostream& operator<< (std::ostream& os, const AbstractCreature& creature);
 protected:
     std::string _name;
     char _displayCharacter;
+
+    void setToBoss();
+
 };
 
 #endif // ABSTRACTCREATURE_H

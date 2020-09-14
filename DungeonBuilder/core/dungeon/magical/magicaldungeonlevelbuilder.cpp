@@ -23,7 +23,7 @@ void MagicalDungeonLevelBuilder::buildDungeonLevel(std::string name, int width, 
  * @param id
  */
 std::shared_ptr<Room> MagicalDungeonLevelBuilder::buildRoom(int id){
-    double rand = Game::instance().randomDouble();
+    double rand = Game::instance()->randomDouble();
     std::shared_ptr<Room> room;
     // create a random room from the valid room types avaliable for the type of dungeon(basic)
     if(rand <= _CHAMBER_RARITY){
@@ -108,7 +108,7 @@ void MagicalDungeonLevelBuilder::buildExit(std::shared_ptr<Room> room, Room::Dir
 }
 void MagicalDungeonLevelBuilder::buildItem(std::shared_ptr<Room> room){
     // TODO: prototype model Items
-    double rand = Game::instance().randomDouble();
+    double rand = Game::instance()->randomDouble();
     std::unique_ptr<Item> item;
     if(rand <= _ITEM_RARITY){
 //        item = new Weapon("");

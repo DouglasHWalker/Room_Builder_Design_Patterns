@@ -17,7 +17,7 @@ public:
     enum class Direction : unsigned int { North, South, East, West }; // WARNING: enum overload operator to reverse direction
 
     virtual std::string description() = 0;
-    std::vector<std::string> display();
+    std::array<std::string, 5> display();
     int id();
     std::unique_ptr<Item> item();
     void setItem(std::unique_ptr<Item>& newItem);
@@ -31,6 +31,8 @@ private:
     std::unique_ptr<Item> _item;
     std::unique_ptr<AbstractCreature> _creature;
     std::array<std::shared_ptr<RoomEdge>, 4> _edges;
+
+
 };
 
 #endif // ROOM_H

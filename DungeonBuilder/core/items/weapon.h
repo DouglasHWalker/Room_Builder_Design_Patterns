@@ -5,10 +5,15 @@
 class Weapon : public Item
 {
 public:
-    Weapon(std::string name) : Item(name){}; // TODO: instatiate values
+    Weapon(std::string name) : Item(name){
+        _displayCharacter = _DISPLAY_CHAR;
+        // TODO: instatiate values
+    };
     Weapon *clone(){
         return new Weapon(*this);
     };
+private:
+    const char _DISPLAY_CHAR = 'W';
 };
 
 #endif // WEAPON_H
