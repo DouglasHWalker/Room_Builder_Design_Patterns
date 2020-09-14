@@ -2,18 +2,17 @@
 #define ONEWAYDOOR_H
 #include "core/dungeon/doorway.h"
 
-class OneWayDoor
+class OneWayDoor: public Doorway
 {
 public:
-    OneWayDoor();
+    OneWayDoor() : Doorway(){
+        _isEntry = _opposite == nullptr ? true : false;
+    }
+    ~OneWayDoor() = default; // TODO: Do I need to declar this as it is already specified in the base class Doorway
 
-    void connect(Doorway opposite);
-    bool isEntrance();
-    bool isExit();
+    std::string description() override;
+    char displayCharacter() override;
 
-    std::string description();
-    char displayCharacter();
-    bool isPassage();
 };
 
 #endif // ONEWAYDOOR_H

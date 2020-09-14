@@ -1,6 +1,8 @@
 #include "lockeddoor.h"
 
-LockedDoor::LockedDoor()
-{
-
+std::string LockedDoor::description(){
+    return "Locked Door"; // TODO: could implement this to cover the entire description
+}
+char LockedDoor::displayCharacter(){
+    return _DISPLAY_CHAR;
 }

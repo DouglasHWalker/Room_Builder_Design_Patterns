@@ -2,14 +2,15 @@
 #define DUNGEONLEVEL_H
 #include <iostream>
 #include <vector>
+#include <memory>
 #include "room.h"
 
 class DungeonLevel
 {
 public:
     DungeonLevel(std::string name, int width, int height);
-
-    void addRoom(Room *room);
+    virtual ~DungeonLevel() = default; // WARNING: Static here might be wrong
+    void addRoom(std::shared_ptr<Room> room);
     Room retrieveRoom(int);
     int width();
     int height();
@@ -24,7 +25,7 @@ private:
     int _width;
     int _height;
     std::string _description;
-    std::vector<Room> _rooms;
+    std::vector<std::unique_ptr<Room>> _rooms;
 };
 
 #endif // DUNGEONLEVEL_H

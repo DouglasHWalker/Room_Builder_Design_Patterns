@@ -9,6 +9,7 @@ class DungeonLevelBuilder
 {
 public:
     DungeonLevelBuilder();
+    virtual ~DungeonLevelBuilder() = default;
 
     enum class MoveConstraints : unsigned int
     {
@@ -18,21 +19,25 @@ public:
         OriginLocked = 4,
         DestinationLocked = 8
     };
+    // WARNING: add overloaded operators for the move constraints bitwise
 
-    virtual void buildDungeonLevel(std::string name, int width, int height);
-    virtual Room* buildRoom(int id);
-    virtual void buildDoorway(Room *origin, Room *destination, Room::Direction direction, MoveConstraints constraints);
-    virtual void buildEntrance(Room *room, Room::Direction direction);
-    virtual void buildExit(Room *room, Room::Direction direction);
-    virtual void buildItem(Room *room);
-    virtual void buildCreature(Room *room);
-    DungeonLevel* getDungeonLevel(){
-        return _dungeonLevel; // TODO: change to smart pointer, method indicates tranfer of ownership
+
+    virtual void buildDungeonLevel(std::string name, int width, int height) const;
+    virtual std::shared_ptr<Room> buildRoom(int id);
+    virtual void buildDoorway(std::shared_ptr<Room> origin, std::shared_ptr<Room> destination, Room::Direction direction, MoveConstraints constraints);
+    virtual void buildEntrance(std::shared_ptr<Room> room, Room::Direction direction);
+    virtual void buildExit(std::shared_ptr<Room> room, Room::Direction direction);
+    virtual void buildItem(std::shared_ptr<Room> room);
+    virtual void buildCreature(std::shared_ptr<Room> &room);
+    std::unique_ptr<DungeonLevel> getDungeonLevel(){
+        // transfer of ownership where dungeon level is bare pointer
+        // TODO: change to smart pointer, method indicates tranfer of ownership
+        return std::move(_dungeonLevel);
     }
 
 
 protected:
-    DungeonLevel* _dungeonLevel;
+    std::unique_ptr<DungeonLevel> _dungeonLevel;
 };
 
 #endif // DUNGEONLEVELBUILDER_H

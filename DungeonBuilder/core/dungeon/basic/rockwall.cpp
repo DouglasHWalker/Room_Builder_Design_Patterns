@@ -1,6 +1,5 @@
 #include "rockwall.h"
 
-RockWall::RockWall()
-{
-
+std::string RockWall::description(){
+    return "Rock Wall"; // could be modified to return more information
 }

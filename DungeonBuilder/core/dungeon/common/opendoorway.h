@@ -2,18 +2,15 @@
 #define OPENDOORWAY_H
 #include "core/dungeon/doorway.h"
 
-class OpenDoorway : Doorway
+class OpenDoorway : public Doorway
 {
 public:
-    OpenDoorway();
+    OpenDoorway() : Doorway() {}
 
-    void connect(Doorway opposite);
-    bool isEntrance();
-    bool isExit();
+    std::string description() override;
+    char displayCharacter() override;
 
-    std::string description();
-    char displayCharacter();
-    bool isPassage();
+
 };
 
 #endif // OPENDOORWAY_H

@@ -2,14 +2,13 @@
 #define ROCKWALL_H
 #include "core/dungeon/wall.h"
 
-class RockWall : Wall
+class RockWall : public Wall
 {
 public:
-    RockWall();
+    RockWall() : Wall(){}
+    ~RockWall() = default; // TODO: decontructor could already be implemented by Wall base class
 
-    std::string description();
-    char displayCharacter();
-    bool isPassage();
+    std::string description() override;
 };
 
 #endif // ROCKWALL_H

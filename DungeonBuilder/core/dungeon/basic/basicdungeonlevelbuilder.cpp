@@ -1,5 +1,6 @@
 #include "basicdungeonlevelbuilder.h"
 #include "core/dungeon/doorway.h"
+#include "core/dungeon/common/opendoorway.h"
 #include "core/creatures/monster.h"
 #include "core/game.h"
 #include "core/dungeon/basic/quartzchamber.h"
@@ -14,7 +15,7 @@
  * @param height
  */
 void BasicDungeonLevelBuilder::buildDungeonLevel(std::string name, int width, int height){
-    _dungeonLevel = new DungeonLevel(name, width, height);
+    _dungeonLevel = std::make_unique<DungeonLevel>(name, width, height);
 }
 
 /**
@@ -22,32 +23,88 @@ void BasicDungeonLevelBuilder::buildDungeonLevel(std::string name, int width, in
  * dungeon level currently under construction; the concrete type of Room MUST be chosen randomly
  * @param id
  */
-Room BasicDungeonLevelBuilder::buildRoom(int id){
+std::shared_ptr<Room> BasicDungeonLevelBuilder::buildRoom(int id){
     double rand = Game::instance().randomDouble();
-    Room *room;
+    std::shared_ptr<Room> room;
     // create a random room from the valid room types avaliable for the type of dungeon(basic)
     if(rand <= 0.7){
-        room = new RockChamber(id);
+        room = std::make_shared<RockChamber>(id);
     } else {
-        room = new QuartzChamber(id);
+        room = std::make_shared<QuartzChamber>(id);
     }
     // add the room to the dungeon level
     _dungeonLevel->addRoom(room);
+
+    return room;
 }
 void BasicDungeonLevelBuilder::buildDoorway(Room origin, Room destination, Room::Direction direction, MoveConstraints constraints){
     // TODO: connect the doors to the rooms
-    Doorway *originDoorway = new Doorway(); // origin
-    Doorway *destinationDoorway = new Doorway(); // destination, in opposite direction
-    // adding contraints
+
+    // create the doorways
+    std::shared_ptr<Doorway> originDoorway; // origin
+    std::shared_ptr<Doorway> destinationDoorway; // destination, in opposite direction
+    // determine the door type
+    switch (constraints) {
+    case MoveConstraints::None:
+        // Open doorway
+        // origin
+        originDoorway = std::make_shared<OpenDoorway>();
+        destinationDoorway = std::make_shared<OpenDoorway>();
+        break;
+    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::DestinationImpassable)):
+        // one way door going from origin
+        // BUG: Must fix soon.
+        break;
+    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginImpassable)):
+        // One way door going from destination
+
+        break;
+    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginImpassable) | static_cast<unsigned>(MoveConstraints::DestinationImpassable)):
+        //  Blocked doorway
+
+        break;
+    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginLocked)):
+    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginLocked) | static_cast<unsigned>(MoveConstraints::DestinationImpassable)):
+        // Locked door on origin
+
+    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::DestinationLocked)):
+    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginLocked) | static_cast<unsigned>(MoveConstraints::DestinationLocked)):
+        // Locked Door
+
+        break;
+
+        case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginImpassable) | static_cast<unsigned>(MoveConstraints::DestinationLocked)):
+    }
+
+    // connect doorways
+    originDoorway->connect(destinationDoorway);
+    destinationDoorway->connect(originDoorway);
+    // set edges
+    origin.setEdge(originDoorway, direction);
+    // determine the opposite direction
+    Room::Direction opDirection;
+    switch(direction){
+    case Room::Direction::North:
+        opDirection = Room::Direction::South;
+    case Room::Direction::South:
+        opDirection = Room::Direction::North;
+    case Room::Direction::East:
+        opDirection = Room::Direction::West;
+    case Room::Direction::West:
+        opDirection = Room::Direction::North;
+    }
+    destination.setEdge(destinationDoorway, opDirection);
+
+
 }
 void BasicDungeonLevelBuilder::buildEntrance(Room room, Room::Direction direction){
     // TODO: connect the doors to the rooms
-    buildDoorway(room, room, direction, MoveConstraints::OriginLocked); // TODO: make sure this is right
+    buildDoorway(room, room, direction, MoveConstraints::OriginLocked);
 
 }
 void BasicDungeonLevelBuilder::buildExit(Room room, Room::Direction direction){
     // TODO: connect the doors to the rooms
-    buildDoorway(room, room, direction, MoveConstraints::DestinationLocked); // TODO: make sure this is right
+    buildDoorway(room, room, direction, MoveConstraints::DestinationLocked);
 }
 void BasicDungeonLevelBuilder::buildItem(Room room){
     // TODO: prototype model Items

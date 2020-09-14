@@ -1,20 +1,15 @@
 #ifndef BLOCKEDDOORWAY_H
 #define BLOCKEDDOORWAY_H
 #include "core/dungeon/doorway.h"
+#include "core/dungeon/room.h"
 
-class BlockedDoorway : Doorway
+class BlockedDoorway : public Doorway
 {
 public:
-    BlockedDoorway();
-
-    void connect(Doorway opposite);
-    bool isEntrance();
-    bool isExit();
-
-    std::string description();
-    char displayCharacter();
-    bool isPassage();
-
+    std::string description() override;
+    char displayCharacter() override;
+private:
+    const char& _DISPLAY_CHAR = 'X';
 };
 
 #endif // BLOCKEDDOORWAY_H

@@ -12,6 +12,9 @@ public:
     static Game& instance();
     Game(Game &other) = delete;
     Game operator=(Game &other) = delete;
+    ~Game(){
+        delete _dungeonLevel; // TODO: double check this is a correctly deleted bare pointer
+    }
 
     void setDungeonType(DungeonLevelBuilder *dungeonLevelBuilder);
     void createExampleLevel();
@@ -26,6 +29,8 @@ private:
 
     std::mt19937 _randomGenerator{uint32_t(time(nullptr))};
     std::uniform_real_distribution<double> _realDistribution{0.0, 1.0};
+
+    // TODO: double check singleton implementation correct
 };
 
 #endif // GAME_H

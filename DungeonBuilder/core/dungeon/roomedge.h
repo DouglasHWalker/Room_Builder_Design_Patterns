@@ -1,19 +1,20 @@
 #ifndef ROOMEDGE_H
 #define ROOMEDGE_H
 #include <iostream>
+#include <ostream>
+#include <memory>
 
 class RoomEdge
 {
 public:
-    RoomEdge();
     virtual std::string description();
     virtual char displayCharacter();
     virtual bool isPassage();
 
-private:
+protected:
     std::string _description;
     char _displayCharacter;
-    bool _isPassage;
+    // TODO: does the RoomEdge need a direction
 };
 
 #endif // ROOMEDGE_H

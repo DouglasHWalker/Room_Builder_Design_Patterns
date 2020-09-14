@@ -1,6 +1,5 @@
 #include "magicwall.h"
 
-MagicWall::MagicWall()
-{
-
+std::string MagicWall::description(){
+    return "Magic Wall"; // could be modified to return more information
 }

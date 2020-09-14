@@ -1,23 +1,29 @@
 #ifndef DOORWAY_H
 #define DOORWAY_H
-#include "roomedge.h"
+#include "room.h"
 
 class Doorway : public RoomEdge
 {
 public:
-    Doorway();
+    virtual ~Doorway(){
+        delete _opposite; // TODO: double check this is correct way to delete bare pointer, virtual?
+    }
 
-    std::string description();
-    char displayCharacter();
-    bool isPassage();
+    virtual std::string description() override; // TODO: should this be virtual again, override?
+    virtual char displayCharacter() override; // TODO: should this be virtual again, override?
+    bool isPassage() override; // TODO: override?
 
-    void connect(Doorway opposite);
+    void connect(std::shared_ptr<Doorway> opposite);
     bool isEntrance();
     bool isExit();
 
-private:
-    bool _isEntrance;
-    bool _isExit;
+    friend std::ostream& operator <<(std::ostream& os, const Doorway& doorway);
+
+protected:
+    bool _isEntry = false;
+    bool _isExit = false; // WARNING: revise entry exit
+    Doorway* _opposite;
+
 };
 
 #endif // DOORWAY_H

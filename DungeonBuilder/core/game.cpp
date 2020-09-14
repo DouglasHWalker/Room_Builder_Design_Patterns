@@ -16,15 +16,15 @@ void Game::createExampleLevel(){
 
     _dungeonBuilder->buildDungeonLevel(title, width, height);
     // build all the dungeon rooms
-    Room *room1 = _dungeonBuilder->buildRoom(1);
-    Room *room2 = _dungeonBuilder->buildRoom(2);
-    Room *room3 = _dungeonBuilder->buildRoom(3);
-    Room *room4 = _dungeonBuilder->buildRoom(4);
-    Room *room5 = _dungeonBuilder->buildRoom(5);
-    Room *room6 = _dungeonBuilder->buildRoom(6);
-    Room *room7 = _dungeonBuilder->buildRoom(7);
-    Room *room8 = _dungeonBuilder->buildRoom(8);
-    Room *room9 = _dungeonBuilder->buildRoom(9);
+    std::shared_ptr<Room> room1 = _dungeonBuilder->buildRoom(1);
+    std::shared_ptr<Room> room2 = _dungeonBuilder->buildRoom(2);
+    std::shared_ptr<Room> room3 = _dungeonBuilder->buildRoom(3);
+    std::shared_ptr<Room> room4 = _dungeonBuilder->buildRoom(4);
+    std::shared_ptr<Room> room5 = _dungeonBuilder->buildRoom(5);
+    std::shared_ptr<Room> room6 = _dungeonBuilder->buildRoom(6);
+    std::shared_ptr<Room> room7 = _dungeonBuilder->buildRoom(7);
+    std::shared_ptr<Room> room8 = _dungeonBuilder->buildRoom(8);
+    std::shared_ptr<Room> room9 = _dungeonBuilder->buildRoom(9);
 
     // add the apropriate doorways to the rooms
     // room1
@@ -76,7 +76,7 @@ void Game::createExampleLevel(){
     _dungeonBuilder->buildCreature(room9);
 
     // get dungeon level, return to display
-    _dungeonLevel = _dungeonBuilder->getDungeonLevel();
+    _dungeonLevel = _dungeonBuilder->getDungeonLevel().get(); // FIXME: bare pointer requires .get() this may be very wrong
 
 }
 void Game::createRandomLevel(std::string name, int width, int height){}

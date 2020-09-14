@@ -69,8 +69,7 @@ bool MenuInterface::yesNoConfirmation(){
 
 void MenuInterface::generateExampleLevel(){
     _display << "\nCreating Example Dungeon Level..." << std::endl;
-    BasicDungeonLevelBuilder *dungeon = new BasicDungeonLevelBuilder();
-    Game::instance().setDungeonType(dungeon);
+    Game::instance().setDungeonType(new BasicDungeonLevelBuilder());
     Game::instance().createExampleLevel();
     _display << "\nDungeon level created!" << std::endl;
 }
