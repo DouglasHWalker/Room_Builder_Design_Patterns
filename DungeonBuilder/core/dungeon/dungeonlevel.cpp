@@ -5,7 +5,7 @@ void DungeonLevel::addRoom(std::shared_ptr<Room> room){
     _rooms.push_back(room);
 }
 std::shared_ptr<Room> DungeonLevel::retrieveRoom(int id){
-    return _rooms[id];
+    return _rooms[id - 1];
 }
 int DungeonLevel::width(){
     return _width;

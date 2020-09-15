@@ -26,7 +26,7 @@ public:
     void setEdge(std::shared_ptr<RoomEdge> edge, Room::Direction direction);
     std::shared_ptr<RoomEdge> edgeAt(Room::Direction direction);
 
-private:
+protected:
     int _id;
     std::unique_ptr<Item> _item;
     std::unique_ptr<AbstractCreature> _creature;

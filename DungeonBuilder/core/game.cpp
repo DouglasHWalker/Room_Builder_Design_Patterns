@@ -87,6 +87,14 @@ std::string Game::describeLevel(){
     return _dungeonLevel->description();
 }
 
+int Game::getNumberOfRooms(){
+    return _dungeonLevel->width() * _dungeonLevel->height();
+}
+
+std::string Game::describeRoom(int roomNumber){
+    return _dungeonLevel->retrieveRoom(roomNumber)->description();
+}
+
 double Game::randomDouble(){
     return _realDistribution(_randomGenerator);
 }

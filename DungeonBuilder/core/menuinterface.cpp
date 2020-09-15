@@ -110,9 +110,9 @@ void MenuInterface::generateRandomLevel(){
     } while(not validInput);
 
     _display << "\nCreating " << levelName << "..." << std::endl;
-    // TODO: Create Level using gathered settings
     _display << "\nName:\t" << levelName << "\nRows:\t" << rows << "\nCols:\t" << cols << "\nType:\t" << ((levelType == 'b') ? "Basic" : "Magical") << std::endl;
 
+    // TODO: Create Level using gathered settings
     if(levelType == 'b'){
         Game::instance()->setDungeonType(std::make_shared<BasicDungeonLevelBuilder>());
     } else {
@@ -243,17 +243,18 @@ void MenuInterface::displayExplorationMenu(){
     } while (not exit);
 }
 void MenuInterface::describeRoom(){
-    _display << "\nWhich room would you like to describe? " << "(1-4)" << std::endl; // TODO: Max number of rooms: Add to Game class?
+    int maxRooms = Game::instance()->getNumberOfRooms();
+    _display << "\nWhich room would you like to describe? " << "(1-" << maxRooms << ")" << std::endl; // TODO: Max number of rooms: Add to Game class?
     int roomNumber{0};
-    for(_input >> roomNumber; _input.fail() or roomNumber < 1 or roomNumber > 4; _input >> roomNumber){
+    for(_input >> roomNumber; _input.fail() or roomNumber < 1 or roomNumber > maxRooms; _input >> roomNumber){
         _input.clear();
         _input.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
         _display << "Invalid integer, please choose a room number between "
-                 << 1 << '-' << 4
+                 << 1 << '-' << maxRooms
                  << std::endl;
     }
     _display << "Room " << roomNumber << " is..." << std::endl;
-    //TODO: output description of dungeon
+    _display << Game::instance()->describeRoom(roomNumber) << std::endl;
     _display << "\nPress Enter to continue...\t" << std::endl;
     // TODO: prompt for 'enter'
 }

@@ -26,9 +26,14 @@ public:
     void createRandomLevel(std::string name, int width, int height);
     std::vector<std::string> displayLevel();
 
-    std::string describeLevel(); // TODO: remove this somehow, not in specification
-
     double randomDouble();
+
+    // TODO: remove these somehow, not in specification
+    std::string describeLevel();
+    int getNumberOfRooms();
+    std::string describeRoom(int roomNumber);
+
+
 private:
     Game() { std::cout << "Game created"; };
     static Game* theInstance;
