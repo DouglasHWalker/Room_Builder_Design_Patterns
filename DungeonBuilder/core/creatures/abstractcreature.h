@@ -1,12 +1,13 @@
 #ifndef ABSTRACTCREATURE_H
 #define ABSTRACTCREATURE_H
 #include <iostream>
+#include <memory>
 
 class AbstractCreature
 {
 public:
     AbstractCreature(std::string name) : _name{name}{}
-    virtual AbstractCreature *clone() = 0;
+    virtual std::unique_ptr<AbstractCreature> clone() = 0;
     std::string name();
     char displayCharacter();
 
@@ -14,8 +15,7 @@ public:
 protected:
     std::string _name;
     char _displayCharacter = 'M';
-
-    void setToBoss();
+    bool isBoss();
 
 };
 

@@ -120,15 +120,35 @@ void BasicDungeonLevelBuilder::buildItem(std::shared_ptr<Room> room){
     double rand = Game::instance()->randomDouble();
     std::unique_ptr<Item> item;
     if(rand <= _ITEM_RARITY){
-//        item = new Weapon("");
+        if(rand <= _ITEM_RARITY/3){
+            item = std::unique_ptr(_boomerang_proto->clone());
+        } else if(rand <= (_ITEM_RARITY/3)*2){
+            item = std::unique_ptr(_battleAxe_proto->clone());
+        } else {
+            item = std::unique_ptr(_shortSword_proto->clone());
+        }
     } else {
-//        item = new Consumable("");
+        // TOOD: make this more extensible
+        // randomly select a prototype
+        if(rand <= _ITEM_RARITY/3){
+            item = std::unique_ptr(_molotov_proto->clone());
+        } else if(rand <= (_ITEM_RARITY/3)*2){
+            item = std::unique_ptr(_healthPotion_proto->clone());
+        } else {
+            item = std::unique_ptr(_smokeBomb_proto->clone());
+        }
     }
-    room->setItem(item);
+    room->setItem(std::move(item));
 }
 void BasicDungeonLevelBuilder::buildCreature(std::shared_ptr<Room> room){
-    // TODO: prototype model Creatures
-    // create a creatute selected randomly from the valid creature types avaliable for the type of dungeon(basic)
-//    AbstractCreature *monster = new Monster(); // TODO: concrete creature
-//    room.setCreature(creature);
+    double rand = Game::instance()->randomDouble();
+    std::unique_ptr<AbstractCreature> creature;
+    if(rand >= _CREATURE_RARITY){
+        creature = _werewolf_proto->clone();
+    } else if(rand <= _CREATURE_RARITY/2){
+        creature = _evilWizard_proto->clone();
+    } else {
+        creature = _goblin_proto->clone();
+    }
+    room->setCreature(std::move(creature));
 }

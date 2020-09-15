@@ -9,8 +9,8 @@ public:
         _displayCharacter = _DISPLAY_CHAR; // WARNING: is this instantiated at the correct level
         // TODO: intatiate values
     };
-    Consumable *clone(){
-        return new Consumable(*this);
+    std::unique_ptr<Item> clone(){
+        return std::make_unique<Consumable>(*this);
     };
 private:
     const char _DISPLAY_CHAR = 'C';

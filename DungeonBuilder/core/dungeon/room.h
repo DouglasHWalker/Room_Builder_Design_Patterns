@@ -20,7 +20,7 @@ public:
     std::array<std::string, 5> display();
     int id();
     std::unique_ptr<Item> item();
-    void setItem(std::unique_ptr<Item>& newItem);
+    void setItem(std::unique_ptr<Item> newItem);
     std::unique_ptr<AbstractCreature> creature();
     void setCreature(std::unique_ptr<AbstractCreature> newCreature);
     void setEdge(std::shared_ptr<RoomEdge> edge, Room::Direction direction);

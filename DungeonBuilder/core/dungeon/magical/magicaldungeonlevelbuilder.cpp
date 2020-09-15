@@ -72,7 +72,7 @@ void MagicalDungeonLevelBuilder::buildDoorway(std::shared_ptr<Room> origin, std:
 
         break;
 
-        case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginImpassable) | static_cast<unsigned>(MoveConstraints::DestinationLocked)):
+    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginImpassable) | static_cast<unsigned>(MoveConstraints::DestinationLocked)):
         break;
     }
 
@@ -107,19 +107,38 @@ void MagicalDungeonLevelBuilder::buildExit(std::shared_ptr<Room> room, Room::Dir
     buildDoorway(room, room, direction, MoveConstraints::DestinationLocked);
 }
 void MagicalDungeonLevelBuilder::buildItem(std::shared_ptr<Room> room){
-    // TODO: prototype model Items
     double rand = Game::instance()->randomDouble();
     std::unique_ptr<Item> item;
+    // TOOD: make this more extensible, the randomisation automatic or something
     if(rand <= _ITEM_RARITY){
-//        item = new Weapon("");
+        if(rand <= _ITEM_RARITY/3){
+            item = _boomerang_proto->clone();
+        } else if(rand <= (_ITEM_RARITY/3)*2){
+            item = _magicWand_proto->clone();
+        } else {
+            item = _wizardStaff_proto->clone();
+        }
     } else {
-//        item = new Consumable("");
+        // randomly select a prototype
+        if(rand <= _ITEM_RARITY/3){
+            item = _molotov_proto->clone();
+        } else if(rand <= (_ITEM_RARITY/3)*2){
+            item = _healthPotion_proto->clone();
+        } else {
+            item = _resistancePotion_proto->clone();
+        }
     }
-    room->setItem(item);
+    room->setItem(std::move(item));
 }
 void MagicalDungeonLevelBuilder::buildCreature(std::shared_ptr<Room> room){
-    // TODO: prototype model Creatures
-    // create a creatute selected randomly from the valid creature types avaliable for the type of dungeon(basic)
-//    AbstractCreature *monster = new Monster(); // TODO: concrete creature
-//    room.setCreature(creature);
+    double rand = Game::instance()->randomDouble();
+    std::unique_ptr<AbstractCreature> creature;
+    if(rand >= _CREATURE_RARITY){
+        creature = _dragon_proto->clone();
+    } else if(rand <= _CREATURE_RARITY/2){
+        creature = _evilWizard_proto->clone();
+    } else {
+        creature = _goblin_proto->clone();
+    }
+    room->setCreature(std::move(creature));
 }

@@ -44,7 +44,7 @@ std::unique_ptr<Item> Room::item(){
     return std::move(_item);
 }
 
-void Room::setItem(std::unique_ptr<Item>& newItem){
+void Room::setItem(std::unique_ptr<Item> newItem){
     _item = std::move(newItem);
 }
 

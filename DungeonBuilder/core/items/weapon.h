@@ -9,8 +9,8 @@ public:
         _displayCharacter = _DISPLAY_CHAR;
         // TODO: instatiate values
     };
-    Weapon *clone(){
-        return new Weapon(*this);
+    std::unique_ptr<Item> clone(){
+        return std::make_unique<Weapon>(*this);
     };
 private:
     const char _DISPLAY_CHAR = 'W';
