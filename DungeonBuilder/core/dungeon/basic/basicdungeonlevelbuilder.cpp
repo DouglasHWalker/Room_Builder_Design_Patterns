@@ -107,13 +107,15 @@ void BasicDungeonLevelBuilder::buildDoorway(std::shared_ptr<Room> origin, std::s
 
 }
 void BasicDungeonLevelBuilder::buildEntrance(std::shared_ptr<Room>  room, Room::Direction direction){
-    // TODO: connect the doors to the rooms
     buildDoorway(room, room, direction, MoveConstraints::OriginLocked);
 
 }
 void BasicDungeonLevelBuilder::buildExit(std::shared_ptr<Room> room, Room::Direction direction){
-    // TODO: connect the doors to the rooms
     buildDoorway(room, room, direction, MoveConstraints::DestinationLocked);
+    std::unique_ptr<AbstractCreature> creature = room->creature();
+    creature->setIsBoss();
+    room->setCreature(std::move(creature));
+    // TODO: transfer of ownership might be avoidable here...
 }
 void BasicDungeonLevelBuilder::buildItem(std::shared_ptr<Room> room){
     // TODO: prototype model Items

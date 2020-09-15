@@ -14,8 +14,15 @@ std::array<std::string, 5> Room::display(){
     std::string middleRow{};
     middleRow += edgeAt(Room::Direction::West)->displayCharacter();
     middleRow += "   ";
-    if(_creature == nullptr){middleRow += "  ";}
-    else {middleRow += _creature->displayCharacter(); }
+    // if room does not have creature
+    if(_creature == nullptr){
+        middleRow += "  ";
+    }
+    else {
+        middleRow += _creature->displayCharacter();
+        // if creature is boss add asterix
+        middleRow += _creature->isBoss() ? '*' : ' ';
+    }
     middleRow += _item != nullptr ? _item->displayCharacter() : ' ';
     middleRow +=  "   ";
     middleRow += edgeAt(Room::Direction::East)->displayCharacter();

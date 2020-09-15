@@ -12,10 +12,13 @@ public:
     char displayCharacter();
 
     friend std::ostream& operator<< (std::ostream& os, const AbstractCreature& creature);
+
+    void setIsBoss();
+    bool isBoss();
 protected:
     std::string _name;
     char _displayCharacter = 'M';
-    bool isBoss();
+    bool _isBoss = false;
 
 };
 

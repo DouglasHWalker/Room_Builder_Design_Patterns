@@ -55,12 +55,6 @@ void Game::createExampleLevel(){
     // room 9
     _dungeonBuilder->buildDoorway(room9, room8, Room::Direction::West, DungeonLevelBuilder::MoveConstraints::None);
 
-    // build entrance
-    _dungeonBuilder->buildEntrance(room1, Room::Direction::North);
-
-    // build exit
-    _dungeonBuilder->buildExit(room9, Room::Direction::East);
-
     // build items
     _dungeonBuilder->buildItem(room3);
     _dungeonBuilder->buildItem(room5);
@@ -70,6 +64,14 @@ void Game::createExampleLevel(){
     _dungeonBuilder->buildCreature(room3);
     _dungeonBuilder->buildCreature(room5);
     _dungeonBuilder->buildCreature(room9);
+
+    // build entrance
+    _dungeonBuilder->buildEntrance(room1, Room::Direction::North);
+
+    // build exit
+    _dungeonBuilder->buildExit(room9, Room::Direction::East);
+
+
 
     // get dungeon level, return to display
     _dungeonLevel = _dungeonBuilder->getDungeonLevel(); // FIXME: bare pointer requires .get() this may be very wrong

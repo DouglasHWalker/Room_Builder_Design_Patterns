@@ -105,6 +105,10 @@ void MagicalDungeonLevelBuilder::buildEntrance(std::shared_ptr<Room> room, Room:
 void MagicalDungeonLevelBuilder::buildExit(std::shared_ptr<Room> room, Room::Direction direction){
     // TODO: connect the doors to the rooms
     buildDoorway(room, room, direction, MoveConstraints::DestinationLocked);
+    std::unique_ptr<AbstractCreature> creature = room->creature();
+    creature->setIsBoss();
+    room->setCreature(std::move(creature));
+    // TODO: transfer of ownership might be avoidable here...
 }
 void MagicalDungeonLevelBuilder::buildItem(std::shared_ptr<Room> room){
     double rand = Game::instance()->randomDouble();
