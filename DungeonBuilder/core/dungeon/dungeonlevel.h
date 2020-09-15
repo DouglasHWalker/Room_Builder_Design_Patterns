@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <memory>
+#include <sstream>
 #include "room.h"
 
 class DungeonLevel

@@ -76,9 +76,15 @@ void Game::createExampleLevel(){
 
 }
 void Game::createRandomLevel(std::string name, int width, int height){}
+
 std::vector<std::string> Game::displayLevel(){
     return _dungeonLevel->display();
 }
+
+std::string Game::describeLevel(){
+    return _dungeonLevel->description();
+}
+
 double Game::randomDouble(){
     return _realDistribution(_randomGenerator);
 }

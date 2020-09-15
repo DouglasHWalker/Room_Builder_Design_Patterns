@@ -47,10 +47,8 @@ std::vector<std::string> DungeonLevel::display(){
 
         }
     }
-    // add a space
-
-
+    // add dungeon name to output
+    dungeonLevelString.insert(dungeonLevelString.begin(), name());
     return dungeonLevelString;
-
 }
 

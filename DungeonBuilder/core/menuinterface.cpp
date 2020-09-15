@@ -208,13 +208,10 @@ void MenuInterface::displayViewMenu(){
 
 void MenuInterface::describeLevel(){
     // TODO: add model to description
-    _display << "\nName:\t" << std::endl;
-    _display << "\nSize:\t" << std::endl;
-    _display << "\nType:\t" << std::endl;
+    _display << Game::instance()->describeLevel() << std::endl;
 }
 
 void MenuInterface::displayLevel(){
-    _display << "\nName:\t" << std::endl;
     std::vector<std::string> vect = Game::instance()->displayLevel();
     for (int i = 0; i < int(vect.size()); i++){
         _display << vect[i] << std::endl;
