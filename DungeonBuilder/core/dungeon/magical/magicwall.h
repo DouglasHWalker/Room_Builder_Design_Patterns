@@ -5,9 +5,6 @@
 class MagicWall : public Wall
 {
 public:
-    MagicWall() : Wall(){}
-    ~MagicWall() = default; // TODO: decontructor could already be implemented by Wall base class
-
     std::string description() override;
 };
 

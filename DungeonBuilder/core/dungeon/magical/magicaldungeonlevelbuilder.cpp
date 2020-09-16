@@ -77,8 +77,8 @@ void MagicalDungeonLevelBuilder::buildDoorway(std::shared_ptr<Room> origin, std:
     }
 
     // connect doorways
-    originDoorway->connect(destinationDoorway);
-    destinationDoorway->connect(originDoorway);
+    originDoorway->connect(destinationDoorway.get());
+    destinationDoorway->connect(originDoorway.get());
     // set edges
     origin->setEdge(originDoorway, direction);
     // determine the opposite direction

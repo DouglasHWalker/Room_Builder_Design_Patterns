@@ -21,6 +21,13 @@ public:
         OriginLocked = 4,
         DestinationLocked = 8
     };
+
+    friend DungeonLevelBuilder::MoveConstraints operator | (DungeonLevelBuilder::MoveConstraints mc, DungeonLevelBuilder::MoveConstraints mc2){
+            return static_cast<DungeonLevelBuilder::MoveConstraints>(static_cast<unsigned>(mc) | static_cast<unsigned>(mc2));
+    }
+
+//    friend DungeonLevelBuilder::MoveConstraints operator & (DungeonLevelBuilder::MoveConstraints mc, DungeonLevelBuilder::MoveConstraints mc2);
+
     // WARNING: add overloaded operators for the move constraints bitwise
 
 

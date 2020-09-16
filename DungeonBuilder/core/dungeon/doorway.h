@@ -13,15 +13,18 @@ public:
     virtual char displayCharacter() override = 0; // TODO: should this be virtual again, override?
     bool isPassage() override; // TODO: override?
 
-    void connect(std::shared_ptr<Doorway> opposite);
+    void connect(Doorway* opposite);
     bool isEntrance();
     bool isExit();
+    // WARNING: public getters not in class diagram
+    void setEntry(bool isEntry);
+    void setExit(bool isExit);
 
 protected:
     bool _isEntry = false;
     bool _isExit = false; // WARNING: revise entry exit
     Doorway* _opposite;
-
+//    Room::Direction _direction; // TODO: might be unessary
 };
 
 #endif // DOORWAY_H

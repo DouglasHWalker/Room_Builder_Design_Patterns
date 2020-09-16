@@ -7,8 +7,6 @@ class OpenDoorway : public Doorway
 public:
     std::string description() override;
     char displayCharacter() override;
-
-
 };
 
 #endif // OPENDOORWAY_H
