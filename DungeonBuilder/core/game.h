@@ -43,6 +43,18 @@ private:
     std::mt19937 _randomGenerator{uint32_t(time(nullptr))};
     std::uniform_real_distribution<double> _realDistribution{0.0, 1.0};
 
+    // Chance constants
+    const double ITEM_CHANCE = 0.35;
+    const double WEAPON_CHANCE = 0.35;
+    const double CREATURE_CHANCE = 0.25;
+    const double TRAVERSABLE_CHANCE = 0.4;
+    const double LOCKED_CHANCE = 0.3;
+    const double IMPASSABLE_CHANCE = 0.3;
+    // helper methods for random level generation
+    void addRandomDoorways(int row, int col, std::shared_ptr<Room> room);
+    void buildRandomDoorway(double random, Room::Direction direction);
+    void buildRandomEntry(Room::Direction direction);
+    void buildRandomExit(Room::Direction direction);
     // TODO: double check singleton implementation correct
 };
 

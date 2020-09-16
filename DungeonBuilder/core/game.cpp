@@ -70,12 +70,144 @@ void Game::createExampleLevel(){
     _dungeonBuilder->buildEntrance(room1, Room::Direction::North);
     _dungeonBuilder->buildExit(room9, Room::Direction::East);
 
-    // get dungeon level, return to display
+    // set dungeon level to newly created level
     _dungeonLevel = _dungeonBuilder->getDungeonLevel(); // FIXME: bare pointer requires .get() this may be very wrong
 
 }
 void Game::createRandomLevel(std::string name, int width, int height){
 
+    _dungeonBuilder->buildDungeonLevel(name, width, height);
+    // random between 1-11 modulus width
+    int entranceRoom = (rand() % width + 1); // a room somewhere in the first row
+    int exitRoom = ((height - 1) * width) + (rand() % width + 1);// a room somewhere in the last row
+
+
+    // ROOMS
+    // build the dungeon rooms
+    std::vector<std::shared_ptr<Room>> rooms = std::vector<std::shared_ptr<Room>>();
+    for(int i{0}; i <= width * height; i++) {
+        rooms[i] = _dungeonBuilder->buildRoom(i + 1);
+    }
+
+    // add components
+    for(int row{1}; row <= height; row++) {
+        for(int col{1}; col <= width; col++) {
+
+            int roomId = (row - 1 * width) + col;
+            double random = randomDouble();
+            std::shared_ptr<Room> room = _dungeonBuilder->getDungeonLevel()->retrieveRoom(roomId);
+            addRandomDoorways(row, col, room);
+
+
+
+
+
+
+
+
+            // CREATURES
+            double creature_roll = randomDouble();
+            if(creature_roll <= CREATURE_CHANCE and roomId != entranceRoom){
+
+            }
+            // if exit room, add creature
+            if(roomId == exitRoom){
+
+            }
+
+            // ITEMS
+            double item_roll = randomDouble();
+            double weapon_roll = randomDouble();
+            if(item_roll <= ITEM_CHANCE and roomId != entranceRoom){
+                // if weapon
+                if(weapon_roll <= WEAPON_CHANCE){
+
+                }
+            }
+            // if exit room,
+            if(item_roll <= ITEM_CHANCE and roomId == exitRoom){
+                // if weapon
+                if(weapon_roll <= WEAPON_CHANCE){
+
+                }
+            }
+            int oneOrTwo = rand() % 2 + 1;
+
+
+            // ENTRY & EXIT
+            oneOrTwo = rand() % 2 + 1;
+            // if 1x1
+            if(width * height == 1){
+                // get two different random directions
+                int entryRandEdge = rand() % 4 + 1;
+                int exitRandEdge = rand() % 4 + 1;
+                while(exitRandEdge == entryRandEdge){
+                    exitRandEdge = rand() % 4 + 1;
+                }
+                // build entry
+                buildRandomEntry(static_cast<Room::Direction>(entryRandEdge));
+                // build exit
+                buildRandomExit(static_cast<Room::Direction>(exitRandEdge));
+            } else if(entranceRoom == exitRoom and roomId == entranceRoom){ // if entry in same room and we are building that room
+                // if in a corner
+                if(roomId == 1){ // top left corner
+                    // North or West
+                    buildRandomEntry(oneOrTwo == 1 ? Room::Direction::North : Room::Direction::West);
+                    buildRandomExit(oneOrTwo == 0 ? Room::Direction::North : Room::Direction::West);
+                } else if(roomId == width){ // top right corner
+                    // North or East
+                    buildRandomEntry(oneOrTwo == 1 ? Room::Direction::North : Room::Direction::East);
+                    buildRandomExit(oneOrTwo == 0 ? Room::Direction::North : Room::Direction::East);
+                } else if(roomId == height){ // bottom left corner
+                    // South or West
+                    buildRandomEntry(oneOrTwo == 1 ? Room::Direction::South : Room::Direction::West);
+                    buildRandomExit(oneOrTwo == 0 ? Room::Direction::South : Room::Direction::West);
+                } else if(roomId == width * height){ // bottom right corner
+                    // South or East
+                    buildRandomEntry(oneOrTwo == 1 ? Room::Direction::South : Room::Direction::East);
+                    buildRandomExit(oneOrTwo == 0 ? Room::Direction::South : Room::Direction::East);
+                } else { // Not in corner room, must have at least two doorways
+                    for(int i{0}; i < oneOrTwo; i++){
+                        // build entry
+                        buildRandomEntry(Room::Direction::North);
+                        // build exit
+                        buildRandomExit(Room::Direction::South);
+                    }
+                }
+            } else { // not in same room
+                // if on entrance room
+                if(roomId == entranceRoom) {
+                    // if in a corner
+                    if(roomId == 1) { // top left corner
+                        // North or West
+                        buildRandomEntry(oneOrTwo == 1 ? Room::Direction::North : Room::Direction::West);
+                    } else if(roomId == width){ // top right corner
+                        // North or East
+                        buildRandomEntry(oneOrTwo == 1 ? Room::Direction::North : Room::Direction::East);
+                    } else { // not in a corner
+                        // North Wall
+                        buildRandomEntry(Room::Direction::North);
+                    }
+                }
+                // if on exit room, build exit
+                if(roomId == exitRoom) {
+                    // if in a corner
+                    if(roomId == height) { // bottom left corner
+                        // South or West
+                        buildRandomEntry(oneOrTwo == 1 ? Room::Direction::North : Room::Direction::West);
+                    } else if(roomId == width * height){ // bottom right corner
+                        // South or East
+                        buildRandomEntry(oneOrTwo == 1 ? Room::Direction::North : Room::Direction::West);
+                    } else { // not in a corner
+                        // South Wall
+                        buildRandomEntry(Room::Direction::South);
+                    }
+                }
+            }
+        }
+    }
+    // set dungeon level to newly created level
+    _dungeonLevel = _dungeonBuilder->getDungeonLevel();
 }
 
 std::vector<std::string> Game::displayLevel(){
@@ -96,4 +228,102 @@ std::string Game::describeRoom(int roomNumber){
 
 double Game::randomDouble(){
     return _realDistribution(_randomGenerator);
+}
+
+// Helper methods
+void Game::addRandomDoorways(int row, int col, std::shared_ptr<Room> room){
+    int roomId = room->id();
+    int oneOrTwo = rand() % 2 + 1;
+    int randDir = rand() % 3 + 1;
+    double random = randomDouble();
+    int width = _dungeonLevel->width();
+    int height = _dungeonLevel->width();
+    // NOTE: could do this with a switch using a int[] like a truth table
+    // if in a corner room, must have at least one doorway
+    if(roomId == 1){ // top left corner
+        // South or East
+        buildRandomDoorway(random, oneOrTwo == 1 ? Room::Direction::South : Room::Direction::East);
+    } else if(roomId == width){ // top right corner
+        // South or West
+        buildRandomDoorway(random, oneOrTwo == 1 ? Room::Direction::South : Room::Direction::West);
+    } else if(roomId == height){ // bottom left corner
+        // North or East
+        buildRandomDoorway(random, oneOrTwo == 1 ? Room::Direction::North : Room::Direction::East);
+    } else if(roomId == width * height){ // bottom right corner
+        // North or West
+        buildRandomDoorway(random, oneOrTwo == 1 ? Room::Direction::North : Room::Direction::West);
+    } else { // Not is corner room, must have at least two doorways
+
+        for(int i{0}; i < oneOrTwo; i++){
+            if(row == 1){ // if on top row
+                // east, south, west
+                switch(randDir){
+                case 1:
+                    buildRandomDoorway(random, Room::Direction::East);
+                    break;
+                case 2:
+                    buildRandomDoorway(random, Room::Direction::South);
+                    break;
+                case 3:
+                    buildRandomDoorway(random, Room::Direction::West);
+                    break;
+                }
+            } else if (row == height){ // if on bottom row
+                // north, east, west
+                switch(randDir){
+                case 1:
+                    buildRandomDoorway(random, Room::Direction::East);
+                    break;
+                case 2:
+                    buildRandomDoorway(random, Room::Direction::North);
+                    break;
+                case 3:
+                    buildRandomDoorway(random, Room::Direction::West);
+                    break;
+                }
+            } else if (col == 1){ // if on left most column
+                // north, east, south
+                switch(randDir){
+                case 1:
+                    buildRandomDoorway(random, Room::Direction::East);
+                    break;
+                case 2:
+                    buildRandomDoorway(random, Room::Direction::North);
+                    break;
+                case 3:
+                    buildRandomDoorway(random, Room::Direction::South);
+                    break;
+                }
+            } else if (col == width){ // if on right most column
+                // north, south, west
+                switch(randDir){
+                case 1:
+                    buildRandomDoorway(random, Room::Direction::West);
+                    break;
+                case 2:
+                    buildRandomDoorway(random, Room::Direction::North);
+                    break;
+                case 3:
+                    buildRandomDoorway(random, Room::Direction::South);
+                    break;
+                }
+            } else { // not on top or bottom row, not on left or right column
+                // north, east, south, west
+                randDir = rand() % 4 + 1;
+                buildRandomDoorway(random, static_cast<Room::Direction>(randDir));
+            }
+        }
+    }
+}
+
+void Game::buildRandomDoorway(double random, Room::Direction direction){
+
+}
+
+void Game::buildRandomEntry(Room::Direction direction){
+
+}
+
+void Game::buildRandomExit(Room::Direction direction){
+
 }
