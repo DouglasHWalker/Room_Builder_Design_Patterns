@@ -92,7 +92,7 @@ void BasicDungeonLevelBuilder::buildDoorway(std::shared_ptr<Room> origin, std::s
         // origin opened
         originDoorway = std::make_shared<OpenDoorway>(direction);
         // destination locked
-         destinationDoorway = std::make_shared<LockedDoor>();
+        destinationDoorway = std::make_shared<LockedDoor>();
         break;
     case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginImpassable) | static_cast<unsigned>(MoveConstraints::DestinationLocked)):
         // Origin doorway cannot be passed through.
