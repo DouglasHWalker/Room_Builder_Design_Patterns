@@ -9,7 +9,7 @@ std::array<std::string, 5> Room::display(){
     // Create North Row string
     std::string northRow{"+----"};
     northRow += edgeAt(Room::Direction::North)->displayCharacter();
-    northRow += "----+";
+    northRow += "----+  ";
     // Create Middle Row
     std::string middleRow{};
     middleRow += edgeAt(Room::Direction::West)->displayCharacter();
@@ -26,12 +26,14 @@ std::array<std::string, 5> Room::display(){
     middleRow += _item != nullptr ? _item->displayCharacter() : ' ';
     middleRow +=  "   ";
     middleRow += edgeAt(Room::Direction::East)->displayCharacter();
+    // if middle row has passage, add to output
+    middleRow += edgeAt(Room::Direction::East)->isPassage() ? "--" : "  ";
     // Create South Row
     std::string southRow{"+----"};
     southRow += edgeAt(Room::Direction::South)->displayCharacter();
-    southRow += "----+";
+    southRow += "----+  ";
     // Create Blank Row
-    std::string blankRow{"|         |"};
+    std::string blankRow{"|         |  "};
 
     // Add strings to output
     output[0] = northRow;
