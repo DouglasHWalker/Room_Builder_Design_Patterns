@@ -24,7 +24,6 @@ protected:
     bool _isEntry = false;
     bool _isExit = false; // WARNING: revise entry exit
     Doorway* _opposite;
-//    Room::Direction _direction; // TODO: might be unessary
 };
 
 #endif // DOORWAY_H

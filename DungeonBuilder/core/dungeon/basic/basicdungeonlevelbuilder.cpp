@@ -142,7 +142,7 @@ void BasicDungeonLevelBuilder::buildEntrance(std::shared_ptr<Room>  room, Room::
 
 void BasicDungeonLevelBuilder::buildExit(std::shared_ptr<Room> room, Room::Direction direction){
     // build exit
-    std::shared_ptr<Doorway> doorway =  std::make_shared<OpenDoorway>();
+    std::shared_ptr<Doorway> doorway =  std::make_shared<OneWayDoor>();
     doorway->setExit(true);
     // set edge of room
     room->setEdge(doorway, direction);

@@ -23,12 +23,9 @@ public:
     };
 
     friend DungeonLevelBuilder::MoveConstraints operator | (DungeonLevelBuilder::MoveConstraints mc, DungeonLevelBuilder::MoveConstraints mc2){
-            return static_cast<DungeonLevelBuilder::MoveConstraints>(static_cast<unsigned>(mc) | static_cast<unsigned>(mc2));
+        return static_cast<DungeonLevelBuilder::MoveConstraints>(static_cast<unsigned>(mc) | static_cast<unsigned>(mc2));
     }
-
-//    friend DungeonLevelBuilder::MoveConstraints operator & (DungeonLevelBuilder::MoveConstraints mc, DungeonLevelBuilder::MoveConstraints mc2);
-
-    // WARNING: add overloaded operators for the move constraints bitwise
+    // TODO: make this right, might be better to move implementaiton to cpp file or add note for marking
 
 
     virtual void buildDungeonLevel(std::string name, int width, int height){}; // WARNING: is this const?
