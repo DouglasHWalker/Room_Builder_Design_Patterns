@@ -5,6 +5,7 @@
 class RockWall : public Wall
 {
 public:
+    RockWall(Room::Direction direction) : Wall(direction){}
     std::string description() override;
 };
 

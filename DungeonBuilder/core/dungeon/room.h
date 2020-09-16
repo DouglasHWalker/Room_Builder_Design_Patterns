@@ -16,6 +16,20 @@ public:
 
     enum class Direction : unsigned int { North, South, East, West }; // WARNING: enum overload operator to reverse direction
 
+    // not operator negates the direction so that north points south, east points west and vise versa
+    friend Room::Direction operator ! (Room::Direction& r1){
+        switch(r1){
+        case Room::Direction::North:
+            return Room::Direction::South;
+        case Room::Direction::South:
+            return Room::Direction::North;
+        case Room::Direction::East:
+            return Room::Direction::West;
+        case Room::Direction::West:
+            return Room::Direction::East;
+        }
+    }
+
     virtual std::string description() = 0;
     std::array<std::string, 5> display();
     int id();

@@ -47,8 +47,8 @@ void MagicalDungeonLevelBuilder::buildDoorway(std::shared_ptr<Room> origin, std:
     case MoveConstraints::None:
         // Open doorway
         // origin
-        originDoorway = std::make_shared<OpenDoorway>();
-        destinationDoorway = std::make_shared<OpenDoorway>();
+        originDoorway = std::make_shared<OpenDoorway>(direction);
+        destinationDoorway = std::make_shared<OpenDoorway>(!direction);
         break;
     case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::DestinationImpassable)):
         // one way door going from origin

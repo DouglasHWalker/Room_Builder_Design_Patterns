@@ -20,6 +20,17 @@ char OneWayDoor::displayCharacter(){
     if(_isExit){
         return 'O';
     }
-    // TODO: depends on direction
-    return '^';
+    // otherwise
+    switch(_direction){
+    case Room::Direction::North:
+        return 'v';
+    case Room::Direction::South:
+        return '^';
+    case Room::Direction::East:
+        return '<';
+    case Room::Direction::West:
+        return '>';
+    default:
+        break;
+    }
 }

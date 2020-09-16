@@ -5,12 +5,11 @@
 class OneWayDoor: public Doorway
 {
 public:
-    OneWayDoor() : Doorway(){}
-    ~OneWayDoor() = default; // TODO: Do I need to declar this as it is already specified in the base class Doorway
-
+    OneWayDoor(Room::Direction direction): _direction{direction}{}
     std::string description() override;
     char displayCharacter() override;
-
+private:
+    Room::Direction _direction;
 };
 
 #endif // ONEWAYDOOR_H

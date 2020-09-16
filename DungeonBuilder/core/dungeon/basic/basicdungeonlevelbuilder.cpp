@@ -37,10 +37,10 @@ std::shared_ptr<Room> BasicDungeonLevelBuilder::buildRoom(int id){
         room = std::make_shared<QuartzChamber>(id);
     }
     // build the walls of the room
-    room->setEdge(std::make_shared<RockWall>(), Room::Direction::North);
-    room->setEdge(std::make_shared<RockWall>(), Room::Direction::South);
-    room->setEdge(std::make_shared<RockWall>(), Room::Direction::East);
-    room->setEdge(std::make_shared<RockWall>(), Room::Direction::West);
+    room->setEdge(std::make_shared<RockWall>(Room::Direction::North), Room::Direction::North);
+    room->setEdge(std::make_shared<RockWall>(Room::Direction::South), Room::Direction::South);
+    room->setEdge(std::make_shared<RockWall>(Room::Direction::East), Room::Direction::East);
+    room->setEdge(std::make_shared<RockWall>(Room::Direction::West), Room::Direction::West);
     // add the room to the dungeon level
     _dungeonLevel->addRoom(room);
 
@@ -59,18 +59,18 @@ void BasicDungeonLevelBuilder::buildDoorway(std::shared_ptr<Room> origin, std::s
     switch (constraints) {
     case MoveConstraints::None:
         // Open doorway
-        originDoorway = std::make_shared<OpenDoorway>();
-        destinationDoorway = std::make_shared<OpenDoorway>();
+        originDoorway = std::make_shared<OpenDoorway>(direction);
+        destinationDoorway = std::make_shared<OpenDoorway>(!direction);
         break;
     case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginImpassable)):
         // Origin doorway cannot be passed through.
-        originDoorway = std::make_shared<OneWayDoor>();
-        destinationDoorway = std::make_shared<OpenDoorway>();
+        originDoorway = std::make_shared<OneWayDoor>(direction);
+        destinationDoorway = std::make_shared<OpenDoorway>(!direction);
         break;
     case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::DestinationImpassable)):
         // Destination doorway cannot be passed through.
-        originDoorway = std::make_shared<OpenDoorway>();
-        destinationDoorway = std::make_shared<OneWayDoor>();
+        originDoorway = std::make_shared<OpenDoorway>(direction);
+        destinationDoorway = std::make_shared<OneWayDoor>(!direction);
         break;
     case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginImpassable) | static_cast<unsigned>(MoveConstraints::DestinationImpassable)):
         //  Blocked doorway on both ends
@@ -81,22 +81,22 @@ void BasicDungeonLevelBuilder::buildDoorway(std::shared_ptr<Room> origin, std::s
         // Locked door on origin
         originDoorway = std::make_shared<LockedDoor>();
         // opendoor on destination
-        destinationDoorway = std::make_shared<OpenDoorway>();
+        destinationDoorway = std::make_shared<OpenDoorway>(!direction);
     case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginLocked) | static_cast<unsigned>(MoveConstraints::DestinationImpassable)):
         // Locked door on origin
         originDoorway = std::make_shared<LockedDoor>();
         // Destination doorway cannot be passed through.
-        destinationDoorway = std::make_shared<OneWayDoor>();
+        destinationDoorway = std::make_shared<OneWayDoor>(!direction);
         break;
     case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::DestinationLocked)):
         // origin opened
-        originDoorway = std::make_shared<OpenDoorway>();
+        originDoorway = std::make_shared<OpenDoorway>(direction);
         // destination locked
          destinationDoorway = std::make_shared<LockedDoor>();
         break;
     case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginImpassable) | static_cast<unsigned>(MoveConstraints::DestinationLocked)):
         // Origin doorway cannot be passed through.
-        originDoorway = std::make_shared<OpenDoorway>();
+        originDoorway = std::make_shared<OneWayDoor>(direction);
         // destination locked
         destinationDoorway = std::make_shared<LockedDoor>();
         break;
@@ -113,28 +113,12 @@ void BasicDungeonLevelBuilder::buildDoorway(std::shared_ptr<Room> origin, std::s
     destinationDoorway->connect(originDoorway.get());
     // set edges
     origin->setEdge(originDoorway, direction);
-    // determine the opposite direction
-    Room::Direction opDirection;
-    switch(direction){
-    case Room::Direction::North:
-        opDirection = Room::Direction::South;
-        break;
-    case Room::Direction::South:
-        opDirection = Room::Direction::North;
-        break;
-    case Room::Direction::East:
-        opDirection = Room::Direction::West;
-        break;
-    case Room::Direction::West:
-        opDirection = Room::Direction::North;
-        break;
-    }
-    destination->setEdge(destinationDoorway, opDirection);
+    destination->setEdge(destinationDoorway, !direction);
 }
 
 void BasicDungeonLevelBuilder::buildEntrance(std::shared_ptr<Room>  room, Room::Direction direction){
     // build entry
-    std::shared_ptr<Doorway> doorway = std::make_shared<OneWayDoor>();
+    std::shared_ptr<Doorway> doorway = std::make_shared<OneWayDoor>(direction);
     doorway->setEntry(true);
     // set edge of room
     room->setEdge(doorway, direction);
@@ -142,7 +126,7 @@ void BasicDungeonLevelBuilder::buildEntrance(std::shared_ptr<Room>  room, Room::
 
 void BasicDungeonLevelBuilder::buildExit(std::shared_ptr<Room> room, Room::Direction direction){
     // build exit
-    std::shared_ptr<Doorway> doorway =  std::make_shared<OneWayDoor>();
+    std::shared_ptr<Doorway> doorway =  std::make_shared<OneWayDoor>(direction);
     doorway->setExit(true);
     // set edge of room
     room->setEdge(doorway, direction);
