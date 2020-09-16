@@ -54,6 +54,7 @@ void Game::createExampleLevel(){
     _dungeonBuilder->buildDoorway(room8, room9, Room::Direction::East, DungeonLevelBuilder::MoveConstraints::None);
     // room 9
     //    _dungeonBuilder->buildDoorway(room9, room8, Room::Direction::West, DungeonLevelBuilder::MoveConstraints::None);
+    // WARNING: clean up commentted out doorways
 
     // build items
     _dungeonBuilder->buildItem(room3);
@@ -65,19 +66,17 @@ void Game::createExampleLevel(){
     _dungeonBuilder->buildCreature(room5);
     _dungeonBuilder->buildCreature(room9);
 
-    // build entrance
+    // build entrance and exit
     _dungeonBuilder->buildEntrance(room1, Room::Direction::North);
-
-    // build exit
     _dungeonBuilder->buildExit(room9, Room::Direction::East);
-
-
 
     // get dungeon level, return to display
     _dungeonLevel = _dungeonBuilder->getDungeonLevel(); // FIXME: bare pointer requires .get() this may be very wrong
 
 }
-void Game::createRandomLevel(std::string name, int width, int height){}
+void Game::createRandomLevel(std::string name, int width, int height){
+
+}
 
 std::vector<std::string> Game::displayLevel(){
     return _dungeonLevel->display();

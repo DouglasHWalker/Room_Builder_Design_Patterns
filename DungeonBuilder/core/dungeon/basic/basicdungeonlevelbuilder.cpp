@@ -1,6 +1,5 @@
 #include "basicdungeonlevelbuilder.h"
 #include "core/game.h"
-#include "core/dungeon/doorway.h"
 #include "core/dungeon/common/opendoorway.h"
 #include "core/dungeon/common/onewaydoor.h"
 #include "core/dungeon/common/lockeddoor.h"
@@ -8,25 +7,11 @@
 #include "core/dungeon/basic/quartzchamber.h"
 #include "core/dungeon/basic/rockchamber.h"
 #include "core/dungeon/basic/rockwall.h"
-#include "core/creatures/monster.h"
 
-/**
- * @brief BasicDungeonLevelBuilder::buildDungeonLevel (name, width, height)—creates the appropriate concrete DungeonLevel object with the
- * given name, width, and height parameters. The object MUST be constructed as a bare pointer and NOT
- * using smart pointers.
- * @param name
- * @param width
- * @param height
- */
 void BasicDungeonLevelBuilder::buildDungeonLevel(std::string name, int width, int height){
     _dungeonLevel = new BasicDungeonLevel(name, width, height); // NOTE: Must use bare pointer
 }
 
-/**
- * @brief BasicDungeonLevelBuilder::buildRoom(id)—creates a concrete Room object with the specified identifier ('id') and adds it to the
- * dungeon level currently under construction; the concrete type of Room MUST be chosen randomly
- * @param id
- */
 std::shared_ptr<Room> BasicDungeonLevelBuilder::buildRoom(int id){
     double rand = Game::instance()->randomDouble();
     std::shared_ptr<Room> room;
@@ -47,15 +32,10 @@ std::shared_ptr<Room> BasicDungeonLevelBuilder::buildRoom(int id){
     return room;
 }
 void BasicDungeonLevelBuilder::buildDoorway(std::shared_ptr<Room> origin, std::shared_ptr<Room> destination, Room::Direction direction, MoveConstraints constraints){
-    // the doorways
+    // the doorways to build
     std::shared_ptr<Doorway> originDoorway; // origin
     std::shared_ptr<Doorway> destinationDoorway; // destination, in opposite direction
-
-    //    originDoorway = std::make_shared<OpenDoorway>();
-    //    destinationDoorway = std::make_shared<OpenDoorway>();
-    // TODO: connect the doors to the rooms
     // determine the door type
-
     switch (constraints) {
     case MoveConstraints::None:
         // Open doorway
@@ -108,28 +88,28 @@ void BasicDungeonLevelBuilder::buildDoorway(std::shared_ptr<Room> origin, std::s
     default:
         break;
     }
-    // connect doorways
+    // connect doorways in both directions
     originDoorway->connect(destinationDoorway.get());
     destinationDoorway->connect(originDoorway.get());
-    // set edges
+    // set edges in both directions
     origin->setEdge(originDoorway, direction);
     destination->setEdge(destinationDoorway, !direction);
 }
 
 void BasicDungeonLevelBuilder::buildEntrance(std::shared_ptr<Room>  room, Room::Direction direction){
     // build entry
-    std::shared_ptr<Doorway> doorway = std::make_shared<OneWayDoor>(direction);
-    doorway->setEntry(true);
+    std::shared_ptr<Doorway> entry = std::make_shared<OneWayDoor>(direction);
+    entry->setEntry(true);
     // set edge of room
-    room->setEdge(doorway, direction);
+    room->setEdge(entry, direction);
 }
 
 void BasicDungeonLevelBuilder::buildExit(std::shared_ptr<Room> room, Room::Direction direction){
     // build exit
-    std::shared_ptr<Doorway> doorway =  std::make_shared<OneWayDoor>(direction);
-    doorway->setExit(true);
+    std::shared_ptr<Doorway> exit =  std::make_shared<OneWayDoor>(direction);
+    exit->setExit(true);
     // set edge of room
-    room->setEdge(doorway, direction);
+    room->setEdge(exit, direction);
 
     // set creature to boss
     std::unique_ptr<AbstractCreature> creature = room->creature();
@@ -146,21 +126,21 @@ void BasicDungeonLevelBuilder::buildItem(std::shared_ptr<Room> room){
     std::unique_ptr<Item> item;
     if(rand <= _ITEM_RARITY){
         if(rand <= _ITEM_RARITY/3){
-            item = std::unique_ptr(_boomerang_proto->clone());
+            item = _boomerang_proto->clone();
         } else if(rand <= (_ITEM_RARITY/3)*2){
-            item = std::unique_ptr(_battleAxe_proto->clone());
+            item = _battleAxe_proto->clone();
         } else {
-            item = std::unique_ptr(_shortSword_proto->clone());
+            item = _shortSword_proto->clone();
         }
     } else {
         // TOOD: make this more extensible
         // randomly select a prototype
         if(rand <= _ITEM_RARITY/3){
-            item = std::unique_ptr(_molotov_proto->clone());
+            item = _molotov_proto->clone();
         } else if(rand <= (_ITEM_RARITY/3)*2){
-            item = std::unique_ptr(_healthPotion_proto->clone());
+            item = _healthPotion_proto->clone();
         } else {
-            item = std::unique_ptr(_smokeBomb_proto->clone());
+            item = _smokeBomb_proto->clone();
         }
     }
     room->setItem(std::move(item));
