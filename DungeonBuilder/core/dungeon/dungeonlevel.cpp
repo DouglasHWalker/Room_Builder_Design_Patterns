@@ -31,15 +31,12 @@ std::vector<std::string> DungeonLevel::display(){
         // for each column of rooms (width)
         for (int c{0}; c < _width; c++) {
             // retrieve the next room, add display to output
-            currentRoom =_rooms[c + (r * _width)];
+            currentRoom =_rooms[(c + (r * _width)) + 1];
             // for every row of chars in the room
             for(int roomCol{0}; roomCol < 5; roomCol++){ // 4 = room height -1
                 // add the row of chars to the appropriate row in output string
                 dungeonLevelString.at(roomCol + (r * numberOfRowsInRoom)) += currentRoom->display()[roomCol];
                 // if we are at the middle row, add a dashed line bewteen the rooms, otherwise add space
-                if(c != _width -1){
-                    //                    dungeonLevelString.at(roomCol + (r * numberOfRowsInRoom)) += roomCol == 2 ? "--" : "  ";
-                }
             }
             // add the seperator row between rows of rooms, unless we just printed the last row
             if(r != _width - 1){

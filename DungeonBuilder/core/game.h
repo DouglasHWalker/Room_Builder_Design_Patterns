@@ -48,9 +48,9 @@ private:
     const double ITEM_CHANCE = 0.35;
     const double WEAPON_CHANCE = 0.35;
     const double CREATURE_CHANCE = 0.25;
-    const double TRAVERSABLE_CHANCE = 0.4;
-    const double LOCKED_CHANCE = 0.3;
-    const double IMPASSABLE_CHANCE = 0.3;
+    const double TRAVERSABLE_CHANCE = 0.40;
+    const double LOCKED_CHANCE = 0.30;
+    const double IMPASSABLE_CHANCE = 0.30;
     // helper methods for random level generation
     void addRandomDoorways(int row, int col, std::shared_ptr<Room> room);
     void buildRandomDoorway(double random, Room::Direction direction);

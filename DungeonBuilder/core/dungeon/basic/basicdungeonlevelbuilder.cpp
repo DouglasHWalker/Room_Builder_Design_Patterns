@@ -90,7 +90,7 @@ void BasicDungeonLevelBuilder::buildDoorway(std::shared_ptr<Room> origin, std::s
         break;
     }
     // connect doorways in both directions
-    originDoorway->connect(destinationDoorway.get());
+    originDoorway->connect(destinationDoorway.get()); // WARNING: getting bare pointer
     destinationDoorway->connect(originDoorway.get());
     // set edges in both directions
     origin->setEdge(originDoorway, direction);

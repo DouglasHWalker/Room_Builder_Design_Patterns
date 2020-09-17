@@ -35,11 +35,9 @@ void Game::createExampleLevel(){
     //    _dungeonBuilder->buildDoorway(room3, room2, Room::Direction::West, DungeonLevelBuilder::MoveConstraints::OriginImpassable);
     _dungeonBuilder->buildDoorway(room3, room6, Room::Direction::South, DungeonLevelBuilder::MoveConstraints::DestinationLocked);
     // room 4
-    // did not include door going from 4 to 1 (its one way)
     _dungeonBuilder->buildDoorway(room4, room5, Room::Direction::East, DungeonLevelBuilder::MoveConstraints::DestinationImpassable);
     _dungeonBuilder->buildDoorway(room4, room7, Room::Direction::South, DungeonLevelBuilder::MoveConstraints::OriginImpassable | DungeonLevelBuilder::MoveConstraints::DestinationImpassable);
     // room 5
-    // did not include door from 5 to 4 (its one way)
     //    _dungeonBuilder->buildDoorway(room5, room2, Room::Direction::North, DungeonLevelBuilder::MoveConstraints::None);
     _dungeonBuilder->buildDoorway(room5, room6, Room::Direction::East, DungeonLevelBuilder::MoveConstraints::None);
     _dungeonBuilder->buildDoorway(room5, room8, Room::Direction::South, DungeonLevelBuilder::MoveConstraints::None);
@@ -72,7 +70,7 @@ void Game::createExampleLevel(){
     _dungeonBuilder->buildExit(room9, Room::Direction::East);
 
     // set dungeon level to newly created level
-    _dungeonLevel = _dungeonBuilder->getDungeonLevel(); // FIXME: bare pointer requires .get() this may be very wrong
+    _dungeonLevel = _dungeonBuilder->getDungeonLevel();
 
 }
 
@@ -160,16 +158,11 @@ void Game::createRandomLevel(std::string name, int width, int height){
     int entranceRoom = (rand() % width + 1); // a room somewhere in the first row
     int exitRoom = ((height - 1) * width) + (rand() % width + 1);// a room somewhere in the last row
 
-    // build room if not exist
-    // build neighbouring rooms
-    // build connections/doors
-    // next room
-
     // ROOMS
     // build the dungeon rooms
     std::set<int> builtRooms;
     int numRooms = width * height;
-    //    = std::vector<std::shared_ptr<Room>>();
+    // for every room
     for(int i{1}; i <= numRooms; i++) {
         std::shared_ptr<Room> room;
         // if room has not yet been built
