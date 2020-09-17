@@ -99,7 +99,7 @@ void Game::createRandomLevel(std::string name, int width, int height){
         if(numRooms != 1){
             // build valid neighbours of current room
             std::set<int> & builtRoomsRef = builtRooms;
-            std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> neighbours = buildNeighbours(i, width, numRooms, builtRoomsRef);
+            std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> neighbours = buildNeighbours(i, builtRoomsRef);
             // build doorways randomly to the rooms neighbours
             buildRandomNeighbouringDoorways(room, neighbours);
         }
@@ -123,95 +123,48 @@ void Game::createRandomLevel(std::string name, int width, int height){
         if(id == exitRoom){
             _dungeonBuilder->buildItem(room);
         }
+
+        // ENTRY
+        Room::Direction entryDirection;
+        Room::Direction exitDirection;
+        if(id == entranceRoom){
+            int randDir = rand() % 2;
+            if(entranceRoom == 1){ // North, West corner
+                entryDirection = randDir == 0 ? Room::Direction::North : Room::Direction::West;
+            } else if(entranceRoom == width){ // North, East corner
+                entryDirection = randDir == 0 ? Room::Direction::North : Room::Direction::East;
+            } else { // Top row, not corners
+                entryDirection = Room::Direction::North;
+            }
+            _dungeonBuilder->buildEntrance(room, entryDirection);
+        }
+        // EXIT
+        if(id == exitRoom){
+            // determine all valid directions
+            std::set<Room::Direction> validDirections;
+            if(exitRoom == 1){ // South, West corner
+                validDirections.insert(Room::Direction::South);
+                validDirections.insert(Room::Direction::West);
+            } else if(exitRoom == width){ // South, East corner
+                validDirections.insert(Room::Direction::South);
+                validDirections.insert(Room::Direction::East);
+            } else { // Top row, not corners
+                validDirections.insert(Room::Direction::South);
+            }
+            // if in entrance room, remove entrance direction from avalible options
+            if(id == entranceRoom){ validDirections.erase(entryDirection); }
+            // random direction
+            int randDir = rand() % validDirections.size();
+            auto it = validDirections.begin();
+            for (int i{0}; i < randDir; i++){it++;}
+            exitDirection = *it;
+            // build exit
+            _dungeonBuilder->buildExit(room, exitDirection);
+        }
     }
-
-    // build dungeon entrance and exit
-
-
     // set dungeon level to newly created level
-    _dungeonLevel = _dungeonBuilder->getDungeonLevel();
+    _dungeonLevel = _dungeonBuilder->getDungeonLevel(); // FIXME: 1 column and 1 row maps are broken
 }
-
-
-
-//
-
-
-//            int oneOrTwo = rand() % 2 + 1;
-
-
-//            // ENTRY & EXIT
-//            oneOrTwo = rand() % 2 + 1;
-//            // if 1x1
-//            if(width * height == 1){
-//                // get two different random directions
-//                int entryRandEdge = rand() % 4 + 1;
-//                int exitRandEdge = rand() % 4 + 1;
-//                while(exitRandEdge == entryRandEdge){
-//                    exitRandEdge = rand() % 4 + 1;
-//                }
-//                // build entry
-//                buildRandomEntry(static_cast<Room::Direction>(entryRandEdge));
-//                // build exit
-//                buildRandomExit(static_cast<Room::Direction>(exitRandEdge));
-//            } else if(entranceRoom == exitRoom and roomId == entranceRoom){ // if entry in same room and we are building that room
-//                // if in a corner
-//                if(roomId == 1){ // top left corner
-//                    // North or West
-//                    buildRandomEntry(oneOrTwo == 1 ? Room::Direction::North : Room::Direction::West);
-//                    buildRandomExit(oneOrTwo == 0 ? Room::Direction::North : Room::Direction::West);
-//                } else if(roomId == width){ // top right corner
-//                    // North or East
-//                    buildRandomEntry(oneOrTwo == 1 ? Room::Direction::North : Room::Direction::East);
-//                    buildRandomExit(oneOrTwo == 0 ? Room::Direction::North : Room::Direction::East);
-//                } else if(roomId == height){ // bottom left corner
-//                    // South or West
-//                    buildRandomEntry(oneOrTwo == 1 ? Room::Direction::South : Room::Direction::West);
-//                    buildRandomExit(oneOrTwo == 0 ? Room::Direction::South : Room::Direction::West);
-//                } else if(roomId == width * height){ // bottom right corner
-//                    // South or East
-//                    buildRandomEntry(oneOrTwo == 1 ? Room::Direction::South : Room::Direction::East);
-//                    buildRandomExit(oneOrTwo == 0 ? Room::Direction::South : Room::Direction::East);
-//                } else { // Not in corner room, must have at least two doorways
-//                    for(int i{0}; i < oneOrTwo; i++){
-//                        // build entry
-//                        buildRandomEntry(Room::Direction::North);
-//                        // build exit
-//                        buildRandomExit(Room::Direction::South);
-//                    }
-//                }
-//            } else { // not in same room
-//                // if on entrance room
-//                if(roomId == entranceRoom) {
-//                    // if in a corner
-//                    if(roomId == 1) { // top left corner
-//                        // North or West
-//                        buildRandomEntry(oneOrTwo == 1 ? Room::Direction::North : Room::Direction::West);
-//                    } else if(roomId == width){ // top right corner
-//                        // North or East
-//                        buildRandomEntry(oneOrTwo == 1 ? Room::Direction::North : Room::Direction::East);
-//                    } else { // not in a corner
-//                        // North Wall
-//                        buildRandomEntry(Room::Direction::North);
-//                    }
-//                }
-//                // if on exit room, build exit
-//                if(roomId == exitRoom) {
-//                    // if in a corner
-//                    if(roomId == height) { // bottom left corner
-//                        // South or West
-//                        buildRandomEntry(oneOrTwo == 1 ? Room::Direction::North : Room::Direction::West);
-//                    } else if(roomId == width * height){ // bottom right corner
-//                        // South or East
-//                        buildRandomEntry(oneOrTwo == 1 ? Room::Direction::North : Room::Direction::West);
-//                    } else { // not in a corner
-//                        // South Wall
-//                        buildRandomEntry(Room::Direction::South);
-//                    }
-//                }
-//            }
-//        }
-//    }
 
 std::vector<std::string> Game::displayLevel(){
     return _dungeonLevel->display();
@@ -234,30 +187,37 @@ double Game::randomDouble(){
 }
 
 // Helper methods
-std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> Game::buildNeighbours(int roomId, int width, int numRooms, std::set<int> &builtRooms){
+std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> Game::buildNeighbours(int roomId, std::set<int> &builtRooms){
     std::vector<std::tuple<int, Room::Direction>> validNeighbours;
     std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> neighbours;
+    int mapWidth = _dungeonBuilder->getDungeonLevel()->width();
+    int mapHeight = _dungeonBuilder->getDungeonLevel()->height();
+    int numRooms = mapWidth * mapHeight;
     // determine which neighbours are valid
-    switch (roomId % width) {
-    case 0: // right column
-        validNeighbours.push_back(std::make_pair(roomId - 1, Room::Direction::West)); // West neighbor
-        break;
-    case 1: // left column
-        validNeighbours.push_back(std::make_pair(roomId + 1, Room::Direction::East)); // East neighbor
-        break;
-    default: // middle-column
-        validNeighbours.push_back(std::make_pair(roomId - 1, Room::Direction::West)); // West neighbor
-        validNeighbours.push_back(std::make_pair(roomId + 1, Room::Direction::East)); // East neighbor
-        break;
+    if(mapWidth != 1){ // if not in a single column map, add horizontal neighbour
+        switch (roomId % mapWidth) {
+        case 0: // right column
+            validNeighbours.push_back(std::make_pair(roomId - 1, Room::Direction::West)); // West neighbor
+            break;
+        case 1: // left column
+            validNeighbours.push_back(std::make_pair(roomId + 1, Room::Direction::East)); // East neighbor
+            break;
+        default: // middle-column
+            validNeighbours.push_back(std::make_pair(roomId - 1, Room::Direction::West)); // West neighbor
+            validNeighbours.push_back(std::make_pair(roomId + 1, Room::Direction::East)); // East neighbor
+            break;
+        }
     }
     // room row
-    if(roomId >= 1 and roomId <= width) { // first row
-        validNeighbours.push_back(std::make_pair(roomId + width, Room::Direction::South)); // South neighbor
-    } else if(roomId >= numRooms - width and roomId <= numRooms){ // last row
-        validNeighbours.push_back(std::make_pair(roomId - width, Room::Direction::North)); // North neighbor
-    } else { // middle-row
-        validNeighbours.push_back(std::make_pair(roomId + width, Room::Direction::South)); // South neighbor
-        validNeighbours.push_back(std::make_pair(roomId - width, Room::Direction::North)); // North neighbor
+    if(mapHeight != 1){// if not single row map, add vertical neighbour
+        if(roomId >= 1 and roomId <= mapWidth) { // first row,
+            validNeighbours.push_back(std::make_pair(roomId + mapWidth, Room::Direction::South)); // South neighbor
+        } else if(roomId >= numRooms - mapWidth and roomId <= numRooms){ // last row
+            validNeighbours.push_back(std::make_pair(roomId - mapWidth, Room::Direction::North)); // North neighbor
+        } else { // middle-row
+            validNeighbours.push_back(std::make_pair(roomId + mapWidth, Room::Direction::South)); // South neighbor
+            validNeighbours.push_back(std::make_pair(roomId - mapWidth, Room::Direction::North)); // North neighbor
+        }
     }
     // build neighbours
     std::shared_ptr<Room> neighbour;
@@ -315,18 +275,26 @@ void Game::buildRandomNeighbouringDoorways(std::shared_ptr<Room> room, std::vect
     int randDir = 0;
     // depending on the number of neighbours
     switch (neighbours.size()) {
-    case 2: // if only 2 neighbours, we are in a corner
-        // randomly build doors to 1 neighbour
-        randDir = rand() % 2 + 1; // 2 different possibilities
-        switch (randDir) {
-        case 1: // build doorway to first neighbour
+    case 1: // if only 1 neighbour, we are in a corner of a single row or column map
+        _dungeonBuilder->buildDoorway(room, std::get<0>(neighbours[0]), std::get<1>(neighbours[0]), getRandomMovementConstraints());
+        break;
+    case 2: // if only 2 neighbours, we are in a corner, or a middle room for a single row or columnn map
+        if(_dungeonBuilder->getDungeonLevel()->height() == 1 || _dungeonBuilder->getDungeonLevel()->width() == 1){ // single row or column map, build both neighbours
             _dungeonBuilder->buildDoorway(room, std::get<0>(neighbours[0]), std::get<1>(neighbours[0]), getRandomMovementConstraints());
-            break;
-        case 2: // build doorway to second neighbour
             _dungeonBuilder->buildDoorway(room, std::get<0>(neighbours[1]), std::get<1>(neighbours[1]), getRandomMovementConstraints());
-            break;
-        default:
-            break;
+        } else { // normal map
+            // randomly build doors to 1 neighbour
+            randDir = rand() % 2 + 1; // 2 different possibilities
+            switch (randDir) {
+            case 1: // build doorway to first neighbour
+                _dungeonBuilder->buildDoorway(room, std::get<0>(neighbours[0]), std::get<1>(neighbours[0]), getRandomMovementConstraints());
+                break;
+            case 2: // build doorway to second neighbour
+                _dungeonBuilder->buildDoorway(room, std::get<0>(neighbours[1]), std::get<1>(neighbours[1]), getRandomMovementConstraints());
+                break;
+            default:
+                break;
+            }
         }
         break;
     case 3: // if 3 neighbours, we are in an outside row or column

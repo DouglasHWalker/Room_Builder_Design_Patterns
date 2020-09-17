@@ -53,7 +53,7 @@ private:
     const double LOCKED_CHANCE = 0.30;
     const double IMPASSABLE_CHANCE = 0.30;
     // helper methods for random level generation
-    std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> buildNeighbours(int i, int width, int numRooms, std::set<int> &builtRooms);
+    std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> buildNeighbours(int i, std::set<int> &builtRooms);
     DungeonLevelBuilder::MoveConstraints getRandomMovementConstraints();
     void buildRandomNeighbouringDoorways(std::shared_ptr<Room> room, std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> neighbours);
     // TODO: double check singleton implementation correct

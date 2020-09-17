@@ -19,7 +19,7 @@ public:
     void buildItem(std::shared_ptr<Room> room);
     void buildCreature(std::shared_ptr<Room> room);
 private:
-    double _ITEM_RARITY = 0.5;
+    double _WEAPON_CHANCE = 0.35;
     double _CHAMBER_RARITY = 0.5;
     double _CREATURE_RARITY = 0.9;
 

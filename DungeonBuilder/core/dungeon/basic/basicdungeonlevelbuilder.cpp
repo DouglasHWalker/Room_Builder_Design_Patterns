@@ -10,7 +10,6 @@
 
 void BasicDungeonLevelBuilder::buildDungeonLevel(std::string name, int width, int height){
     _dungeonLevel = new BasicDungeonLevel(name, width, height); // NOTE: Must use bare pointer
-
 }
 
 std::shared_ptr<Room> BasicDungeonLevelBuilder::buildRoom(int id){
@@ -150,14 +149,18 @@ void BasicDungeonLevelBuilder::buildItem(std::shared_ptr<Room> room){
     room->setItem(std::move(item));
 }
 void BasicDungeonLevelBuilder::buildCreature(std::shared_ptr<Room> room){
-    double rand = Game::instance()->randomDouble();
     std::unique_ptr<AbstractCreature> creature;
-    if(rand >= _CREATURE_RARITY){
-        creature = _werewolf_proto->clone();
-    } else if(rand <= _CREATURE_RARITY/2){
-        creature = _evilWizard_proto->clone();
-    } else {
-        creature = _goblin_proto->clone();
+    int randCreature = std::rand() % 6;
+    switch (randCreature) {
+    case 0:
+        creature = _werewolf_proto->clone(); // ~16% chance
+        break;
+    case 1:
+    case 2:
+        creature = _evilWizard_proto->clone(); // ~32% chance
+        break;
+    default: creature = _goblin_proto->clone(); // ~52% chance
+        break;
     }
     room->setCreature(std::move(creature));
 }

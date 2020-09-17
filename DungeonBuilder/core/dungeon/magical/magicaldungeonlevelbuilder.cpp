@@ -33,69 +33,72 @@ std::shared_ptr<Room> MagicalDungeonLevelBuilder::buildRoom(int id){
 }
 
 void MagicalDungeonLevelBuilder::buildDoorway(std::shared_ptr<Room> origin, std::shared_ptr<Room> destination, Room::Direction direction, MoveConstraints constraints){
-    // the doorways to build
-    std::shared_ptr<Doorway> originDoorway; // origin
-    std::shared_ptr<Doorway> destinationDoorway; // destination, in opposite direction
-    // determine the door type
-    switch (constraints) {
-    case MoveConstraints::None:
-        // Open doorway
-        originDoorway = std::make_shared<OpenDoorway>(direction);
-        destinationDoorway = std::make_shared<OpenDoorway>(!direction);
-        break;
-    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginImpassable)):
-        // Origin doorway cannot be passed through.
-        originDoorway = std::make_shared<OneWayDoor>(direction);
-        destinationDoorway = std::make_shared<OpenDoorway>(!direction);
-        break;
-    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::DestinationImpassable)):
-        // Destination doorway cannot be passed through.
-        originDoorway = std::make_shared<OpenDoorway>(direction);
-        destinationDoorway = std::make_shared<OneWayDoor>(!direction);
-        break;
-    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginImpassable) | static_cast<unsigned>(MoveConstraints::DestinationImpassable)):
-        //  Blocked doorway on both ends
-        originDoorway = std::make_shared<BlockedDoorway>();
-        destinationDoorway = std::make_shared<BlockedDoorway>();
-        break;
-    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginLocked)):
-        // Locked door on origin
-        originDoorway = std::make_shared<LockedDoor>();
-        // opendoor on destination
-        destinationDoorway = std::make_shared<OpenDoorway>(!direction);
-    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginLocked) | static_cast<unsigned>(MoveConstraints::DestinationImpassable)):
-        // Locked door on origin
-        originDoorway = std::make_shared<LockedDoor>();
-        // Destination doorway cannot be passed through.
-        destinationDoorway = std::make_shared<OneWayDoor>(!direction);
-        break;
-    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::DestinationLocked)):
-        // origin opened
-        originDoorway = std::make_shared<OpenDoorway>(direction);
-        // destination locked
-        destinationDoorway = std::make_shared<LockedDoor>();
-        break;
-    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginImpassable) | static_cast<unsigned>(MoveConstraints::DestinationLocked)):
-        // Origin doorway cannot be passed through.
-        originDoorway = std::make_shared<OneWayDoor>(direction);
-        // destination locked
-        destinationDoorway = std::make_shared<LockedDoor>();
-        break;
-    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginLocked) | static_cast<unsigned>(MoveConstraints::DestinationLocked)):
-        // Locked Door origin and destination
-        originDoorway = std::make_shared<LockedDoor>();
-        destinationDoorway = std::make_shared<LockedDoor>();
-        break;
-    default:
-        break;
+    // if doorway does not already exist here
+    if(not origin->edgeAt(direction)->isPassage()){// the doorways to build
+        std::shared_ptr<Doorway> originDoorway; // origin
+        std::shared_ptr<Doorway> destinationDoorway; // destination, in opposite direction
+        // determine the door type
+        switch (constraints) {
+        case MoveConstraints::None:
+            // Open doorway
+            originDoorway = std::make_shared<OpenDoorway>(direction);
+            destinationDoorway = std::make_shared<OpenDoorway>(!direction);
+            break;
+        case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginImpassable)):
+            // Origin doorway cannot be passed through.
+            originDoorway = std::make_shared<OneWayDoor>(direction);
+            destinationDoorway = std::make_shared<OpenDoorway>(!direction);
+            break;
+        case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::DestinationImpassable)):
+            // Destination doorway cannot be passed through.
+            originDoorway = std::make_shared<OpenDoorway>(direction);
+            destinationDoorway = std::make_shared<OneWayDoor>(!direction);
+            break;
+        case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginImpassable) | static_cast<unsigned>(MoveConstraints::DestinationImpassable)):
+            //  Blocked doorway on both ends
+            originDoorway = std::make_shared<BlockedDoorway>();
+            destinationDoorway = std::make_shared<BlockedDoorway>();
+            break;
+        case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginLocked)):
+            // Locked door on origin
+            originDoorway = std::make_shared<LockedDoor>();
+            // opendoor on destination
+            destinationDoorway = std::make_shared<OpenDoorway>(!direction);
+        case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginLocked) | static_cast<unsigned>(MoveConstraints::DestinationImpassable)):
+            // Locked door on origin
+            originDoorway = std::make_shared<LockedDoor>();
+            // Destination doorway cannot be passed through.
+            destinationDoorway = std::make_shared<OneWayDoor>(!direction);
+            break;
+        case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::DestinationLocked)):
+            // origin opened
+            originDoorway = std::make_shared<OpenDoorway>(direction);
+            // destination locked
+            destinationDoorway = std::make_shared<LockedDoor>();
+            break;
+        case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginImpassable) | static_cast<unsigned>(MoveConstraints::DestinationLocked)):
+            // Origin doorway cannot be passed through.
+            originDoorway = std::make_shared<OneWayDoor>(direction);
+            // destination locked
+            destinationDoorway = std::make_shared<LockedDoor>();
+            break;
+        case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginLocked) | static_cast<unsigned>(MoveConstraints::DestinationLocked)):
+            // Locked Door origin and destination
+            originDoorway = std::make_shared<LockedDoor>();
+            destinationDoorway = std::make_shared<LockedDoor>();
+            break;
+        default:
+            break;
+        }
+        // connect doorways in both directions
+        originDoorway->connect(destinationDoorway.get()); // WARNING: getting bare pointer
+        destinationDoorway->connect(originDoorway.get());
+        // set edges in both directions
+        origin->setEdge(originDoorway, direction);
+        destination->setEdge(destinationDoorway, !direction);
     }
-    // connect doorways in both directions
-    originDoorway->connect(destinationDoorway.get());
-    destinationDoorway->connect(originDoorway.get());
-    // set edges in both directions
-    origin->setEdge(originDoorway, direction);
-    destination->setEdge(destinationDoorway, !direction);
 }
+
 void MagicalDungeonLevelBuilder::buildEntrance(std::shared_ptr<Room> room, Room::Direction direction){
     // build entry
     std::shared_ptr<Doorway> entry = std::make_shared<OneWayDoor>(direction);
@@ -103,6 +106,7 @@ void MagicalDungeonLevelBuilder::buildEntrance(std::shared_ptr<Room> room, Room:
     // set edge of room
     room->setEdge(entry, direction);
 }
+
 void MagicalDungeonLevelBuilder::buildExit(std::shared_ptr<Room> room, Room::Direction direction){
     // build exit
     std::shared_ptr<Doorway> exit =  std::make_shared<OneWayDoor>(direction);
@@ -118,39 +122,45 @@ void MagicalDungeonLevelBuilder::buildExit(std::shared_ptr<Room> room, Room::Dir
     room->setCreature(std::move(creature));
     // TODO: transfer of ownership might be avoidable here...
 }
+
 void MagicalDungeonLevelBuilder::buildItem(std::shared_ptr<Room> room){
     double rand = Game::instance()->randomDouble();
     std::unique_ptr<Item> item;
-    // TOOD: make this more extensible, the randomisation automatic or something
-    if(rand <= _ITEM_RARITY){
-        if(rand <= _ITEM_RARITY/3){
-            item = _boomerang_proto->clone();
-        } else if(rand <= (_ITEM_RARITY/3)*2){
-            item = _magicWand_proto->clone();
-        } else {
-            item = _wizardStaff_proto->clone();
+    int randItem = std::rand() % 3;
+    if(rand <= _WEAPON_CHANCE){ // weapon
+        switch (randItem) {
+        case 0: item = _boomerang_proto->clone(); // ~33% chance
+            break;
+        case 1: item = _magicWand_proto->clone(); // ~33% chance
+            break;
+        case 2: item = _wizardStaff_proto->clone(); // ~33% chance
+            break;
         }
-    } else {
-        // randomly select a prototype
-        if(rand <= _ITEM_RARITY/3){
-            item = _molotov_proto->clone();
-        } else if(rand <= (_ITEM_RARITY/3)*2){
-            item = _healthPotion_proto->clone();
-        } else {
-            item = _resistancePotion_proto->clone();
+    } else { // Consumable
+        switch (randItem) {
+        case 0: item = _molotov_proto->clone(); // ~33% chance
+            break;
+        case 1: item = _healthPotion_proto->clone(); // ~33% chance
+            break;
+        case 2: item = _resistancePotion_proto->clone(); // ~33% chance
+            break;
         }
     }
     room->setItem(std::move(item));
 }
 void MagicalDungeonLevelBuilder::buildCreature(std::shared_ptr<Room> room){
-    double rand = Game::instance()->randomDouble();
     std::unique_ptr<AbstractCreature> creature;
-    if(rand >= _CREATURE_RARITY){
-        creature = _dragon_proto->clone();
-    } else if(rand <= _CREATURE_RARITY/2){
-        creature = _evilWizard_proto->clone();
-    } else {
-        creature = _goblin_proto->clone();
+    int randCreature = std::rand() % 6;
+    switch (randCreature) {
+    case 0:
+        creature = _dragon_proto->clone(); // ~16% chance
+        break;
+    case 1:
+    case 2:
+        creature = _evilWizard_proto->clone(); // ~32% chance
+        break;
+    default: creature = _goblin_proto->clone(); // ~52% chance
+        break;
     }
     room->setCreature(std::move(creature));
 }
