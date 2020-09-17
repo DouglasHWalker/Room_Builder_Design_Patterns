@@ -39,7 +39,7 @@ std::vector<std::string> DungeonLevel::display(){
                 // if we are at the middle row, add a dashed line bewteen the rooms, otherwise add space
             }
             // add the seperator row between rows of rooms, unless we just printed the last row
-            if(r != _width - 1){
+            if(r != _height - 1){
                 dungeonLevelString.at(lastDungeonStringRow) +=
                     currentRoom->edgeAt(Room::Direction::South)->isPassage() ? "     |       " : "             ";
             }

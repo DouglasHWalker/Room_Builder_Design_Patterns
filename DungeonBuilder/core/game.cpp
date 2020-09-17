@@ -3,7 +3,7 @@
 #include <ctime>
 #include "game.h"
 Game* Game::theInstance = nullptr;
-void Game::setDungeonType(std::shared_ptr<DungeonLevelBuilder> dungeonLevelBuilder){
+void Game::setDungeonType(DungeonLevelBuilder* dungeonLevelBuilder){
     _dungeonBuilder = dungeonLevelBuilder;
 }
 void Game::createExampleLevel(){
@@ -74,84 +74,6 @@ void Game::createExampleLevel(){
 
 }
 
-std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> Game::buildNeighbours(int i, int width, int numRooms, std::set<int> &builtRooms){
-    std::vector<std::tuple<int, Room::Direction>> validNeighbours;
-    std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> neighbours;
-    // determine which neighbours are valid
-    switch (i % width) {
-    case 0: // right column
-        validNeighbours.push_back(std::make_pair(i - 1, Room::Direction::West)); // West neighbor
-        break;
-    case 1: // left column
-        validNeighbours.push_back(std::make_pair(i + 1, Room::Direction::East)); // East neighbor
-        break;
-    default: // middle-column
-        validNeighbours.push_back(std::make_pair(i - 1, Room::Direction::West)); // West neighbor
-        validNeighbours.push_back(std::make_pair(i + 1, Room::Direction::East)); // East neighbor
-        break;
-    }
-    // room row
-    if(i >= 1 and i <= width) { // first row
-        validNeighbours.push_back(std::make_pair(i + width, Room::Direction::South)); // South neighbor
-    } else if(i >= numRooms - width and i <= numRooms){ // last row
-        validNeighbours.push_back(std::make_pair(i - width, Room::Direction::North)); // North neighbor
-    } else { // middle-row
-        validNeighbours.push_back(std::make_pair(i - width, Room::Direction::South)); // South neighbor
-        validNeighbours.push_back(std::make_pair(i + width, Room::Direction::North)); // North neighbor
-    }
-    // build neighbours
-    std::shared_ptr<Room> neighbour;
-    for(int j{0}; j < static_cast<int>(neighbours.size()); j++){
-        // if neighbour has not been built yet, build neighbour
-        int id = std::get<0>(validNeighbours[j]);
-        if(builtRooms.find(id) != builtRooms.end()){
-            neighbour = _dungeonBuilder->buildRoom(id);
-            builtRooms.insert(id);
-        } else { // otherwise get the existing neighbour
-            neighbour = _dungeonBuilder->getDungeonLevel()->retrieveRoom(i);
-        }
-        // add neighbour to list of rooms neighbours
-        neighbours.push_back(std::make_pair(neighbour, std::get<1>(validNeighbours[j])));
-    }
-    return neighbours;
-}
-
-DungeonLevelBuilder::MoveConstraints Game::getRandomMovementConstraints() {
-
-    int constraints = 0;
-    // origin
-    double random = randomDouble();
-    if(random <= IMPASSABLE_CHANCE){ constraints += 1; } // origin impassable
-    else if (random <= LOCKED_CHANCE + IMPASSABLE_CHANCE){ constraints += 2; } // origin locked
-    // destination
-    random = randomDouble();
-    if(random <= IMPASSABLE_CHANCE){ constraints += 4; } // destination impassable
-    else if (random <= LOCKED_CHANCE + IMPASSABLE_CHANCE){ constraints += 8; } // destination locked
-
-    switch (constraints) {
-    case 0: // both traversable
-        return DungeonLevelBuilder::MoveConstraints::None;
-    case 1: // origin impassable, dest traversable
-        return DungeonLevelBuilder::MoveConstraints::OriginImpassable;
-    case 2: // origin locked, dest traversable
-        return DungeonLevelBuilder::MoveConstraints::OriginLocked;
-    case 4: // origin traversable, destination impassable
-        return DungeonLevelBuilder::MoveConstraints::DestinationImpassable;
-    case 5: // both impassable
-        return DungeonLevelBuilder::MoveConstraints::OriginImpassable | DungeonLevelBuilder::MoveConstraints::DestinationImpassable;
-    case 6: // origin locked, dest impassable
-        return DungeonLevelBuilder::MoveConstraints::OriginLocked | DungeonLevelBuilder::MoveConstraints::DestinationImpassable;
-    case 8: // origin passable, dest locked
-        return DungeonLevelBuilder::MoveConstraints::DestinationLocked;
-    case 9: // origin impassable, dest locked
-        return DungeonLevelBuilder::MoveConstraints::OriginImpassable | DungeonLevelBuilder::MoveConstraints::DestinationLocked;
-    case 10: // both locked
-        return DungeonLevelBuilder::MoveConstraints::OriginLocked | DungeonLevelBuilder::MoveConstraints::DestinationLocked;
-    default:
-        return DungeonLevelBuilder::MoveConstraints::None;
-    }
-}
-
 void Game::createRandomLevel(std::string name, int width, int height){
 
     _dungeonBuilder->buildDungeonLevel(name, width, height);
@@ -164,40 +86,22 @@ void Game::createRandomLevel(std::string name, int width, int height){
     int numRooms = width * height;
     // for every room
     for(int i{1}; i <= numRooms; i++) {
+        // retrieve room
         std::shared_ptr<Room> room;
-        // if room has not yet been built
-        if(builtRooms.find(i) != builtRooms.end()){
+        // if room has not yet been built, build it
+        if(builtRooms.find(i) == builtRooms.end()){
             room = _dungeonBuilder->buildRoom(i);
             builtRooms.insert(i);
         } else { // otherwise get the existing room
             room = _dungeonBuilder->getDungeonLevel()->retrieveRoom(i);
         }
-        // build valid neighbours of current room
-        std::set<int> & builtRoomsRef = builtRooms;
-        std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> neighbours = buildNeighbours(i, width, numRooms, builtRoomsRef);
-
-        // build doorways to neighbours
-        // if only 2 neighbours, we are in a corner
-        if(neighbours.size() == 2){
-            // randomly build doors to 1 or both neighbours
-            int oneOrTwo = rand() % 2 + 1; // at least one door
-            int randDir = rand() % 2 + 1; // 50% chance for direction
-            switch (oneOrTwo + randDir) { //
-            case 2: // build doorway to first neighbour
-                _dungeonBuilder->buildDoorway(room, std::get<0>(neighbours[0]), std::get<1>(neighbours[0]), getRandomMovementConstraints());
-                break;
-            case 3: // build doorway to second neighbour
-                _dungeonBuilder->buildDoorway(room, std::get<0>(neighbours[1]), std::get<1>(neighbours[1]), getRandomMovementConstraints());
-                break;
-            case 4: // build both neighbours
-                _dungeonBuilder->buildDoorway(room, std::get<0>(neighbours[0]), std::get<1>(neighbours[0]), getRandomMovementConstraints());
-                _dungeonBuilder->buildDoorway(room, std::get<0>(neighbours[1]), std::get<1>(neighbours[1]), getRandomMovementConstraints());
-                break;
-            default:
-                break;
-            }
-        } else { // we are not in a corner
-
+        // if room has neighbours, i.e. level dimensions != 1x1
+        if(numRooms != 1){
+            // build valid neighbours of current room
+            std::set<int> & builtRoomsRef = builtRooms;
+            std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> neighbours = buildNeighbours(i, width, numRooms, builtRoomsRef);
+            // build doorways randomly to the rooms neighbours
+            buildRandomNeighbouringDoorways(room, neighbours);
         }
     }
     // set dungeon level to newly created level
@@ -328,18 +232,148 @@ double Game::randomDouble(){
 }
 
 // Helper methods
-void Game::addRandomDoorways(int row, int col, std::shared_ptr<Room> room){
-
+std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> Game::buildNeighbours(int roomId, int width, int numRooms, std::set<int> &builtRooms){
+    std::vector<std::tuple<int, Room::Direction>> validNeighbours;
+    std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> neighbours;
+    // determine which neighbours are valid
+    switch (roomId % width) {
+    case 0: // right column
+        validNeighbours.push_back(std::make_pair(roomId - 1, Room::Direction::West)); // West neighbor
+        break;
+    case 1: // left column
+        validNeighbours.push_back(std::make_pair(roomId + 1, Room::Direction::East)); // East neighbor
+        break;
+    default: // middle-column
+        validNeighbours.push_back(std::make_pair(roomId - 1, Room::Direction::West)); // West neighbor
+        validNeighbours.push_back(std::make_pair(roomId + 1, Room::Direction::East)); // East neighbor
+        break;
+    }
+    // room row
+    if(roomId >= 1 and roomId <= width) { // first row
+        validNeighbours.push_back(std::make_pair(roomId + width, Room::Direction::South)); // South neighbor
+    } else if(roomId >= numRooms - width and roomId <= numRooms){ // last row
+        validNeighbours.push_back(std::make_pair(roomId - width, Room::Direction::North)); // North neighbor
+    } else { // middle-row
+        validNeighbours.push_back(std::make_pair(roomId + width, Room::Direction::South)); // South neighbor
+        validNeighbours.push_back(std::make_pair(roomId - width, Room::Direction::North)); // North neighbor
+    }
+    // build neighbours
+    std::shared_ptr<Room> neighbour;
+    for(int j{0}; j < static_cast<int>(validNeighbours.size()); j++){
+        // if neighbour has not been built yet, build neighbour
+        int id = std::get<0>(validNeighbours[j]);
+        if(builtRooms.find(id) == builtRooms.end()){
+            neighbour = _dungeonBuilder->buildRoom(id);
+            builtRooms.insert(id);
+        } else { // otherwise get the existing neighbour
+            neighbour = _dungeonBuilder->getDungeonLevel()->retrieveRoom(id);
+        }
+        // add neighbour to list of rooms neighbours
+        neighbours.push_back(std::make_pair(neighbour, std::get<1>(validNeighbours[j])));
+    }
+    return neighbours;
 }
 
-void Game::buildRandomDoorway(double random, Room::Direction direction){
+DungeonLevelBuilder::MoveConstraints Game::getRandomMovementConstraints() {
+    int constraints = 0;
+    // generate origin constraints
+    double random = randomDouble();
+    if(random <= IMPASSABLE_CHANCE){ constraints += 1; } // origin impassable
+    else if (random <= LOCKED_CHANCE + IMPASSABLE_CHANCE){ constraints += 2; } // origin locked
+    //  generate destination constraints
+    random = randomDouble();
+    if(random <= IMPASSABLE_CHANCE){ constraints += 4; } // destination impassable
+    else if (random <= LOCKED_CHANCE + IMPASSABLE_CHANCE){ constraints += 8; } // destination locked
 
+    switch (constraints) {
+    case 0: // both traversable
+        return DungeonLevelBuilder::MoveConstraints::None;
+    case 1: // origin impassable, dest traversable
+        return DungeonLevelBuilder::MoveConstraints::OriginImpassable;
+    case 2: // origin locked, dest traversable
+        return DungeonLevelBuilder::MoveConstraints::OriginLocked;
+    case 4: // origin traversable, destination impassable
+        return DungeonLevelBuilder::MoveConstraints::DestinationImpassable;
+    case 5: // both impassable
+        return DungeonLevelBuilder::MoveConstraints::OriginImpassable | DungeonLevelBuilder::MoveConstraints::DestinationImpassable;
+    case 6: // origin locked, dest impassable
+        return DungeonLevelBuilder::MoveConstraints::OriginLocked | DungeonLevelBuilder::MoveConstraints::DestinationImpassable;
+    case 8: // origin passable, dest locked
+        return DungeonLevelBuilder::MoveConstraints::DestinationLocked;
+    case 9: // origin impassable, dest locked
+        return DungeonLevelBuilder::MoveConstraints::OriginImpassable | DungeonLevelBuilder::MoveConstraints::DestinationLocked;
+    case 10: // both locked
+        return DungeonLevelBuilder::MoveConstraints::OriginLocked | DungeonLevelBuilder::MoveConstraints::DestinationLocked;
+    default:
+        return DungeonLevelBuilder::MoveConstraints::None;
+    }
 }
 
-void Game::buildRandomEntry(Room::Direction direction){
-
-}
-
-void Game::buildRandomExit(Room::Direction direction){
-
+void Game::buildRandomNeighbouringDoorways(std::shared_ptr<Room> room, std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> neighbours){
+    int randDir = 0;
+    // depending on the number of neighbours
+    switch (neighbours.size()) {
+    case 2: // if only 2 neighbours, we are in a corner
+        // randomly build doors to 1 neighbour
+        randDir = rand() % 2 + 1; // 2 different possibilities
+        switch (randDir) {
+        case 1: // build doorway to first neighbour
+            _dungeonBuilder->buildDoorway(room, std::get<0>(neighbours[0]), std::get<1>(neighbours[0]), getRandomMovementConstraints());
+            break;
+        case 2: // build doorway to second neighbour
+            _dungeonBuilder->buildDoorway(room, std::get<0>(neighbours[1]), std::get<1>(neighbours[1]), getRandomMovementConstraints());
+            break;
+        default:
+            break;
+        }
+        break;
+    case 3: // if 3 neighbours, we are in an outside row or column
+        randDir = rand() % 3 + 1; // 3 different possibilities
+        switch (randDir) {
+        case 1: // build doorways to first and second neighbour
+            _dungeonBuilder->buildDoorway(room, std::get<0>(neighbours[0]), std::get<1>(neighbours[0]), getRandomMovementConstraints());
+            _dungeonBuilder->buildDoorway(room, std::get<0>(neighbours[1]), std::get<1>(neighbours[1]), getRandomMovementConstraints());
+            break;
+        case 2: // build doorway to first and third neighbour
+            _dungeonBuilder->buildDoorway(room, std::get<0>(neighbours[0]), std::get<1>(neighbours[0]), getRandomMovementConstraints());
+            _dungeonBuilder->buildDoorway(room, std::get<0>(neighbours[2]), std::get<1>(neighbours[2]), getRandomMovementConstraints());
+            break;
+        case 3: // build doorway to second and third neighbour
+            _dungeonBuilder->buildDoorway(room, std::get<0>(neighbours[1]), std::get<1>(neighbours[1]), getRandomMovementConstraints());
+            _dungeonBuilder->buildDoorway(room, std::get<0>(neighbours[2]), std::get<1>(neighbours[2]), getRandomMovementConstraints());
+            break;
+        }
+        break;
+    case 4: // 4, a central room
+        randDir = rand() % 6 + 1; // 6 different possibilities
+        switch (randDir) {
+        case 1: // build doorways to first and second neighbour
+            _dungeonBuilder->buildDoorway(room, std::get<0>(neighbours[0]), std::get<1>(neighbours[0]), getRandomMovementConstraints());
+            _dungeonBuilder->buildDoorway(room, std::get<0>(neighbours[1]), std::get<1>(neighbours[1]), getRandomMovementConstraints());
+            break;
+        case 2: // build doorway to first and third neighbour
+            _dungeonBuilder->buildDoorway(room, std::get<0>(neighbours[0]), std::get<1>(neighbours[0]), getRandomMovementConstraints());
+            _dungeonBuilder->buildDoorway(room, std::get<0>(neighbours[2]), std::get<1>(neighbours[2]), getRandomMovementConstraints());
+            break;
+        case 3: // build doorway to first and fourth neighbour
+            _dungeonBuilder->buildDoorway(room, std::get<0>(neighbours[0]), std::get<1>(neighbours[0]), getRandomMovementConstraints());
+            _dungeonBuilder->buildDoorway(room, std::get<0>(neighbours[3]), std::get<1>(neighbours[3]), getRandomMovementConstraints());
+            break;
+        case 4: // build doorway to second and third neighbour
+            _dungeonBuilder->buildDoorway(room, std::get<0>(neighbours[1]), std::get<1>(neighbours[1]), getRandomMovementConstraints());
+            _dungeonBuilder->buildDoorway(room, std::get<0>(neighbours[2]), std::get<1>(neighbours[2]), getRandomMovementConstraints());
+            break;
+        case 5: // build doorway to second and fourth neighbour
+            _dungeonBuilder->buildDoorway(room, std::get<0>(neighbours[1]), std::get<1>(neighbours[1]), getRandomMovementConstraints());
+            _dungeonBuilder->buildDoorway(room, std::get<0>(neighbours[3]), std::get<1>(neighbours[3]), getRandomMovementConstraints());
+            break;
+        case 6: // build doorway to third and fourth neighbour
+            _dungeonBuilder->buildDoorway(room, std::get<0>(neighbours[2]), std::get<1>(neighbours[2]), getRandomMovementConstraints());
+            _dungeonBuilder->buildDoorway(room, std::get<0>(neighbours[3]), std::get<1>(neighbours[3]), getRandomMovementConstraints());
+            break;
+        default:
+            break;
+        }
+        break;
+    }
 }

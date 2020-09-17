@@ -20,9 +20,10 @@ public:
     Game operator=(Game &other) = delete;
     ~Game(){
         delete _dungeonLevel; // TODO: double check this is a correctly deleted bare pointer
+        delete _dungeonBuilder;
     }
 
-    void setDungeonType(std::shared_ptr<DungeonLevelBuilder> dungeonLevelBuilder);
+    void setDungeonType(DungeonLevelBuilder* dungeonLevelBuilder);
     void createExampleLevel();
     void createRandomLevel(std::string name, int width, int height);
     std::vector<std::string> displayLevel();
@@ -36,9 +37,9 @@ public:
 
 
 private:
-    Game() { std::cout << "Game created"; };
+    Game() {};
     static Game* theInstance;
-    std::shared_ptr<DungeonLevelBuilder> _dungeonBuilder;
+    DungeonLevelBuilder* _dungeonBuilder;
     DungeonLevel* _dungeonLevel;
 
     std::mt19937 _randomGenerator{uint32_t(time(nullptr))};
@@ -52,12 +53,9 @@ private:
     const double LOCKED_CHANCE = 0.30;
     const double IMPASSABLE_CHANCE = 0.30;
     // helper methods for random level generation
-    void addRandomDoorways(int row, int col, std::shared_ptr<Room> room);
-    void buildRandomDoorway(double random, Room::Direction direction);
-    void buildRandomEntry(Room::Direction direction);
-    void buildRandomExit(Room::Direction direction);
     std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> buildNeighbours(int i, int width, int numRooms, std::set<int> &builtRooms);
     DungeonLevelBuilder::MoveConstraints getRandomMovementConstraints();
+    void buildRandomNeighbouringDoorways(std::shared_ptr<Room> room, std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> neighbours);
     // TODO: double check singleton implementation correct
 };
 

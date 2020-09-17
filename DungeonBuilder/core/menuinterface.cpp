@@ -70,7 +70,7 @@ bool MenuInterface::yesNoConfirmation(){
 
 void MenuInterface::generateExampleLevel(){
     _display << "\nCreating Example Dungeon Level..." << std::endl;
-    Game::instance()->setDungeonType(std::make_shared<BasicDungeonLevelBuilder>());
+    Game::instance()->setDungeonType(new BasicDungeonLevelBuilder());
     Game::instance()->createExampleLevel();
     _display << "\nDungeon level created!" << std::endl;
 }
@@ -114,9 +114,9 @@ void MenuInterface::generateRandomLevel(){
 
     // TODO: Create Level using gathered settings
     if(levelType == 'b'){
-        Game::instance()->setDungeonType(std::make_shared<BasicDungeonLevelBuilder>());
+        Game::instance()->setDungeonType(new BasicDungeonLevelBuilder());
     } else {
-        Game::instance()->setDungeonType(std::make_shared<MagicalDungeonLevelBuilder>());
+        Game::instance()->setDungeonType(new MagicalDungeonLevelBuilder());
     }
     Game::instance()->createRandomLevel(levelName, cols, rows);
 

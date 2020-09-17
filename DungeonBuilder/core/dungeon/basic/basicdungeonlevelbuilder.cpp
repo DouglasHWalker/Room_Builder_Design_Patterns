@@ -33,68 +33,71 @@ std::shared_ptr<Room> BasicDungeonLevelBuilder::buildRoom(int id){
     return room;
 }
 void BasicDungeonLevelBuilder::buildDoorway(std::shared_ptr<Room> origin, std::shared_ptr<Room> destination, Room::Direction direction, MoveConstraints constraints){
-    // the doorways to build
-    std::shared_ptr<Doorway> originDoorway; // origin
-    std::shared_ptr<Doorway> destinationDoorway; // destination, in opposite direction
-    // determine the door type
-    switch (constraints) {
-    case MoveConstraints::None:
-        // Open doorway
-        originDoorway = std::make_shared<OpenDoorway>(direction);
-        destinationDoorway = std::make_shared<OpenDoorway>(!direction);
-        break;
-    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginImpassable)):
-        // Origin doorway cannot be passed through.
-        originDoorway = std::make_shared<OneWayDoor>(direction);
-        destinationDoorway = std::make_shared<OpenDoorway>(!direction);
-        break;
-    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::DestinationImpassable)):
-        // Destination doorway cannot be passed through.
-        originDoorway = std::make_shared<OpenDoorway>(direction);
-        destinationDoorway = std::make_shared<OneWayDoor>(!direction);
-        break;
-    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginImpassable) | static_cast<unsigned>(MoveConstraints::DestinationImpassable)):
-        //  Blocked doorway on both ends
-        originDoorway = std::make_shared<BlockedDoorway>();
-        destinationDoorway = std::make_shared<BlockedDoorway>();
-        break;
-    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginLocked)):
-        // Locked door on origin
-        originDoorway = std::make_shared<LockedDoor>();
-        // opendoor on destination
-        destinationDoorway = std::make_shared<OpenDoorway>(!direction);
-    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginLocked) | static_cast<unsigned>(MoveConstraints::DestinationImpassable)):
-        // Locked door on origin
-        originDoorway = std::make_shared<LockedDoor>();
-        // Destination doorway cannot be passed through.
-        destinationDoorway = std::make_shared<OneWayDoor>(!direction);
-        break;
-    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::DestinationLocked)):
-        // origin opened
-        originDoorway = std::make_shared<OpenDoorway>(direction);
-        // destination locked
-        destinationDoorway = std::make_shared<LockedDoor>();
-        break;
-    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginImpassable) | static_cast<unsigned>(MoveConstraints::DestinationLocked)):
-        // Origin doorway cannot be passed through.
-        originDoorway = std::make_shared<OneWayDoor>(direction);
-        // destination locked
-        destinationDoorway = std::make_shared<LockedDoor>();
-        break;
-    case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginLocked) | static_cast<unsigned>(MoveConstraints::DestinationLocked)):
-        // Locked Door origin and destination
-        originDoorway = std::make_shared<LockedDoor>();
-        destinationDoorway = std::make_shared<LockedDoor>();
-        break;
-    default:
-        break;
-    }
-    // connect doorways in both directions
-    originDoorway->connect(destinationDoorway.get()); // WARNING: getting bare pointer
-    destinationDoorway->connect(originDoorway.get());
-    // set edges in both directions
-    origin->setEdge(originDoorway, direction);
-    destination->setEdge(destinationDoorway, !direction);
+    // if doorway does not already exist here
+    if(not origin->edgeAt(direction)->isPassage()){// the doorways to build
+        std::shared_ptr<Doorway> originDoorway; // origin
+        std::shared_ptr<Doorway> destinationDoorway; // destination, in opposite direction
+        // determine the door type
+        switch (constraints) {
+        case MoveConstraints::None:
+            // Open doorway
+            originDoorway = std::make_shared<OpenDoorway>(direction);
+            destinationDoorway = std::make_shared<OpenDoorway>(!direction);
+            break;
+        case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginImpassable)):
+            // Origin doorway cannot be passed through.
+            originDoorway = std::make_shared<OneWayDoor>(direction);
+            destinationDoorway = std::make_shared<OpenDoorway>(!direction);
+            break;
+        case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::DestinationImpassable)):
+            // Destination doorway cannot be passed through.
+            originDoorway = std::make_shared<OpenDoorway>(direction);
+            destinationDoorway = std::make_shared<OneWayDoor>(!direction);
+            break;
+        case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginImpassable) | static_cast<unsigned>(MoveConstraints::DestinationImpassable)):
+            //  Blocked doorway on both ends
+            originDoorway = std::make_shared<BlockedDoorway>();
+            destinationDoorway = std::make_shared<BlockedDoorway>();
+            break;
+        case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginLocked)):
+            // Locked door on origin
+            originDoorway = std::make_shared<LockedDoor>();
+            // opendoor on destination
+            destinationDoorway = std::make_shared<OpenDoorway>(!direction);
+            break;
+        case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginLocked) | static_cast<unsigned>(MoveConstraints::DestinationImpassable)):
+            // Locked door on origin
+            originDoorway = std::make_shared<LockedDoor>();
+            // Destination doorway cannot be passed through.
+            destinationDoorway = std::make_shared<OneWayDoor>(!direction); // FIXME: seg fault occasionally
+            break;
+        case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::DestinationLocked)):
+            // origin opened
+            originDoorway = std::make_shared<OpenDoorway>(direction);
+            // destination locked
+            destinationDoorway = std::make_shared<LockedDoor>();
+            break;
+        case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginImpassable) | static_cast<unsigned>(MoveConstraints::DestinationLocked)):
+            // Origin doorway cannot be passed through.
+            originDoorway = std::make_shared<OneWayDoor>(direction);
+            // destination locked
+            destinationDoorway = std::make_shared<LockedDoor>();
+            break;
+        case static_cast<MoveConstraints>(static_cast<unsigned>(MoveConstraints::OriginLocked) | static_cast<unsigned>(MoveConstraints::DestinationLocked)):
+            // Locked Door origin and destination
+            originDoorway = std::make_shared<LockedDoor>();
+            destinationDoorway = std::make_shared<LockedDoor>();
+            break;
+        default:
+            break;
+        }
+        // connect doorways in both directions
+        originDoorway->connect(destinationDoorway.get()); // WARNING: getting bare pointer
+        destinationDoorway->connect(originDoorway.get());
+        // set edges in both directions
+        origin->setEdge(originDoorway, direction);
+        destination->setEdge(destinationDoorway, !direction);
+    } // end if doorway already exists
 }
 
 void BasicDungeonLevelBuilder::buildEntrance(std::shared_ptr<Room>  room, Room::Direction direction){
