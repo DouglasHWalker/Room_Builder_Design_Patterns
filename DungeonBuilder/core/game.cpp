@@ -104,37 +104,39 @@ void Game::createRandomLevel(std::string name, int width, int height){
             buildRandomNeighbouringDoorways(room, neighbours);
         }
     }
+    // fill rooms with consumables and creatures
+    for(int id{1}; id <= numRooms; id++){
+        std::shared_ptr<Room> room = _dungeonBuilder->getDungeonLevel()->retrieveRoom(id);
+        // CREATURES
+        if(randomDouble() <= CREATURE_CHANCE and id != entranceRoom){
+            _dungeonBuilder->buildCreature(room);
+        }
+        // if exit room, add creature
+        if(id == exitRoom){
+            _dungeonBuilder->buildCreature(room);
+        }
+        // ITEMS
+        if(randomDouble() <= ITEM_CHANCE and id != entranceRoom){
+            _dungeonBuilder->buildItem(room);
+        }
+        // if exit room,
+        if(id == exitRoom){
+            _dungeonBuilder->buildItem(room);
+        }
+    }
+
+    // build dungeon entrance and exit
+
+
     // set dungeon level to newly created level
     _dungeonLevel = _dungeonBuilder->getDungeonLevel();
 }
 
-//        int roomId = 1;
-//            // CREATURES
-//            double creature_roll = randomDouble();
-//            if(creature_roll <= CREATURE_CHANCE and roomId != entranceRoom){
 
-//            }
-//            // if exit room, add creature
-//            if(roomId == exitRoom){
 
-//            }
+//
 
-//            // ITEMS
-//            double item_roll = randomDouble();
-//            double weapon_roll = randomDouble();
-//            if(item_roll <= ITEM_CHANCE and roomId != entranceRoom){
-//                // if weapon
-//                if(weapon_roll <= WEAPON_CHANCE){
 
-//                }
-//            }
-//            // if exit room,
-//            if(item_roll <= ITEM_CHANCE and roomId == exitRoom){
-//                // if weapon
-//                if(weapon_roll <= WEAPON_CHANCE){
-
-//                }
-//            }
 //            int oneOrTwo = rand() % 2 + 1;
 
 

@@ -125,26 +125,26 @@ void BasicDungeonLevelBuilder::buildExit(std::shared_ptr<Room> room, Room::Direc
 }
 
 void BasicDungeonLevelBuilder::buildItem(std::shared_ptr<Room> room){
-    // TODO: prototype model Items
     double rand = Game::instance()->randomDouble();
     std::unique_ptr<Item> item;
-    if(rand <= _ITEM_RARITY){
-        if(rand <= _ITEM_RARITY/3){
-            item = _boomerang_proto->clone();
-        } else if(rand <= (_ITEM_RARITY/3)*2){
-            item = _battleAxe_proto->clone();
-        } else {
-            item = _shortSword_proto->clone();
+    int randItem = std::rand() % 3;
+    if(rand <= _WEAPON_CHANCE){ // weapon
+        switch (randItem) {
+        case 0: item = _boomerang_proto->clone();
+            break;
+        case 1: item = _battleAxe_proto->clone();
+            break;
+        case 2: item = _shortSword_proto->clone();
+            break;
         }
-    } else {
-        // TOOD: make this more extensible
-        // randomly select a prototype
-        if(rand <= _ITEM_RARITY/3){
-            item = _molotov_proto->clone();
-        } else if(rand <= (_ITEM_RARITY/3)*2){
-            item = _healthPotion_proto->clone();
-        } else {
-            item = _smokeBomb_proto->clone();
+    } else { // Consumable
+        switch (randItem) {
+        case 0: item = _molotov_proto->clone();
+            break;
+        case 1: item = _healthPotion_proto->clone();
+            break;
+        case 2: item = _smokeBomb_proto->clone();
+            break;
         }
     }
     room->setItem(std::move(item));
