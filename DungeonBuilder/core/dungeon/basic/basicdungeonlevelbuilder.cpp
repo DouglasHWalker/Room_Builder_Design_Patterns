@@ -10,6 +10,7 @@
 
 void BasicDungeonLevelBuilder::buildDungeonLevel(std::string name, int width, int height){
     _dungeonLevel = new BasicDungeonLevel(name, width, height); // NOTE: Must use bare pointer
+
 }
 
 std::shared_ptr<Room> BasicDungeonLevelBuilder::buildRoom(int id){

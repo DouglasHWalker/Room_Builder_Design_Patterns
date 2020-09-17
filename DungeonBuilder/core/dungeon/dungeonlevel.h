@@ -1,7 +1,7 @@
 #ifndef DUNGEONLEVEL_H
 #define DUNGEONLEVEL_H
 #include <iostream>
-#include <vector>
+#include <map>
 #include <memory>
 #include <sstream>
 #include "room.h"
@@ -29,7 +29,7 @@ private:
     std::string _name;
     int _width;
     int _height;
-    std::vector<std::shared_ptr<Room>> _rooms;
+    std::map<int, std::shared_ptr<Room>> _rooms;
 };
 
 #endif // DUNGEONLEVEL_H

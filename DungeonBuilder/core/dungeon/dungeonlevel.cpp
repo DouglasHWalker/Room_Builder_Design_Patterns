@@ -2,10 +2,10 @@
 #include "dungeonlevel.h"
 
 void DungeonLevel::addRoom(std::shared_ptr<Room> room){
-    _rooms.push_back(room);
+    _rooms.insert(std::make_pair(room->id(), room));
 }
 std::shared_ptr<Room> DungeonLevel::retrieveRoom(int id){
-    return _rooms[id - 1];
+    return _rooms[id];
 }
 int DungeonLevel::width(){
     return _width;

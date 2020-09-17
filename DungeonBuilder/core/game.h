@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include <iostream>
+#include <set>
 #include <ctime>
 #include <random>
 #include "dungeon/dungeonlevelbuilder.h"
@@ -55,6 +56,8 @@ private:
     void buildRandomDoorway(double random, Room::Direction direction);
     void buildRandomEntry(Room::Direction direction);
     void buildRandomExit(Room::Direction direction);
+    std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> buildNeighbours(int i, int width, int numRooms, std::set<int> &builtRooms);
+    DungeonLevelBuilder::MoveConstraints getRandomMovementConstraints();
     // TODO: double check singleton implementation correct
 };
 
