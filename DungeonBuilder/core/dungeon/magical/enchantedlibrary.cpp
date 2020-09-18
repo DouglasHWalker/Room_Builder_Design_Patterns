@@ -10,12 +10,12 @@ std::string EnchantedLibrary::description() const {
        << "\nTo the SOUTH is " << *edgeAt(Room::Direction::South)
        << "\nTo the EAST is " << *edgeAt(Room::Direction::East)
        << "\nTo the WEST is " << *edgeAt(Room::Direction::West);
-    if(_creature != nullptr){
-        ss << "\nA " << *_creature << " rests on a desk nearby.";
-    } // FIXME: creature <<
     if(_item != nullptr){
-        ss << "\nA " << *_item << " is snoring loudly amongst the volumes.";
-    } // FIXME: item <<
+        ss << "\nA " << *_item << " rests on a desk nearby.";
+    }
+    if(_creature != nullptr){
+        ss << "\nA " << *_creature << " is snoring loudly amongst the volumes.";
+    }
     return ss.str();
 }
 

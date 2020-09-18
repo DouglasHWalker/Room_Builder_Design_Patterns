@@ -8,7 +8,7 @@ namespace core::dungeon {
 class DungeonLevel
 {
 public:
-    DungeonLevel(std::string name, int width, int height) : _name{name}, _width{width}, _height{height} {}
+    DungeonLevel(const std::string &name, const int width, const int height) : _name{name}, _width{width}, _height{height} {}
     virtual ~DungeonLevel() = default; // WARNING: virtual here might be wrong
     void addRoom(const std::shared_ptr<Room> room);
     std::shared_ptr<Room> retrieveRoom(const int id) const;

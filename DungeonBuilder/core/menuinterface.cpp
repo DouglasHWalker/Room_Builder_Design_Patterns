@@ -9,7 +9,7 @@ using core::dungeon::magical::MagicalDungeonLevelBuilder;
 
 MenuInterface::MenuInterface(std::ostream &display, std::istream &input) : _display(display), _input(input) {}
 
-void MenuInterface::displayWelcome(const std::string author, const std::string title) const{
+void MenuInterface::displayWelcome(const std::string &author, const std::string &title) const{
     _display << "Welcome to: " << title << "\n\t\tDeveloped by " << author << "\n\tCOMP 3023 Software Development with C++" << std::endl;
 }
 

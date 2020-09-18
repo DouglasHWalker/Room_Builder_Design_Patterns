@@ -15,18 +15,19 @@ public:
         if(theInstance == nullptr){
             theInstance = new Game;
         }
-        return theInstance; // TODO: should this be a smart pointer
+        return theInstance;
     }
     Game(Game &other) = delete;
     Game operator=(Game &other) = delete;
     ~Game(){
-        delete _dungeonLevel; // TODO: double check this is a correctly deleted bare pointer
+        delete _dungeonLevel;
         delete _dungeonBuilder;
+        delete theInstance;
     }
 
     void setDungeonType(core::dungeon::DungeonLevelBuilder* dungeonLevelBuilder);
     void createExampleLevel();
-    void createRandomLevel(std::string name, int width, int height);
+    void createRandomLevel(const std::string &name, const int width, const int height);
     std::vector<std::string> displayLevel() const;
 
     double randomDouble(); // non-const, changes private memeber _randomGenerator
@@ -60,7 +61,7 @@ private:
     // helper methods for random level generation
     std::vector<std::tuple<std::shared_ptr<core::dungeon::Room>, core::dungeon::Room::Direction>> buildNeighbours(const int i, std::set<int> &builtRooms) const;
     core::dungeon::DungeonLevelBuilder::MoveConstraints getRandomMovementConstraints(); // non-const changes _randomGenerator
-    void buildRandomNeighbouringDoorways(std::shared_ptr<core::dungeon::Room> room, std::vector<std::tuple<std::shared_ptr<core::dungeon::Room>, core::dungeon::Room::Direction>> neighbours);  // non-const changes _randomGenerator
+    void buildRandomNeighbouringDoorways(std::shared_ptr<core::dungeon::Room> room, std::vector<std::tuple<std::shared_ptr<core::dungeon::Room> , core::dungeon::Room::Direction>> &neighbours);  // non-const changes _randomGenerator
 };
 
 } // namespace core

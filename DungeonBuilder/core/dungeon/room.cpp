@@ -8,8 +8,8 @@ Room::Room(int id) : _id{id} {
     _edges = std::array<std::shared_ptr<RoomEdge>, 4>(); // TODO: make the edges and edge array smart pointers?
 }
 
-std::array<std::string, 5> Room::display(){
-    std::array<std::string, 5> output = std::array<std::string, 5>(); // TODO: should this be using pointers
+std::array<std::string, 5> Room::display() const{
+    std::array<std::string, 5> output = std::array<std::string, 5>();
     // Create North Row string
     std::string northRow{"+----"};
     northRow += edgeAt(Direction::North)->displayCharacter();
@@ -49,7 +49,7 @@ std::array<std::string, 5> Room::display(){
     return output;
 }
 
-int Room::id(){
+int Room::id() const{
     return _id;
 }
 
@@ -69,12 +69,12 @@ void Room::setCreature(std::unique_ptr<AbstractCreature> newCreature){
     _creature = std::move(newCreature);
 }
 
-void Room::setEdge(const std::shared_ptr<RoomEdge> edge, const Direction direction){
+void Room::setEdge(const std::shared_ptr<RoomEdge> edge, const Direction &direction){
     // return the edge at the given direction enum value (North = 0, South = 1, East = 2, West = 3)
     _edges[static_cast<std::underlying_type<Direction>::type>(direction)] = edge;
 }
 
-std::shared_ptr<RoomEdge> Room::edgeAt(const Direction direction) const {
+std::shared_ptr<RoomEdge> Room::edgeAt(const Direction &direction) const {
     // return the edge at the given direction enum value (North = 0, South = 1, East = 2, West = 3)
     return _edges[static_cast<std::underlying_type<Direction>::type>(direction)];
 }

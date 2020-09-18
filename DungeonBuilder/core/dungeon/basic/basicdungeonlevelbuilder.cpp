@@ -15,7 +15,7 @@ using core::dungeon::RoomEdge;
 using core::items::Item;
 using core::creatures::AbstractCreature;
 
-void BasicDungeonLevelBuilder::buildDungeonLevel(const std::string name, const int width, const int height){
+void BasicDungeonLevelBuilder::buildDungeonLevel(const std::string &name, const int width, const int height){
     _dungeonLevel = new BasicDungeonLevel(name, width, height); // NOTE: Must use bare pointer
 }
 
@@ -38,7 +38,7 @@ std::shared_ptr<Room> BasicDungeonLevelBuilder::buildRoom(const int id) const{
 
     return room;
 }
-void BasicDungeonLevelBuilder::buildDoorway(const std::shared_ptr<Room> origin, const std::shared_ptr<Room> destination, const Room::Direction direction, const MoveConstraints constraints) const{
+void BasicDungeonLevelBuilder::buildDoorway(const std::shared_ptr<Room> origin, const std::shared_ptr<Room> destination, const Room::Direction &direction, const MoveConstraints &constraints) const{
     // if doorway does not already exist here
     if(not origin->edgeAt(direction)->isPassage()){// the doorways to build
         std::shared_ptr<Doorway> originDoorway; // origin
@@ -106,7 +106,7 @@ void BasicDungeonLevelBuilder::buildDoorway(const std::shared_ptr<Room> origin, 
     } // end if doorway already exists
 }
 
-void BasicDungeonLevelBuilder::buildEntrance(const std::shared_ptr<Room>  room, const Room::Direction direction) const{
+void BasicDungeonLevelBuilder::buildEntrance(const std::shared_ptr<Room>  room, const Room::Direction &direction) const{
     // build entry
     std::shared_ptr<Doorway> entry = std::make_shared<OneWayDoor>(direction);
     entry->setEntry(true);
@@ -114,7 +114,7 @@ void BasicDungeonLevelBuilder::buildEntrance(const std::shared_ptr<Room>  room, 
     room->setEdge(entry, direction);
 }
 
-void BasicDungeonLevelBuilder::buildExit(const std::shared_ptr<Room> room, const Room::Direction direction) const{
+void BasicDungeonLevelBuilder::buildExit(const std::shared_ptr<Room> room, const Room::Direction &direction) const{
     // build exit
     std::shared_ptr<Doorway> exit =  std::make_shared<OneWayDoor>(direction);
     exit->setExit(true);

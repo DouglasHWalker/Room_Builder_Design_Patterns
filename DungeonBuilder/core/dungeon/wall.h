@@ -7,12 +7,11 @@ namespace core::dungeon {
 class Wall : public RoomEdge
 {
 public:
-    Wall(Room::Direction direction): _direction{direction}{} // WARNING: does direction need to be passed in a better way
     virtual std::string description() const = 0;
     char displayCharacter() const;
     bool isPassage() const;
 
-private:
+protected:
     Room::Direction _direction;
 };
 

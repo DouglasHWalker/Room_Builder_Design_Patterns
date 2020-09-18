@@ -14,7 +14,7 @@ class MenuInterface
 {
 public:
     MenuInterface(std::ostream &display, std::istream &input);
-    void displayWelcome(const std::string author, const std::string title) const;
+    void displayWelcome(const std::string &author, const std::string &title) const;
     void run() const;
 private:
     std::ostream& _display;

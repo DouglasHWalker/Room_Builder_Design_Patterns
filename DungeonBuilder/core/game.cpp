@@ -60,7 +60,7 @@ void Game::createExampleLevel(){
     _dungeonLevel = _dungeonBuilder->getDungeonLevel();
 }
 
-void Game::createRandomLevel(const std::string name, const int width, const int height){
+void Game::createRandomLevel(const std::string &name, const int width, const int height){
 
     _dungeonBuilder->buildDungeonLevel(name, width, height);
     int entranceRoom = (rand() % width + 1); // a room somewhere in the first row
@@ -261,7 +261,7 @@ DungeonLevelBuilder::MoveConstraints Game::getRandomMovementConstraints(){
     }
 }
 
-void Game::buildRandomNeighbouringDoorways(std::shared_ptr<Room> room, std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> neighbours){
+void Game::buildRandomNeighbouringDoorways(std::shared_ptr<Room> room, std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> &neighbours){
     int randDir = 0;
     // depending on the number of neighbours
     switch (neighbours.size()) {

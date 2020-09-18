@@ -8,10 +8,10 @@ namespace core::creatures {
 class Monster : public AbstractCreature
 {
 public:
-    Monster(std::string name) : AbstractCreature(name) {
+    Monster(const std::string &name) : AbstractCreature(name) {
         _displayCharacter = _DISPLAY_CHAR;
     };
-    std::unique_ptr<AbstractCreature> clone() const{
+    std::unique_ptr<AbstractCreature> clone() const override{
         return std::make_unique<Monster>(*this);
     }; // TODO: override superclass. Return deep copy of self
 

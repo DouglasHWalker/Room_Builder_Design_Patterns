@@ -9,6 +9,7 @@ class AbstractCreature
 {
 public:
     AbstractCreature(std::string name) : _name{name}{}
+    virtual ~AbstractCreature() = default;
     virtual std::unique_ptr<AbstractCreature> clone() const = 0;
     std::string name() const;
     char displayCharacter() const;

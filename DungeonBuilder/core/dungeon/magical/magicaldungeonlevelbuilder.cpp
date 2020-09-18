@@ -15,7 +15,7 @@ using core::dungeon::RoomEdge;
 using core::items::Item;
 using core::creatures::AbstractCreature;
 
-void MagicalDungeonLevelBuilder::buildDungeonLevel(const std::string name, const int width, const int height){
+void MagicalDungeonLevelBuilder::buildDungeonLevel(const std::string &name, const int width, const int height){
     _dungeonLevel = new MagicalDungeonLevel(name, width, height); // NOTE: Must use bare pointer
 }
 
@@ -39,7 +39,7 @@ std::shared_ptr<Room> MagicalDungeonLevelBuilder::buildRoom(int id)  const{
     return room;
 }
 
-void MagicalDungeonLevelBuilder::buildDoorway(std::shared_ptr<Room> origin, std::shared_ptr<Room> destination, Room::Direction direction, MoveConstraints constraints) const{
+void MagicalDungeonLevelBuilder::buildDoorway(const std::shared_ptr<Room> origin, const std::shared_ptr<Room> destination, const Room::Direction &direction, const MoveConstraints &constraints) const{
     // if doorway does not already exist here
     if(not origin->edgeAt(direction)->isPassage()){// the doorways to build
         std::shared_ptr<Doorway> originDoorway; // origin
@@ -107,7 +107,7 @@ void MagicalDungeonLevelBuilder::buildDoorway(std::shared_ptr<Room> origin, std:
     }
 }
 
-void MagicalDungeonLevelBuilder::buildEntrance(std::shared_ptr<Room> room, Room::Direction direction) const{
+void MagicalDungeonLevelBuilder::buildEntrance(std::shared_ptr<Room> room, const Room::Direction &direction) const{
     // build entry
     std::shared_ptr<Doorway> entry = std::make_shared<OneWayDoor>(direction);
     entry->setEntry(true);
@@ -115,7 +115,7 @@ void MagicalDungeonLevelBuilder::buildEntrance(std::shared_ptr<Room> room, Room:
     room->setEdge(entry, direction);
 }
 
-void MagicalDungeonLevelBuilder::buildExit(std::shared_ptr<Room> room, Room::Direction direction) const{
+void MagicalDungeonLevelBuilder::buildExit(std::shared_ptr<Room> room, const Room::Direction &direction) const{
     // build exit
     std::shared_ptr<Doorway> exit =  std::make_shared<OneWayDoor>(direction);
     exit->setExit(true);

@@ -26,14 +26,14 @@ public:
         }
     }
     virtual std::string description() const = 0;
-    std::array<std::string, 5> display();
-    int id();
+    std::array<std::string, 5> display() const;
+    int id() const;
     std::unique_ptr<core::items::Item> item(); // non-const pointer transfer owenership
     void setItem(const std::unique_ptr<core::items::Item> newItem); // non-const pointer transfer owenership
     std::unique_ptr<core::creatures::AbstractCreature> creature();  // non-const pointer transfer owenership
     void setCreature(const std::unique_ptr<core::creatures::AbstractCreature> newCreature); // non-const pointer transfer owenership
-    void setEdge(const std::shared_ptr<RoomEdge> edge, const Room::Direction direction);
-    std::shared_ptr<RoomEdge> edgeAt(const Room::Direction direction) const;
+    void setEdge(const std::shared_ptr<RoomEdge> edge, const Room::Direction &direction);
+    std::shared_ptr<RoomEdge> edgeAt(const Room::Direction &direction) const;
 protected:
     int _id;
     std::unique_ptr<core::items::Item> _item;
