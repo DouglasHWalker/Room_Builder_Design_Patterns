@@ -9,11 +9,11 @@ using core::dungeon::magical::MagicalDungeonLevelBuilder;
 
 MenuInterface::MenuInterface(std::ostream &display, std::istream &input) : _display(display), _input(input) {}
 
-void MenuInterface::displayWelcome(std::string author, std::string title){
+void MenuInterface::displayWelcome(const std::string author, const std::string title) const{
     _display << "Welcome to: " << title << "\n\t\tDeveloped by " << author << "\n\tCOMP 3023 Software Development with C++" << std::endl;
 }
 
-void MenuInterface::run(){
+void MenuInterface::run() const{
     bool exit = false;
     do {
         // display current menu
@@ -42,7 +42,7 @@ void MenuInterface::run(){
     } while (not exit);
 }
 
-void MenuInterface::displayMainMenu(){
+void MenuInterface::displayMainMenu() const{
     _display << "\nWhat would you like to do?"
                 "\n\t(g)enerate the example level"
                 "\n\t(r)andom dungeon level"
@@ -50,7 +50,7 @@ void MenuInterface::displayMainMenu(){
              << std::endl;
 }
 
-bool MenuInterface::yesNoConfirmation(){
+bool MenuInterface::yesNoConfirmation() const{
     char input;
     _input >> input;
     if(tolower(input) == 'y'){
@@ -59,14 +59,14 @@ bool MenuInterface::yesNoConfirmation(){
     return false;
 }
 
-void MenuInterface::generateExampleLevel(){
+void MenuInterface::generateExampleLevel() const{
     _display << "\nCreating Example Dungeon Level..." << std::endl;
     Game::instance()->setDungeonType(new BasicDungeonLevelBuilder());
     Game::instance()->createExampleLevel();
     _display << "\nDungeon level created!" << std::endl;
 }
 
-void MenuInterface::generateRandomLevel(){
+void MenuInterface::generateRandomLevel() const{
     // get random dungeon settings from user
     _input.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::string levelName{inputLevelName()};
@@ -84,7 +84,7 @@ void MenuInterface::generateRandomLevel(){
     _display << "\nDungeon level created!" << std::endl;
 }
 
-void MenuInterface::displayViewMenu(){
+void MenuInterface::displayViewMenu() const{
     bool exit = false;
     do {
         // display menu
@@ -116,7 +116,7 @@ void MenuInterface::displayViewMenu(){
 }
 
 
-void MenuInterface::displayExplorationMenu(){
+void MenuInterface::displayExplorationMenu() const{
     bool exit = false;
     do {
         _display << "\nWhat would you like to do?"
@@ -139,11 +139,11 @@ void MenuInterface::displayExplorationMenu(){
     } while (not exit);
 }
 
-void MenuInterface::describeLevel(){
+void MenuInterface::describeLevel() const{
     _display << Game::instance()->describeLevel() << std::endl;
 }
 
-void MenuInterface::displayLevel(){
+void MenuInterface::displayLevel() const{
     // display level
     std::vector<std::string> vect = Game::instance()->displayLevel();
     for (int i = 0; i < int(vect.size()); i++){
@@ -156,7 +156,7 @@ void MenuInterface::displayLevel(){
     std::getline(_input, input);
 }
 
-void MenuInterface::describeRoom(){
+void MenuInterface::describeRoom() const{
     int maxRooms = Game::instance()->getNumberOfRooms();
     int roomNumber{0};
     // input room number
@@ -178,7 +178,7 @@ void MenuInterface::describeRoom(){
     std::getline(_input, input);
 }
 
-std::string MenuInterface::inputLevelName(){
+std::string MenuInterface::inputLevelName() const{
     // check is valid.
     std::string levelName;
     bool validInput = false;
@@ -196,7 +196,7 @@ std::string MenuInterface::inputLevelName(){
     return levelName;
 }
 
-char MenuInterface::inputLevelType(){
+char MenuInterface::inputLevelType() const{
     // check is valid.
     char levelType;
     bool validInput = false;
@@ -219,7 +219,7 @@ char MenuInterface::inputLevelType(){
     return levelType;
 }
 
-int MenuInterface::inputNumber(std::string &levelName){
+int MenuInterface::inputNumber(std::string &levelName) const{
     int number;
     bool validInput = false;
     do{

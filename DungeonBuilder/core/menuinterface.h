@@ -14,25 +14,25 @@ class MenuInterface
 {
 public:
     MenuInterface(std::ostream &display, std::istream &input);
-    void displayWelcome(std::string author, std::string title);
-    void run();
+    void displayWelcome(const std::string author, const std::string title) const;
+    void run() const;
 private:
     std::ostream& _display;
     std::istream& _input;
 
-    void generateExampleLevel();
-    void generateRandomLevel();
-    bool yesNoConfirmation();
-    void displayViewMenu();
-    void displayMainMenu();
-    void displayLevel();
-    void describeLevel();
-    void displayExplorationMenu();
-    void describeRoom();
+    void generateExampleLevel() const;
+    void generateRandomLevel() const;
+    bool yesNoConfirmation() const;
+    void displayViewMenu() const;
+    void displayMainMenu() const;
+    void displayLevel() const;
+    void describeLevel() const;
+    void displayExplorationMenu() const;
+    void describeRoom() const;
     // additonal helper functions
-    int inputNumber(std::string &levelName);
-    char inputLevelType();
-    std::string inputLevelName();
+    int inputNumber(std::string &levelName) const;
+    char inputLevelType() const;
+    std::string inputLevelName() const;
 };
 
 } // namespace core

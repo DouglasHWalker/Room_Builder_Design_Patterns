@@ -27,14 +27,14 @@ public:
     void setDungeonType(core::dungeon::DungeonLevelBuilder* dungeonLevelBuilder);
     void createExampleLevel();
     void createRandomLevel(std::string name, int width, int height);
-    std::vector<std::string> displayLevel();
+    std::vector<std::string> displayLevel() const;
 
-    double randomDouble();
+    double randomDouble(); // non-const, changes private memeber _randomGenerator
 
     // TODO: remove these somehow, not in specification
-    std::string describeLevel();
-    int getNumberOfRooms();
-    std::string describeRoom(int roomNumber);
+    std::string describeLevel() const;
+    int getNumberOfRooms() const;
+    std::string describeRoom(const int roomNumber) const;
 
 
 private:
@@ -58,10 +58,9 @@ private:
     const double LOCKED_CHANCE = 0.30;
     const double IMPASSABLE_CHANCE = 0.30;
     // helper methods for random level generation
-    std::vector<std::tuple<std::shared_ptr<core::dungeon::Room>, core::dungeon::Room::Direction>> buildNeighbours(int i, std::set<int> &builtRooms);
-    core::dungeon::DungeonLevelBuilder::MoveConstraints getRandomMovementConstraints();
-    void buildRandomNeighbouringDoorways(std::shared_ptr<core::dungeon::Room> room, std::vector<std::tuple<std::shared_ptr<core::dungeon::Room>, core::dungeon::Room::Direction>> neighbours);
-    // TODO: double check singleton implementation correct
+    std::vector<std::tuple<std::shared_ptr<core::dungeon::Room>, core::dungeon::Room::Direction>> buildNeighbours(const int i, std::set<int> &builtRooms) const;
+    core::dungeon::DungeonLevelBuilder::MoveConstraints getRandomMovementConstraints(); // non-const changes _randomGenerator
+    void buildRandomNeighbouringDoorways(std::shared_ptr<core::dungeon::Room> room, std::vector<std::tuple<std::shared_ptr<core::dungeon::Room>, core::dungeon::Room::Direction>> neighbours);  // non-const changes _randomGenerator
 };
 
 } // namespace core

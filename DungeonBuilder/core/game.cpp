@@ -60,7 +60,7 @@ void Game::createExampleLevel(){
     _dungeonLevel = _dungeonBuilder->getDungeonLevel();
 }
 
-void Game::createRandomLevel(std::string name, int width, int height){
+void Game::createRandomLevel(const std::string name, const int width, const int height){
 
     _dungeonBuilder->buildDungeonLevel(name, width, height);
     int entranceRoom = (rand() % width + 1); // a room somewhere in the first row
@@ -152,19 +152,19 @@ void Game::createRandomLevel(std::string name, int width, int height){
     _dungeonLevel = _dungeonBuilder->getDungeonLevel(); // FIXME: 1 column and 1 row maps are broken
 }
 
-std::vector<std::string> Game::displayLevel(){
+std::vector<std::string> Game::displayLevel() const{
     return _dungeonLevel->display();
 }
 
-std::string Game::describeLevel(){
+std::string Game::describeLevel() const{
     return _dungeonLevel->description();
 }
 
-int Game::getNumberOfRooms(){
+int Game::getNumberOfRooms() const{
     return _dungeonLevel->width() * _dungeonLevel->height();
 }
 
-std::string Game::describeRoom(int roomNumber){
+std::string Game::describeRoom(int roomNumber) const{
     return _dungeonLevel->retrieveRoom(roomNumber)->description();
 }
 
@@ -177,7 +177,7 @@ namespace  {
 
 
 }
-std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> Game::buildNeighbours(int roomId, std::set<int> &builtRooms){
+std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> Game::buildNeighbours(const int roomId, std::set<int> &builtRooms) const{
     std::vector<std::tuple<int, Room::Direction>> validNeighbours;
     std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> neighbours;
     int mapWidth = _dungeonBuilder->getDungeonLevel()->width();
@@ -226,7 +226,7 @@ std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> Game::buildNeigh
     return neighbours;
 }
 
-DungeonLevelBuilder::MoveConstraints Game::getRandomMovementConstraints() {
+DungeonLevelBuilder::MoveConstraints Game::getRandomMovementConstraints(){
     int constraints = 0;
     // generate origin constraints
     double random = randomDouble();
