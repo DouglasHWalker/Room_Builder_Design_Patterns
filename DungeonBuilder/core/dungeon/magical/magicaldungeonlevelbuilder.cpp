@@ -156,7 +156,7 @@ void MagicalDungeonLevelBuilder::buildItem(std::shared_ptr<Room> room) const{
     }
     room->setItem(std::move(item));
 }
-void MagicalDungeonLevelBuilder::buildCreature(std::shared_ptr<Room> room){
+void MagicalDungeonLevelBuilder::buildCreature(std::shared_ptr<Room> room) const{
     std::unique_ptr<AbstractCreature> creature;
     int randCreature = std::rand() % 6;
     switch (randCreature) {
