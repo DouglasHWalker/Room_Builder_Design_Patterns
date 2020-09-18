@@ -1,6 +1,8 @@
 #ifndef MAGICALDUNGEONLEVEL_H
 #define MAGICALDUNGEONLEVEL_H
+#include <sstream>
 #include "core/dungeon/dungeonlevel.h"
+namespace core::dungeon::magical {
 
 class MagicalDungeonLevel : public DungeonLevel
 {
@@ -13,4 +15,5 @@ public:
     std::string description() override;
 };
 
+} // namespace core::dungeon::magical
 #endif // MAGICALDUNGEONLEVEL_H

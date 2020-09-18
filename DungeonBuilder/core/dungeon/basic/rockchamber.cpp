@@ -1,4 +1,5 @@
 #include "rockchamber.h"
+namespace core::dungeon::basic {
 
 std::string RockChamber::description(){
     std::string description = "A dark, cold chamber. (Rock Chamber)"
@@ -10,3 +11,5 @@ std::string RockChamber::description(){
     description += _creature != nullptr ? "\nYou catch some movement through the darkness. A " + _creature->name() + " has heard your approach." : "";
     return description;
 }
+
+} // namespace core::dungeon::basic

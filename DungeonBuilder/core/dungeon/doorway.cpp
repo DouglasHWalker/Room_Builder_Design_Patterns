@@ -1,4 +1,5 @@
 #include "doorway.h"
+namespace core::dungeon {
 
 bool Doorway::isPassage(){
     if(isEntrance() || isExit()) return false;
@@ -25,3 +26,5 @@ void Doorway::setEntry(bool isEntry){
 void Doorway::setExit(bool isExit){
     _isExit = isExit;
 }
+
+} // namespace core::dungeon

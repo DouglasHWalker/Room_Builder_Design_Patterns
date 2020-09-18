@@ -1,8 +1,8 @@
 #ifndef DUNGEONLEVELBUILDER_H
 #define DUNGEONLEVELBUILDER_H
-#include <iostream>
-#include "room.h"
+
 #include "dungeonlevel.h"
+namespace core::dungeon {
 
 // abstract class
 class DungeonLevelBuilder
@@ -46,4 +46,5 @@ protected:
     DungeonLevel* _dungeonLevel;
 };
 
+} // namespace core::dungeon
 #endif // DUNGEONLEVELBUILDER_H

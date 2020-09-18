@@ -1,4 +1,5 @@
 #include "abstractcreature.h"
+namespace core::creatures {
 
 std::string AbstractCreature::name(){
     return _name;
@@ -19,3 +20,5 @@ bool AbstractCreature::isBoss(){
 std::ostream & operator << (std::ostream& os, const AbstractCreature& creature){
     return os << creature._name;
 }
+
+} // namespace core::creatures

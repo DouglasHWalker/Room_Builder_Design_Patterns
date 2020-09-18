@@ -1,4 +1,8 @@
 #include "room.h"
+namespace core::dungeon {
+
+using core::creatures::AbstractCreature;
+using core::items::Item;
 
 Room::Room(int id) : _id{id} {
     _edges = std::array<std::shared_ptr<RoomEdge>, 4>(); // TODO: make the edges and edge array smart pointers?
@@ -8,11 +12,11 @@ std::array<std::string, 5> Room::display(){
     std::array<std::string, 5> output = std::array<std::string, 5>(); // TODO: should this be using pointers
     // Create North Row string
     std::string northRow{"+----"};
-    northRow += edgeAt(Room::Direction::North)->displayCharacter();
+    northRow += edgeAt(Direction::North)->displayCharacter();
     northRow += "----+  ";
     // Create Middle Row
     std::string middleRow{};
-    middleRow += edgeAt(Room::Direction::West)->displayCharacter();
+    middleRow += edgeAt(Direction::West)->displayCharacter();
     middleRow += "   ";
     // if room does not have creature
     if(_creature == nullptr){
@@ -25,12 +29,12 @@ std::array<std::string, 5> Room::display(){
     }
     middleRow += _item != nullptr ? _item->displayCharacter() : ' ';
     middleRow +=  "   ";
-    middleRow += edgeAt(Room::Direction::East)->displayCharacter();
+    middleRow += edgeAt(Direction::East)->displayCharacter();
     // if middle row has passage, add to output
-    middleRow += edgeAt(Room::Direction::East)->isPassage() ? "--" : "  ";
+    middleRow += edgeAt(Direction::East)->isPassage() ? "--" : "  ";
     // Create South Row
     std::string southRow{"+----"};
-    southRow += edgeAt(Room::Direction::South)->displayCharacter();
+    southRow += edgeAt(Direction::South)->displayCharacter();
     southRow += "----+  ";
     // Create Blank Row
     std::string blankRow{"|         |  "};
@@ -65,12 +69,14 @@ void Room::setCreature(std::unique_ptr<AbstractCreature> newCreature){
     _creature = std::move(newCreature);
 }
 
-void Room::setEdge(std::shared_ptr<RoomEdge> edge, Room::Direction direction){
+void Room::setEdge(std::shared_ptr<RoomEdge> edge, Direction direction){
     // return the edge at the given direction enum value (North = 0, South = 1, East = 2, West = 3)
-    _edges[static_cast<std::underlying_type<Room::Direction>::type>(direction)] = edge;
+    _edges[static_cast<std::underlying_type<Direction>::type>(direction)] = edge;
 }
 
-std::shared_ptr<RoomEdge> Room::edgeAt(Room::Direction direction){
+std::shared_ptr<RoomEdge> Room::edgeAt(Direction direction){
     // return the edge at the given direction enum value (North = 0, South = 1, East = 2, West = 3)
-    return _edges[static_cast<std::underlying_type<Room::Direction>::type>(direction)];
+    return _edges[static_cast<std::underlying_type<Direction>::type>(direction)];
 }
+
+} // namespace core::dungeon

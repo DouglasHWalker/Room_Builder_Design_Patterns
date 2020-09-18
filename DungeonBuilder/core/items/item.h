@@ -1,7 +1,9 @@
 #ifndef ITEM_H
 #define ITEM_H
-#include <iostream>
+#include <ostream>
 #include <memory>
+
+namespace core::items {
 
 class Item
 {
@@ -18,4 +20,5 @@ protected:
     char _displayCharacter;
 };
 
+} // namespace core::items
 #endif // ITEM_H

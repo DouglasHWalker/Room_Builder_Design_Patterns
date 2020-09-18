@@ -1,8 +1,11 @@
 #include "lockeddoor.h"
+namespace core::dungeon::common {
 
 std::string LockedDoor::description(){
-    return "a Locked Door to another chamber."; // TODO: could implement this to cover the entire description
+    return "a Locked Door to another chamber.";
 }
 char LockedDoor::displayCharacter(){
     return '@';
 }
+
+} // namespace core::dungeon::common

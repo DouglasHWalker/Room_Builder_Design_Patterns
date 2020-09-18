@@ -1,12 +1,14 @@
 #ifndef MAGICALDUNGEONLEVELBUILDER_H
 #define MAGICALDUNGEONLEVELBUILDER_H
-#include <memory>
-#include "core/dungeon/room.h"
 #include "core/dungeon/dungeonlevelbuilder.h"
-#include "core/dungeon/magical/magicaldungeonlevel.h"
 #include "core/creatures/monster.h"
 #include "core/items/consumable.h"
 #include "core/items/weapon.h"
+namespace core::dungeon::magical {
+
+using core::creatures::Monster; // FIXME: using directive in header file
+using core::items::Consumable; // FIXME: using directive in header file
+using core::items::Weapon; // FIXME: using directive in header file
 
 class MagicalDungeonLevelBuilder : public DungeonLevelBuilder
 {
@@ -38,4 +40,5 @@ private:
     std::unique_ptr<Consumable> _resistancePotion_proto = std::make_unique<Consumable>("Resistance Potion");
 };
 
+} // namespace core::dungeon::magical
 #endif // MAGICALDUNGEONLEVELBUILDER_H

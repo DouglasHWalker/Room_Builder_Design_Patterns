@@ -1,10 +1,9 @@
 #ifndef DUNGEONLEVEL_H
 #define DUNGEONLEVEL_H
-#include <iostream>
 #include <map>
-#include <memory>
-#include <sstream>
+#include <vector>
 #include "room.h"
+namespace core::dungeon {
 
 class DungeonLevel
 {
@@ -32,4 +31,5 @@ private:
     std::map<int, std::shared_ptr<Room>> _rooms;
 };
 
+} // namespace core::dungeon
 #endif // DUNGEONLEVEL_H

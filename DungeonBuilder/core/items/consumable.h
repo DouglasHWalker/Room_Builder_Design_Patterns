@@ -1,6 +1,7 @@
 #ifndef CONSUMABLE_H
 #define CONSUMABLE_H
 #include "item.h"
+namespace core::items {
 
 class Consumable : public Item
 {
@@ -16,4 +17,5 @@ private:
     const char _DISPLAY_CHAR = 'C';
 };
 
+} // namespace core::items
 #endif // CONSUMABLE_H

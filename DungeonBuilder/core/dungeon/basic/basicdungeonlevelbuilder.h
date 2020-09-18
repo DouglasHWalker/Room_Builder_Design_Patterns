@@ -1,13 +1,15 @@
 #ifndef BASICDUNGEONLEVELBUILDER_H
 #define BASICDUNGEONLEVELBUILDER_H
-#include <memory>
-#include "core/dungeon/room.h"
 #include "core/dungeon/dungeonlevelbuilder.h"
-#include "core/dungeon/basic/basicdungeonlevel.h"
 #include "core/creatures/monster.h"
 #include "core/items/consumable.h"
 #include "core/items/weapon.h"
 
+namespace core::dungeon::basic {
+
+using core::creatures::Monster;
+using core::items::Weapon;
+using core::items::Consumable;
 
 class BasicDungeonLevelBuilder : public DungeonLevelBuilder
 {
@@ -28,7 +30,6 @@ private:
     std::unique_ptr<Monster> _goblin_proto = std::make_unique<Monster>("Goblin");
     std::unique_ptr<Monster> _werewolf_proto = std::make_unique<Monster>("Werewolf");
     std::unique_ptr<Monster> _evilWizard_proto = std::make_unique<Monster>("Evil Wizard");
-    // FIXME: make boss prototype? may or may not, 15.09: probably not, should be easier to randomise that way
     // Weapons
     std::unique_ptr<Weapon> _boomerang_proto = std::make_unique<Weapon>("Boomerang");
     std::unique_ptr<Weapon> _shortSword_proto = std::make_unique<Weapon>("Short Sword");
@@ -39,4 +40,5 @@ private:
     std::unique_ptr<Consumable> _smokeBomb_proto = std::make_unique<Consumable>("Smoke Bomb");
 };
 
+} // namespace core::dungeon::basic
 #endif // BASICDUNGEONLEVELBUILDER_H

@@ -1,11 +1,12 @@
 #ifndef GAME_H
 #define GAME_H
-
-#include <iostream>
 #include <set>
 #include <ctime>
 #include <random>
 #include "dungeon/dungeonlevelbuilder.h"
+#include "dungeon/dungeonlevel.h"
+#include "dungeon/room.h"
+namespace core {
 
 class Game
 {
@@ -23,7 +24,7 @@ public:
         delete _dungeonBuilder;
     }
 
-    void setDungeonType(DungeonLevelBuilder* dungeonLevelBuilder);
+    void setDungeonType(core::dungeon::DungeonLevelBuilder* dungeonLevelBuilder);
     void createExampleLevel();
     void createRandomLevel(std::string name, int width, int height);
     std::vector<std::string> displayLevel();
@@ -39,12 +40,16 @@ public:
 private:
     Game() {};
     static Game* theInstance;
-    DungeonLevelBuilder* _dungeonBuilder;
-    DungeonLevel* _dungeonLevel;
+    core::dungeon::DungeonLevelBuilder* _dungeonBuilder;
+    core::dungeon::DungeonLevel* _dungeonLevel;
 
     std::mt19937 _randomGenerator{uint32_t(time(nullptr))};
     std::uniform_real_distribution<double> _realDistribution{0.0, 1.0};
 
+    // Example constants
+    const std::string _EXAMPLE_TITLE= "Example Dungeon Level";
+    const int _EXAMPLE_WIDTH= 3;
+    const int _EXAMPLE_HEIGHT = 3;
     // Chance constants
     const double ITEM_CHANCE = 0.35;
     const double WEAPON_CHANCE = 0.35;
@@ -53,10 +58,11 @@ private:
     const double LOCKED_CHANCE = 0.30;
     const double IMPASSABLE_CHANCE = 0.30;
     // helper methods for random level generation
-    std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> buildNeighbours(int i, std::set<int> &builtRooms);
-    DungeonLevelBuilder::MoveConstraints getRandomMovementConstraints();
-    void buildRandomNeighbouringDoorways(std::shared_ptr<Room> room, std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> neighbours);
+    std::vector<std::tuple<std::shared_ptr<core::dungeon::Room>, core::dungeon::Room::Direction>> buildNeighbours(int i, std::set<int> &builtRooms);
+    core::dungeon::DungeonLevelBuilder::MoveConstraints getRandomMovementConstraints();
+    void buildRandomNeighbouringDoorways(std::shared_ptr<core::dungeon::Room> room, std::vector<std::tuple<std::shared_ptr<core::dungeon::Room>, core::dungeon::Room::Direction>> neighbours);
     // TODO: double check singleton implementation correct
 };
 
+} // namespace core
 #endif // GAME_H

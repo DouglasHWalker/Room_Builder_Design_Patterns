@@ -1,10 +1,11 @@
-#include <iostream>
-#include <cctype>
-#include <vector>
 #include "menuinterface.h"
 #include "game.h"
-#include "dungeon/basic/basicdungeonlevelbuilder.h"
-#include "dungeon/magical/magicaldungeonlevelbuilder.h"
+#include "core/dungeon/basic/basicdungeonlevelbuilder.h"
+#include "core/dungeon/magical/magicaldungeonlevelbuilder.h"
+namespace core {
+
+using core::dungeon::basic::BasicDungeonLevelBuilder;
+using core::dungeon::magical::MagicalDungeonLevelBuilder;
 
 MenuInterface::MenuInterface(std::ostream &display, std::istream &input) : _display(display), _input(input) {}
 
@@ -258,3 +259,5 @@ void MenuInterface::describeRoom(){
     _display << "\nPress Enter to continue...\t" << std::endl;
     // TODO: prompt for 'enter'
 }
+
+} // namespace core

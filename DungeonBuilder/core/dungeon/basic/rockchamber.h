@@ -1,6 +1,7 @@
 #ifndef ROCKCHAMBER_H
 #define ROCKCHAMBER_H
 #include "core/dungeon/room.h"
+namespace core::dungeon::basic {
 
 class RockChamber : public Room
 {
@@ -9,4 +10,5 @@ public:
     std::string description() override;
 };
 
+} // namespace core::dungeon::basic
 #endif // ROCKCHAMBER_H

@@ -1,6 +1,6 @@
 #include <iostream>
 #include "core/menuinterface.h"
-using namespace std;
+using core::MenuInterface;
 
 int main()
 {

@@ -1,7 +1,9 @@
 #ifndef ABSTRACTCREATURE_H
 #define ABSTRACTCREATURE_H
-#include <iostream>
+
+#include <ostream>
 #include <memory>
+namespace core::creatures {
 
 class AbstractCreature
 {
@@ -22,4 +24,5 @@ protected:
 
 };
 
+} // namespace core::cretures
 #endif // ABSTRACTCREATURE_H

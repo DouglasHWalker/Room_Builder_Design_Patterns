@@ -4,9 +4,16 @@
 #include "core/dungeon/common/onewaydoor.h"
 #include "core/dungeon/common/lockeddoor.h"
 #include "core/dungeon/common/blockeddoorway.h"
+#include "core/dungeon/magical/magicaldungeonlevel.h"
 #include "core/dungeon/magical/alchemistslaboratory.h"
 #include "core/dungeon/magical/enchantedlibrary.h"
 #include "core/dungeon/magical/magicwall.h"
+namespace core::dungeon::magical {
+
+using namespace core::dungeon::common;
+using core::dungeon::RoomEdge;
+using core::items::Item;
+using core::creatures::AbstractCreature;
 
 void MagicalDungeonLevelBuilder::buildDungeonLevel(std::string name, int width, int height){
     _dungeonLevel = new MagicalDungeonLevel(name, width, height); // NOTE: Must use bare pointer
@@ -165,3 +172,5 @@ void MagicalDungeonLevelBuilder::buildCreature(std::shared_ptr<Room> room){
     }
     room->setCreature(std::move(creature));
 }
+
+} // namespace core::dungeon::magical

@@ -1,6 +1,7 @@
 #ifndef MENUINTERFACE_H
 #define MENUINTERFACE_H
 #include <iostream>
+namespace core {
 
 /**
  * @brief The MenuInterface class
@@ -34,4 +35,5 @@ private:
     bool inputLevelName(std::string &levelName);
 };
 
+} // namespace core
 #endif // MENUINTERFACE_H

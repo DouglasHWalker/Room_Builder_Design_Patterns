@@ -1,4 +1,5 @@
 #include "enchantedlibrary.h"
+namespace core::dungeon::magical {
 
 std::string EnchantedLibrary::description(){
     std::string description = "A vast library brimming with thousands of heavy tomes. "
@@ -11,3 +12,5 @@ std::string EnchantedLibrary::description(){
     description += _creature != nullptr ? "\nA " + _creature->name() + " is snoring loudly between the volumes." : "";
     return description;
 }
+
+} // namespace core::dungeon::magical

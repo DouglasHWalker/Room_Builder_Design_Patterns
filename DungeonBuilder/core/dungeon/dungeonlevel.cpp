@@ -1,5 +1,5 @@
-#include <iostream>
 #include "dungeonlevel.h"
+namespace core::dungeon {
 
 void DungeonLevel::addRoom(std::shared_ptr<Room> room){
     _rooms.insert(std::make_pair(room->id(), room));
@@ -50,3 +50,4 @@ std::vector<std::string> DungeonLevel::display(){
     return dungeonLevelString;
 }
 
+} // namespace core::dungeon

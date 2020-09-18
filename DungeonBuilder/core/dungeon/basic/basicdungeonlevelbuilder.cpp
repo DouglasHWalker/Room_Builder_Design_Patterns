@@ -4,9 +4,16 @@
 #include "core/dungeon/common/onewaydoor.h"
 #include "core/dungeon/common/lockeddoor.h"
 #include "core/dungeon/common/blockeddoorway.h"
+#include "core/dungeon/basic/basicdungeonlevel.h"
 #include "core/dungeon/basic/quartzchamber.h"
 #include "core/dungeon/basic/rockchamber.h"
 #include "core/dungeon/basic/rockwall.h"
+namespace core::dungeon::basic {
+
+using namespace core::dungeon::common;
+using core::dungeon::RoomEdge;
+using core::items::Item;
+using core::creatures::AbstractCreature;
 
 void BasicDungeonLevelBuilder::buildDungeonLevel(std::string name, int width, int height){
     _dungeonLevel = new BasicDungeonLevel(name, width, height); // NOTE: Must use bare pointer
@@ -164,3 +171,4 @@ void BasicDungeonLevelBuilder::buildCreature(std::shared_ptr<Room> room){
     }
     room->setCreature(std::move(creature));
 }
+} // namespace core::dungeon::basic

@@ -1,6 +1,7 @@
 #ifndef DOORWAY_H
 #define DOORWAY_H
-#include "room.h"
+#include "roomedge.h"
+namespace core::dungeon {
 
 class Doorway : public RoomEdge
 {
@@ -9,9 +10,9 @@ public:
         delete _opposite; // TODO: double check this is correct way to delete bare pointer, virtual?
     }
 
-    virtual std::string description() override = 0; // TODO: should this be virtual again, override?
-    virtual char displayCharacter() override = 0; // TODO: should this be virtual again, override?
-    bool isPassage() override; // TODO: override?
+    virtual std::string description() override = 0;
+    virtual char displayCharacter() override = 0;
+    bool isPassage() override;
 
     void connect(Doorway* opposite);
     bool isEntrance();
@@ -26,4 +27,5 @@ protected:
     Doorway* _opposite;
 };
 
+} // namespace core::dungeon
 #endif // DOORWAY_H

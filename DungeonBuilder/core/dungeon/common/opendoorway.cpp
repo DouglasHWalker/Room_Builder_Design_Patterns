@@ -1,4 +1,5 @@
 #include "opendoorway.h"
+namespace core::dungeon::common {
 
 std::string OpenDoorway::description(){
     return "an Open Doorway to another chamber";
@@ -17,3 +18,5 @@ char OpenDoorway::displayCharacter(){
         break;
     }
 }
+
+} // namespace core::dungeon::common

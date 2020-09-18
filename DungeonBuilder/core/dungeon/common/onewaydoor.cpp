@@ -1,4 +1,5 @@
 #include "onewaydoor.h"
+namespace core::dungeon::common {
 
 std::string OneWayDoor::description(){
     // if Entry
@@ -9,7 +10,7 @@ std::string OneWayDoor::description(){
     if(_isExit){
         return "the exit to the dungeon (One-way door).";
     }
-    return "a One-way Door from another chamber."; // TODO: could implement this to cover the entire description
+    return "a One-way Door from another chamber.";
 }
 char OneWayDoor::displayCharacter(){
     // if Entry
@@ -34,3 +35,5 @@ char OneWayDoor::displayCharacter(){
         break;
     }
 }
+
+} // namespace core::dungeon::common

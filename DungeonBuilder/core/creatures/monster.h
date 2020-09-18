@@ -1,6 +1,9 @@
 #ifndef MONSTER_H
 #define MONSTER_H
+
+
 #include "abstractcreature.h"
+namespace core::creatures {
 
 class Monster : public AbstractCreature
 {
@@ -16,4 +19,5 @@ private:
     const char _DISPLAY_CHAR = 'M';
 };
 
+} // namespace core::creatures
 #endif // MONSTER_H

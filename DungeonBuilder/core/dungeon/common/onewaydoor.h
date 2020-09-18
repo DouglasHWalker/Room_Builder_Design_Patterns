@@ -1,6 +1,8 @@
 #ifndef ONEWAYDOOR_H
 #define ONEWAYDOOR_H
 #include "core/dungeon/doorway.h"
+#include "core/dungeon/room.h"
+namespace core::dungeon::common {
 
 class OneWayDoor: public Doorway
 {
@@ -12,4 +14,5 @@ private:
     Room::Direction _direction;
 };
 
+} // namespace core::dungeon::common
 #endif // ONEWAYDOOR_H

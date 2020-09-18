@@ -1,4 +1,5 @@
 #include "wall.h"
+namespace core::dungeon {
 
 char Wall::displayCharacter(){
     switch (_direction) {
@@ -10,6 +11,9 @@ char Wall::displayCharacter(){
         return '|';
     }
 }
+
 bool Wall::isPassage(){
     return false;
 }
+
+} // namespace core::dungeon

@@ -1,4 +1,5 @@
 #include "quartzchamber.h"
+namespace core::dungeon::basic {
 
 std::string QuartzChamber::description(){
     std::string description = "A chamber that gliters like a thousand stars in the torchlight. (Quartz Chamber)"
@@ -10,3 +11,5 @@ std::string QuartzChamber::description(){
     description += _item != nullptr ? "\nYou can see a " + _item->name() + " resting on a large stalatite in the center of the chamber." : "";
     return description;
 }
+
+} // namespace core::dungeon::basic

@@ -1,4 +1,5 @@
 #include "alchemistslaboratory.h"
+namespace core::dungeon::magical {
 
 std::string AlchemistsLaboratory::description(){
     std::string description = "A musky laboratory filled with a myriad of glass chambers and beakers. "
@@ -11,3 +12,5 @@ std::string AlchemistsLaboratory::description(){
     description += _item != nullptr ? "\nYou can see a " + _item->name() + " on a nearby mixing table." : "";
     return description;
 }
+
+} // namespace core::dungeon::magical

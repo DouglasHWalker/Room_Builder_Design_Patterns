@@ -1,6 +1,8 @@
 #ifndef BASICDUNGEONLEVEL_H
 #define BASICDUNGEONLEVEL_H
+#include <sstream>
 #include "core/dungeon/dungeonlevel.h"
+namespace core::dungeon::basic {
 
 class BasicDungeonLevel : public DungeonLevel
 {
@@ -13,4 +15,5 @@ public:
     std::string description() override;
 };
 
+} // namespace core::dungeon::basic
 #endif // BASICDUNGEONLEVEL_H

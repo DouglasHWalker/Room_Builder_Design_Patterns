@@ -1,17 +1,16 @@
-#include <random>
-#include <set>
-#include <ctime>
 #include "game.h"
+namespace core {
+
+using core::dungeon::DungeonLevel;
+using core::dungeon::DungeonLevelBuilder;
+using core::dungeon::Room;
+
 Game* Game::theInstance = nullptr;
 void Game::setDungeonType(DungeonLevelBuilder* dungeonLevelBuilder){
     _dungeonBuilder = dungeonLevelBuilder;
 }
 void Game::createExampleLevel(){
-    std::string title = "Example Dungeon Level";
-    int width = 3;
-    int height = 3;
-
-    _dungeonBuilder->buildDungeonLevel(title, width, height);
+    _dungeonBuilder->buildDungeonLevel(_EXAMPLE_TITLE, _EXAMPLE_WIDTH, _EXAMPLE_HEIGHT);
     // build all the dungeon rooms
     std::shared_ptr<Room> room1 = _dungeonBuilder->buildRoom(1);
     std::shared_ptr<Room> room2 = _dungeonBuilder->buildRoom(2);
@@ -23,37 +22,25 @@ void Game::createExampleLevel(){
     std::shared_ptr<Room> room8 = _dungeonBuilder->buildRoom(8);
     std::shared_ptr<Room> room9 = _dungeonBuilder->buildRoom(9);
 
-    // add the apropriate doorways to the rooms
+    // add doorways to the rooms
     // room1
     _dungeonBuilder->buildDoorway(room1, room2, Room::Direction::East, DungeonLevelBuilder::MoveConstraints::None); // TODO: change move contraints to use bitwise notation
     _dungeonBuilder->buildDoorway(room1, room4, Room::Direction::South, DungeonLevelBuilder::MoveConstraints::DestinationImpassable);
     // room2
-    //    _dungeonBuilder->buildDoorway(room2, room1, Room::Direction::West, DungeonLevelBuilder::MoveConstraints::None);
     _dungeonBuilder->buildDoorway(room2, room3, Room::Direction::East, DungeonLevelBuilder::MoveConstraints::OriginImpassable | DungeonLevelBuilder::MoveConstraints::DestinationImpassable);
     _dungeonBuilder->buildDoorway(room2, room5, Room::Direction::South, DungeonLevelBuilder::MoveConstraints::None);
     // room 3
-    //    _dungeonBuilder->buildDoorway(room3, room2, Room::Direction::West, DungeonLevelBuilder::MoveConstraints::OriginImpassable);
     _dungeonBuilder->buildDoorway(room3, room6, Room::Direction::South, DungeonLevelBuilder::MoveConstraints::DestinationLocked);
     // room 4
     _dungeonBuilder->buildDoorway(room4, room5, Room::Direction::East, DungeonLevelBuilder::MoveConstraints::DestinationImpassable);
     _dungeonBuilder->buildDoorway(room4, room7, Room::Direction::South, DungeonLevelBuilder::MoveConstraints::OriginImpassable | DungeonLevelBuilder::MoveConstraints::DestinationImpassable);
     // room 5
-    //    _dungeonBuilder->buildDoorway(room5, room2, Room::Direction::North, DungeonLevelBuilder::MoveConstraints::None);
     _dungeonBuilder->buildDoorway(room5, room6, Room::Direction::East, DungeonLevelBuilder::MoveConstraints::None);
     _dungeonBuilder->buildDoorway(room5, room8, Room::Direction::South, DungeonLevelBuilder::MoveConstraints::None);
-    // room 6
-    //    _dungeonBuilder->buildDoorway(room6, room3, Room::Direction::North, DungeonLevelBuilder::MoveConstraints::OriginLocked);
-    //    _dungeonBuilder->buildDoorway(room6, room5, Room::Direction::West, DungeonLevelBuilder::MoveConstraints::None);
     // room 7
-    //    _dungeonBuilder->buildDoorway(room7, room4, Room::Direction::North, DungeonLevelBuilder::MoveConstraints::OriginImpassable);
     _dungeonBuilder->buildDoorway(room7, room8, Room::Direction::East, DungeonLevelBuilder::MoveConstraints::OriginLocked | DungeonLevelBuilder::MoveConstraints::DestinationLocked);
     // room 8
-    //    _dungeonBuilder->buildDoorway(room8, room5, Room::Direction::North, DungeonLevelBuilder::MoveConstraints::None);
-    //    _dungeonBuilder->buildDoorway(room8, room7, Room::Direction::West, DungeonLevelBuilder::MoveConstraints::OriginLocked);
     _dungeonBuilder->buildDoorway(room8, room9, Room::Direction::East, DungeonLevelBuilder::MoveConstraints::None);
-    // room 9
-    //    _dungeonBuilder->buildDoorway(room9, room8, Room::Direction::West, DungeonLevelBuilder::MoveConstraints::None);
-    // WARNING: clean up commentted out doorways
 
     // build items
     _dungeonBuilder->buildItem(room3);
@@ -71,7 +58,6 @@ void Game::createExampleLevel(){
 
     // set dungeon level to newly created level
     _dungeonLevel = _dungeonBuilder->getDungeonLevel();
-
 }
 
 void Game::createRandomLevel(std::string name, int width, int height){
@@ -187,6 +173,10 @@ double Game::randomDouble(){
 }
 
 // Helper methods
+namespace  {
+
+
+}
 std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> Game::buildNeighbours(int roomId, std::set<int> &builtRooms){
     std::vector<std::tuple<int, Room::Direction>> validNeighbours;
     std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> neighbours;
@@ -347,3 +337,5 @@ void Game::buildRandomNeighbouringDoorways(std::shared_ptr<Room> room, std::vect
         break;
     }
 }
+
+} // namespace core
