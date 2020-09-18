@@ -10,9 +10,14 @@ class Room
 public:
     Room(int id);
     ~Room() = default;
-    enum class Direction : unsigned int { North, South, East, West }; // WARNING: enum overload operator to reverse direction
-    // not operator negates the direction so that north points south, east points west and vise versa
-    friend Room::Direction operator ! (Room::Direction& r1){
+    enum class Direction : unsigned int { North, South, East, West };
+    //
+    /**
+     * @brief operator ! negates direction so that north points south, east points west and vise versa
+     * @param r1 The direction to negate
+     * @return South if r1 is north, east if r1 is west and vice-versa W->E S->N
+     */
+    friend Room::Direction operator! (const Room::Direction& r1){
         switch(r1){
         case Room::Direction::North: return Room::Direction::South;
         case Room::Direction::South: return Room::Direction::North;
@@ -20,15 +25,15 @@ public:
         case Room::Direction::West: return Room::Direction::East;
         }
     }
-    virtual std::string description() = 0;
+    virtual std::string description() const = 0;
     std::array<std::string, 5> display();
     int id();
-    std::unique_ptr<core::items::Item> item();
-    void setItem(std::unique_ptr<core::items::Item> newItem);
-    std::unique_ptr<core::creatures::AbstractCreature> creature();
-    void setCreature(std::unique_ptr<core::creatures::AbstractCreature> newCreature);
-    void setEdge(std::shared_ptr<RoomEdge> edge, Room::Direction direction);
-    std::shared_ptr<RoomEdge> edgeAt(Room::Direction direction);
+    std::unique_ptr<core::items::Item> item(); // non-const pointer transfer owenership
+    void setItem(const std::unique_ptr<core::items::Item> newItem); // non-const pointer transfer owenership
+    std::unique_ptr<core::creatures::AbstractCreature> creature();  // non-const pointer transfer owenership
+    void setCreature(const std::unique_ptr<core::creatures::AbstractCreature> newCreature); // non-const pointer transfer owenership
+    void setEdge(const std::shared_ptr<RoomEdge> edge, const Room::Direction direction);
+    std::shared_ptr<RoomEdge> edgeAt(const Room::Direction direction) const;
 protected:
     int _id;
     std::unique_ptr<core::items::Item> _item;

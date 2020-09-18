@@ -5,9 +5,9 @@ namespace core::dungeon::common {
 
 class LockedDoor : public Doorway
 {
-public:    
-    std::string description() override;
-    char displayCharacter() override;
+public:
+    std::string description() const override;
+    char displayCharacter() const override;
 };
 
 } // namespace core::dungeon::common

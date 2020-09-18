@@ -7,10 +7,9 @@ class Weapon : public Item
 {
 public:
     Weapon(std::string name) : Item(name){
-        _displayCharacter = _DISPLAY_CHAR;
-        // TODO: instatiate values
+        _displayCharacter = _DISPLAY_CHAR; // TODO: is this intasiated at the right level, could just use the super class 'L'
     };
-    std::unique_ptr<Item> clone(){
+    std::unique_ptr<Item> clone() const{
         return std::make_unique<Weapon>(*this);
     };
 private:

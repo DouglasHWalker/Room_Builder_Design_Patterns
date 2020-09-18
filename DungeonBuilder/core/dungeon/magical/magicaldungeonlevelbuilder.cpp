@@ -15,11 +15,11 @@ using core::dungeon::RoomEdge;
 using core::items::Item;
 using core::creatures::AbstractCreature;
 
-void MagicalDungeonLevelBuilder::buildDungeonLevel(std::string name, int width, int height){
+void MagicalDungeonLevelBuilder::buildDungeonLevel(const std::string name, const int width, const int height){
     _dungeonLevel = new MagicalDungeonLevel(name, width, height); // NOTE: Must use bare pointer
 }
 
-std::shared_ptr<Room> MagicalDungeonLevelBuilder::buildRoom(int id){
+std::shared_ptr<Room> MagicalDungeonLevelBuilder::buildRoom(int id)  const{
     double rand = Game::instance()->randomDouble();
     std::shared_ptr<Room> room;
     // create a random room from the valid room types avaliable for the type of dungeon(basic)
@@ -39,7 +39,7 @@ std::shared_ptr<Room> MagicalDungeonLevelBuilder::buildRoom(int id){
     return room;
 }
 
-void MagicalDungeonLevelBuilder::buildDoorway(std::shared_ptr<Room> origin, std::shared_ptr<Room> destination, Room::Direction direction, MoveConstraints constraints){
+void MagicalDungeonLevelBuilder::buildDoorway(std::shared_ptr<Room> origin, std::shared_ptr<Room> destination, Room::Direction direction, MoveConstraints constraints) const{
     // if doorway does not already exist here
     if(not origin->edgeAt(direction)->isPassage()){// the doorways to build
         std::shared_ptr<Doorway> originDoorway; // origin
@@ -107,7 +107,7 @@ void MagicalDungeonLevelBuilder::buildDoorway(std::shared_ptr<Room> origin, std:
     }
 }
 
-void MagicalDungeonLevelBuilder::buildEntrance(std::shared_ptr<Room> room, Room::Direction direction){
+void MagicalDungeonLevelBuilder::buildEntrance(std::shared_ptr<Room> room, Room::Direction direction) const{
     // build entry
     std::shared_ptr<Doorway> entry = std::make_shared<OneWayDoor>(direction);
     entry->setEntry(true);
@@ -115,7 +115,7 @@ void MagicalDungeonLevelBuilder::buildEntrance(std::shared_ptr<Room> room, Room:
     room->setEdge(entry, direction);
 }
 
-void MagicalDungeonLevelBuilder::buildExit(std::shared_ptr<Room> room, Room::Direction direction){
+void MagicalDungeonLevelBuilder::buildExit(std::shared_ptr<Room> room, Room::Direction direction) const{
     // build exit
     std::shared_ptr<Doorway> exit =  std::make_shared<OneWayDoor>(direction);
     exit->setExit(true);
@@ -131,7 +131,7 @@ void MagicalDungeonLevelBuilder::buildExit(std::shared_ptr<Room> room, Room::Dir
     // TODO: transfer of ownership might be avoidable here...
 }
 
-void MagicalDungeonLevelBuilder::buildItem(std::shared_ptr<Room> room){
+void MagicalDungeonLevelBuilder::buildItem(std::shared_ptr<Room> room) const{
     double rand = Game::instance()->randomDouble();
     std::unique_ptr<Item> item;
     int randItem = std::rand() % 3;

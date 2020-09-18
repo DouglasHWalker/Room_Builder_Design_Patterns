@@ -15,12 +15,12 @@ using core::dungeon::RoomEdge;
 using core::items::Item;
 using core::creatures::AbstractCreature;
 
-void BasicDungeonLevelBuilder::buildDungeonLevel(std::string name, int width, int height){
+void BasicDungeonLevelBuilder::buildDungeonLevel(const std::string name, const int width, const int height){
     _dungeonLevel = new BasicDungeonLevel(name, width, height); // NOTE: Must use bare pointer
 }
 
-std::shared_ptr<Room> BasicDungeonLevelBuilder::buildRoom(int id){
-    double rand = Game::instance()->randomDouble();
+std::shared_ptr<Room> BasicDungeonLevelBuilder::buildRoom(const int id) const{
+    const double rand = Game::instance()->randomDouble();
     std::shared_ptr<Room> room;
     // create a random room from the valid room types avaliable for the type of dungeon(basic)
     if(rand <= _CHAMBER_RARITY){
@@ -38,7 +38,7 @@ std::shared_ptr<Room> BasicDungeonLevelBuilder::buildRoom(int id){
 
     return room;
 }
-void BasicDungeonLevelBuilder::buildDoorway(std::shared_ptr<Room> origin, std::shared_ptr<Room> destination, Room::Direction direction, MoveConstraints constraints){
+void BasicDungeonLevelBuilder::buildDoorway(const std::shared_ptr<Room> origin, const std::shared_ptr<Room> destination, const Room::Direction direction, const MoveConstraints constraints) const{
     // if doorway does not already exist here
     if(not origin->edgeAt(direction)->isPassage()){// the doorways to build
         std::shared_ptr<Doorway> originDoorway; // origin
@@ -106,7 +106,7 @@ void BasicDungeonLevelBuilder::buildDoorway(std::shared_ptr<Room> origin, std::s
     } // end if doorway already exists
 }
 
-void BasicDungeonLevelBuilder::buildEntrance(std::shared_ptr<Room>  room, Room::Direction direction){
+void BasicDungeonLevelBuilder::buildEntrance(const std::shared_ptr<Room>  room, const Room::Direction direction) const{
     // build entry
     std::shared_ptr<Doorway> entry = std::make_shared<OneWayDoor>(direction);
     entry->setEntry(true);
@@ -114,7 +114,7 @@ void BasicDungeonLevelBuilder::buildEntrance(std::shared_ptr<Room>  room, Room::
     room->setEdge(entry, direction);
 }
 
-void BasicDungeonLevelBuilder::buildExit(std::shared_ptr<Room> room, Room::Direction direction){
+void BasicDungeonLevelBuilder::buildExit(const std::shared_ptr<Room> room, const Room::Direction direction) const{
     // build exit
     std::shared_ptr<Doorway> exit =  std::make_shared<OneWayDoor>(direction);
     exit->setExit(true);
@@ -130,8 +130,8 @@ void BasicDungeonLevelBuilder::buildExit(std::shared_ptr<Room> room, Room::Direc
     // TODO: transfer of ownership might be avoidable here...
 }
 
-void BasicDungeonLevelBuilder::buildItem(std::shared_ptr<Room> room){
-    double rand = Game::instance()->randomDouble();
+void BasicDungeonLevelBuilder::buildItem(const std::shared_ptr<Room> room) const{
+    const double rand = Game::instance()->randomDouble();
     std::unique_ptr<Item> item;
     int randItem = std::rand() % 3;
     if(rand <= _WEAPON_CHANCE){ // weapon
@@ -155,9 +155,9 @@ void BasicDungeonLevelBuilder::buildItem(std::shared_ptr<Room> room){
     }
     room->setItem(std::move(item));
 }
-void BasicDungeonLevelBuilder::buildCreature(std::shared_ptr<Room> room){
+void BasicDungeonLevelBuilder::buildCreature(const std::shared_ptr<Room> room) const{
     std::unique_ptr<AbstractCreature> creature;
-    int randCreature = std::rand() % 6;
+    const int randCreature = std::rand() % 6;
     switch (randCreature) {
     case 0:
         creature = _werewolf_proto->clone(); // ~16% chance

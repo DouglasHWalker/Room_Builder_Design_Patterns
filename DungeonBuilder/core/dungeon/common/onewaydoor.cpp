@@ -1,7 +1,7 @@
 #include "onewaydoor.h"
 namespace core::dungeon::common {
 
-std::string OneWayDoor::description(){
+std::string OneWayDoor::description() const {
     // if Entry
     if(_isEntry){
         return "the entrance to the dungeon.";
@@ -12,7 +12,7 @@ std::string OneWayDoor::description(){
     }
     return "a One-way Door from another chamber.";
 }
-char OneWayDoor::displayCharacter(){
+char OneWayDoor::displayCharacter() const {
     // if Entry
     if(_isEntry){
         return 'I';

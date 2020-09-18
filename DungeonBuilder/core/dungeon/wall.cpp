@@ -1,7 +1,7 @@
 #include "wall.h"
 namespace core::dungeon {
 
-char Wall::displayCharacter(){
+char Wall::displayCharacter() const {
     switch (_direction) {
     case Room::Direction::North:
     case Room::Direction::South:
@@ -12,8 +12,12 @@ char Wall::displayCharacter(){
     }
 }
 
-bool Wall::isPassage(){
+bool Wall::isPassage() const{
     return false;
+}
+
+std::ostream& operator << (std::ostream& os, const Wall& edge){
+    return os << edge.description();
 }
 
 } // namespace core::dungeon

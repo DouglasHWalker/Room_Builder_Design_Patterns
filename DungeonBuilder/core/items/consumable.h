@@ -8,9 +8,8 @@ class Consumable : public Item
 public:
     Consumable(std::string name) : Item(name) {
         _displayCharacter = _DISPLAY_CHAR; // WARNING: is this instantiated at the correct level
-        // TODO: intatiate values
     };
-    std::unique_ptr<Item> clone(){
+    std::unique_ptr<Item> clone() const{
         return std::make_unique<Consumable>(*this);
     };
 private:

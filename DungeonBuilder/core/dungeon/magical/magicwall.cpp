@@ -1,7 +1,7 @@
 #include "magicwall.h"
 namespace core::dungeon::magical {
 
-std::string MagicWall::description(){
+std::string MagicWall::description() const {
     return "a Magic Wall.";
 }
 

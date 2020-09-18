@@ -28,13 +28,13 @@ public:
     // TODO: make this right, might be better to move implementaiton to cpp file or add note for marking
 
 
-    virtual void buildDungeonLevel(std::string name, int width, int height){}; // WARNING: is this const?
-    virtual std::shared_ptr<Room> buildRoom(int id){};
-    virtual void buildDoorway(std::shared_ptr<Room> origin, std::shared_ptr<Room> destination, Room::Direction direction, MoveConstraints constraints){};
-    virtual void buildEntrance(std::shared_ptr<Room> room, Room::Direction direction){};
-    virtual void buildExit(std::shared_ptr<Room> room, Room::Direction direction){};
-    virtual void buildItem(std::shared_ptr<Room> room){};
-    virtual void buildCreature(std::shared_ptr<Room> room){};
+    virtual void buildDungeonLevel(const std::string name, const int width, const int height){}; // WARNING: is this const?
+    virtual std::shared_ptr<Room> buildRoom(const int id) const{};
+    virtual void buildDoorway(const std::shared_ptr<Room> origin, const std::shared_ptr<Room> destination, const Room::Direction direction, const MoveConstraints constraints) const {};
+    virtual void buildEntrance(const std::shared_ptr<Room> room, const Room::Direction direction) const {};
+    virtual void buildExit(const std::shared_ptr<Room> room, const Room::Direction direction) const {};
+    virtual void buildItem(const std::shared_ptr<Room> room) const {};
+    virtual void buildCreature(const std::shared_ptr<Room> room) const {};
     DungeonLevel* getDungeonLevel(){
         // transfer of ownership where dungeon level is bare pointer
         // TODO: change to smart pointer, method indicates tranfer of ownership

@@ -30,9 +30,9 @@ private:
     void displayExplorationMenu();
     void describeRoom();
     // additonal helper functions
-    bool getInputNumber(int &number);
-    bool inputLevelType(char &levelType);
-    bool inputLevelName(std::string &levelName);
+    int inputNumber(std::string &levelName);
+    char inputLevelType();
+    std::string inputLevelName();
 };
 
 } // namespace core

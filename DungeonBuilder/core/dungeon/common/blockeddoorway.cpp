@@ -1,10 +1,10 @@
 #include "blockeddoorway.h"
 namespace core::dungeon::common {
 
-std::string BlockedDoorway::description(){
+std::string BlockedDoorway::description() const {
     return "a Blocked Doorway to another chamber";
 }
-char BlockedDoorway::displayCharacter(){
+char BlockedDoorway::displayCharacter() const {
     return 'X';
 }
 

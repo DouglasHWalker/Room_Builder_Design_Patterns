@@ -7,7 +7,9 @@ class EnchantedLibrary : public Room
 {
 public:
     EnchantedLibrary(int id) : Room(id){}
-    std::string description() override;
+    std::string description() const override;
+
+    friend std::ostream& operator<<(std::ostream& os, const EnchantedLibrary& room);
 };
 
 } // namespace core::dungeon::magical

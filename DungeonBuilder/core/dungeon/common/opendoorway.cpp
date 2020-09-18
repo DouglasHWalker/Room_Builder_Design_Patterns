@@ -1,10 +1,10 @@
 #include "opendoorway.h"
 namespace core::dungeon::common {
 
-std::string OpenDoorway::description(){
+std::string OpenDoorway::description() const {
     return "an Open Doorway to another chamber";
 }
-char OpenDoorway::displayCharacter(){
+char OpenDoorway::displayCharacter() const {
     switch(_direction){
     case Room::Direction::North:
         return '^';

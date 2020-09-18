@@ -69,12 +69,12 @@ void Room::setCreature(std::unique_ptr<AbstractCreature> newCreature){
     _creature = std::move(newCreature);
 }
 
-void Room::setEdge(std::shared_ptr<RoomEdge> edge, Direction direction){
+void Room::setEdge(const std::shared_ptr<RoomEdge> edge, const Direction direction){
     // return the edge at the given direction enum value (North = 0, South = 1, East = 2, West = 3)
     _edges[static_cast<std::underlying_type<Direction>::type>(direction)] = edge;
 }
 
-std::shared_ptr<RoomEdge> Room::edgeAt(Direction direction){
+std::shared_ptr<RoomEdge> Room::edgeAt(const Direction direction) const {
     // return the edge at the given direction enum value (North = 0, South = 1, East = 2, West = 3)
     return _edges[static_cast<std::underlying_type<Direction>::type>(direction)];
 }

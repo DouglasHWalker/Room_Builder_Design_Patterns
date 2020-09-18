@@ -7,23 +7,22 @@ class Doorway : public RoomEdge
 {
 public:
     virtual ~Doorway(){
-        delete _opposite; // TODO: double check this is correct way to delete bare pointer, virtual?
+        delete _opposite;
     }
+    virtual std::string description() const override = 0;
+    virtual char displayCharacter() const  override = 0;
+    bool isPassage() const override;
 
-    virtual std::string description() override = 0;
-    virtual char displayCharacter() override = 0;
-    bool isPassage() override;
-
-    void connect(Doorway* opposite);
-    bool isEntrance();
-    bool isExit();
+    void connect(Doorway* const opposite);
+    bool isEntrance() const;
+    bool isExit() const;
     // WARNING: public getters not in class diagram
-    void setEntry(bool isEntry);
-    void setExit(bool isExit);
+    void setEntry(const bool isEntry);
+    void setExit(const bool isExit);
 
 protected:
     bool _isEntry = false;
-    bool _isExit = false; // WARNING: revise entry exit
+    bool _isExit = false; // WARNING: may need to revise entry exit
     Doorway* _opposite;
 };
 

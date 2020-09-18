@@ -7,7 +7,7 @@ class MagicWall : public Wall
 {
 public:
     MagicWall(Room::Direction direction) : Wall(direction){}
-    std::string description() override;
+    std::string description() const override;
 };
 
 } // namespace core::dungeon::magical

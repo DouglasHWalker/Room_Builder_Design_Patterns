@@ -9,9 +9,9 @@ class Item
 {
 public:
     Item(std::string name): _name{name}{}
-    virtual std::unique_ptr<Item> clone() = 0;
-    std::string name();
-    char displayCharacter();
+    virtual std::unique_ptr<Item> clone() const = 0;
+    std::string name() const;
+    char displayCharacter() const;
 
     friend std::ostream& operator <<(std::ostream& os, const Item& item);
 

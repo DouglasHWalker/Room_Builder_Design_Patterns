@@ -7,37 +7,33 @@
 
 namespace core::dungeon::basic {
 
-using core::creatures::Monster;
-using core::items::Weapon;
-using core::items::Consumable;
-
 class BasicDungeonLevelBuilder : public DungeonLevelBuilder
 {
 public:
-    void buildDungeonLevel(std::string name, int width, int height);
-    std::shared_ptr<Room> buildRoom(int id);
-    void buildDoorway(std::shared_ptr<Room> origin, std::shared_ptr<Room> destination, Room::Direction direction, MoveConstraints constraints);
-    void buildEntrance(std::shared_ptr<Room> room, Room::Direction direction);
-    void buildExit(std::shared_ptr<Room> room, Room::Direction direction);
-    void buildItem(std::shared_ptr<Room> room);
-    void buildCreature(std::shared_ptr<Room> room);
+    void buildDungeonLevel(const std::string name, const int width, const int height);
+    std::shared_ptr<Room> buildRoom(const int id) const;
+    void buildDoorway(const std::shared_ptr<Room> origin, const std::shared_ptr<Room> destination, const Room::Direction direction, const MoveConstraints constraints) const;
+    void buildEntrance(const std::shared_ptr<Room> room, const Room::Direction direction) const;
+    void buildExit(const std::shared_ptr<Room> room, const Room::Direction direction) const;
+    void buildItem(const std::shared_ptr<Room> room) const;
+    void buildCreature(const std::shared_ptr<Room> room) const;
 private:
     double _WEAPON_CHANCE = 0.35;
     double _CHAMBER_RARITY = 0.7;
     double _CREATURE_RARITY = 0.75;
 
     // Creatures
-    std::unique_ptr<Monster> _goblin_proto = std::make_unique<Monster>("Goblin");
-    std::unique_ptr<Monster> _werewolf_proto = std::make_unique<Monster>("Werewolf");
-    std::unique_ptr<Monster> _evilWizard_proto = std::make_unique<Monster>("Evil Wizard");
+    std::unique_ptr<core::creatures::Monster> _goblin_proto = std::make_unique<core::creatures::Monster>("Goblin");
+    std::unique_ptr<core::creatures::Monster> _werewolf_proto = std::make_unique<core::creatures::Monster>("Werewolf");
+    std::unique_ptr<core::creatures::Monster> _evilWizard_proto = std::make_unique<core::creatures::Monster>("Evil Wizard");
     // Weapons
-    std::unique_ptr<Weapon> _boomerang_proto = std::make_unique<Weapon>("Boomerang");
-    std::unique_ptr<Weapon> _shortSword_proto = std::make_unique<Weapon>("Short Sword");
-    std::unique_ptr<Weapon> _battleAxe_proto = std::make_unique<Weapon>("Battle Axe");
+    std::unique_ptr<core::items::Weapon> _boomerang_proto = std::make_unique<core::items::Weapon>("Boomerang");
+    std::unique_ptr<core::items::Weapon> _shortSword_proto = std::make_unique<core::items::Weapon>("Short Sword");
+    std::unique_ptr<core::items::Weapon> _battleAxe_proto = std::make_unique<core::items::Weapon>("Battle Axe");
     // Consumables
-    std::unique_ptr<Consumable> _healthPotion_proto = std::make_unique<Consumable>("Health Potion");
-    std::unique_ptr<Consumable> _molotov_proto = std::make_unique<Consumable>("Molotov Cocktail");
-    std::unique_ptr<Consumable> _smokeBomb_proto = std::make_unique<Consumable>("Smoke Bomb");
+    std::unique_ptr<core::items::Consumable> _healthPotion_proto = std::make_unique<core::items::Consumable>("Health Potion");
+    std::unique_ptr<core::items::Consumable> _molotov_proto = std::make_unique<core::items::Consumable>("Molotov Cocktail");
+    std::unique_ptr<core::items::Consumable> _smokeBomb_proto = std::make_unique<core::items::Consumable>("Smoke Bomb");
 };
 
 } // namespace core::dungeon::basic

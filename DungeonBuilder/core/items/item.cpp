@@ -1,11 +1,11 @@
 #include "item.h"
 namespace core::items {
 
-std::string Item::name(){
+std::string Item::name() const{
     return _name;
 }
 
-char Item::displayCharacter(){
+char Item::displayCharacter() const{
     return _displayCharacter;
 }
 

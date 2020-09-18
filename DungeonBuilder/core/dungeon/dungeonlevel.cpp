@@ -1,22 +1,22 @@
 #include "dungeonlevel.h"
 namespace core::dungeon {
 
-void DungeonLevel::addRoom(std::shared_ptr<Room> room){
+void DungeonLevel::addRoom(const std::shared_ptr<Room> room){
     _rooms.insert(std::make_pair(room->id(), room));
 }
-std::shared_ptr<Room> DungeonLevel::retrieveRoom(int id){
-    return _rooms[id];
+std::shared_ptr<Room> DungeonLevel::retrieveRoom(const int id) const{
+    return _rooms.at(id);
 }
-int DungeonLevel::width(){
+int DungeonLevel::width() const{
     return _width;
 }
-int DungeonLevel::height(){
+int DungeonLevel::height() const{
     return _height;
 }
-std::string DungeonLevel::name(){
+std::string DungeonLevel::name() const{
     return _name;
 }
-std::vector<std::string> DungeonLevel::display(){
+std::vector<std::string> DungeonLevel::display() const{ // TODO: use output operators, make a little more consise and practical
     // initialise a vector based on height of dungeon level
     std::vector<std::string> dungeonLevelString = std::vector<std::string>();
     int numberOfRowsInRoom = 6; // including space below
@@ -31,7 +31,7 @@ std::vector<std::string> DungeonLevel::display(){
         // for each column of rooms (width)
         for (int c{0}; c < _width; c++) {
             // retrieve the next room, add display to output
-            currentRoom =_rooms[(c + (r * _width)) + 1];
+            currentRoom =_rooms.at(c + (r * _width) + 1);
             // for every row of chars in the room
             for(int roomCol{0}; roomCol < 5; roomCol++){ // 4 = room height -1
                 // add the row of chars to the appropriate row in output string

@@ -1,7 +1,7 @@
 #include "rockwall.h"
 namespace core::dungeon::basic {
 
-std::string RockWall::description(){
+std::string RockWall::description() const {
     return "a Rock Wall";
 }
 
