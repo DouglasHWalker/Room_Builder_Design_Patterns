@@ -3,26 +3,26 @@ namespace core::dungeon::common {
 
 std::string OneWayDoor::description() const {
     // if Entry
-    if(_isEntry){
+    if(_isEntry) {
         return "the entrance to the dungeon.";
     }
     // if Exit
-    if(_isExit){
+    if(_isExit) {
         return "the exit to the dungeon (One-way door).";
     }
     return "a One-way Door from another chamber.";
 }
 char OneWayDoor::displayCharacter() const {
     // if Entry
-    if(_isEntry){
+    if(_isEntry) {
         return 'I';
     }
     // if Exit
-    if(_isExit){
+    if(_isExit) {
         return 'O';
     }
     // otherwise
-    switch(_direction){
+    switch(_direction) {
     case Room::Direction::North:
         return 'v';
     case Room::Direction::South:

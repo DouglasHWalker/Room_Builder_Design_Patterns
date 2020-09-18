@@ -6,10 +6,10 @@ namespace core::dungeon::magical {
 class AlchemistsLaboratory : public Room
 {
 public:
-    AlchemistsLaboratory(int id) : Room(id){}
+    AlchemistsLaboratory(int id) : Room(id) {}
     std::string description() const override;
 
-    friend std::ostream& operator<<(std::ostream& os, const AlchemistsLaboratory& room);
+    friend std::ostream &operator <<(std::ostream &os, const AlchemistsLaboratory &room);
 };
 
 } // namespace core::dungeon::magical

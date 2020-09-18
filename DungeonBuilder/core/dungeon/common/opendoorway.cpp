@@ -5,7 +5,7 @@ std::string OpenDoorway::description() const {
     return "an Open Doorway to another chamber";
 }
 char OpenDoorway::displayCharacter() const {
-    switch(_direction){
+    switch(_direction) {
     case Room::Direction::North:
         return '^';
     case Room::Direction::South:

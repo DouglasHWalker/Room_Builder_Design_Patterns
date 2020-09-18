@@ -12,7 +12,8 @@ class BasicDungeonLevelBuilder : public DungeonLevelBuilder
 public:
     void buildDungeonLevel(const std::string &name, const int width, const int height);
     std::shared_ptr<Room> buildRoom(const int id) const;
-    void buildDoorway(const std::shared_ptr<Room> origin, const std::shared_ptr<Room> destination, const Room::Direction &direction, const MoveConstraints &constraints) const;
+    void buildDoorway(const std::shared_ptr<Room> origin, const std::shared_ptr<Room> destination,
+                      const Room::Direction &direction, const MoveConstraints &constraints) const;
     void buildEntrance(const std::shared_ptr<Room> room, const Room::Direction &direction) const;
     void buildExit(const std::shared_ptr<Room> room, const Room::Direction &direction) const;
     void buildItem(const std::shared_ptr<Room> room) const;

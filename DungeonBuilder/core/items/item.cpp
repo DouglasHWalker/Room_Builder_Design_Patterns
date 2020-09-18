@@ -9,7 +9,7 @@ char Item::displayCharacter() const{
     return _displayCharacter;
 }
 
-std::ostream & operator << (std::ostream & os, const Item & item){
+std::ostream & operator << (std::ostream & os, const Item & item) {
     return os << item._name;
 }
 

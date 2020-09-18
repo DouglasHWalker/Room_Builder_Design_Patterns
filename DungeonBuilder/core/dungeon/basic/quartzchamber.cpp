@@ -10,13 +10,13 @@ std::string QuartzChamber::description() const {
        << "\nTo the EAST is " << *edgeAt(Room::Direction::East)
        << "\nTo the WEST is " << *edgeAt(Room::Direction::West);
     ss << "\nA silhouette moves across the twinkling surfaces...";
-    if(_item != nullptr){
+    if(_item != nullptr) {
         ss << "\nYour foot brushes past a " << *_item << " as you step forward for a closer look.";
-        if(_creature == nullptr){
+        if(_creature == nullptr) {
             ss << "\nIt must have been your imagination, nothing else is here...";
         }
     }
-    if(_creature != nullptr){
+    if(_creature != nullptr) {
         ss << "\nWhat is that? You lean forward, arching your back."
            << "\nIt's a" << (_creature->isBoss() ? "n " : " ") << *_creature << "!";
     }
@@ -24,7 +24,7 @@ std::string QuartzChamber::description() const {
     return ss.str();
 }
 
-std::ostream& operator<<(std::ostream& os, const QuartzChamber& chamber){
+std::ostream &operator <<(std::ostream &os, const QuartzChamber &chamber) {
     return os << chamber.description();
 }
 

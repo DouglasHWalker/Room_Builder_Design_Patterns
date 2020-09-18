@@ -5,7 +5,7 @@ using core::creatures::AbstractCreature;
 using core::items::Item;
 
 Room::Room(int id) : _id{id} {
-    _edges = std::array<std::shared_ptr<RoomEdge>, 4>(); // TODO: make the edges and edge array smart pointers?
+    _edges = std::array<std::shared_ptr<RoomEdge>, 4>();
 }
 
 std::array<std::string, 5> Room::display() const{
@@ -19,7 +19,7 @@ std::array<std::string, 5> Room::display() const{
     middleRow += edgeAt(Direction::West)->displayCharacter();
     middleRow += "   ";
     // if room does not have creature
-    if(_creature == nullptr){
+    if(_creature == nullptr) {
         middleRow += "  ";
     }
     else {
@@ -53,23 +53,23 @@ int Room::id() const{
     return _id;
 }
 
-std::unique_ptr<Item> Room::item(){
+std::unique_ptr<Item> Room::item() {
     return std::move(_item);
 }
 
-void Room::setItem(std::unique_ptr<Item> newItem){
+void Room::setItem(std::unique_ptr<Item> newItem) {
     _item = std::move(newItem);
 }
 
-std::unique_ptr<AbstractCreature> Room::creature(){
+std::unique_ptr<AbstractCreature> Room::creature() {
     return std::move(_creature);
 }
 
-void Room::setCreature(std::unique_ptr<AbstractCreature> newCreature){
+void Room::setCreature(std::unique_ptr<AbstractCreature> newCreature) {
     _creature = std::move(newCreature);
 }
 
-void Room::setEdge(const std::shared_ptr<RoomEdge> edge, const Direction &direction){
+void Room::setEdge(const std::shared_ptr<RoomEdge> edge, const Direction &direction) {
     // return the edge at the given direction enum value (North = 0, South = 1, East = 2, West = 3)
     _edges[static_cast<std::underlying_type<Direction>::type>(direction)] = edge;
 }

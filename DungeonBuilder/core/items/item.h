@@ -8,7 +8,7 @@ namespace core::items {
 class Item
 {
 public:
-    Item(std::string name): _name{name}{};
+    Item(std::string newName): _name{newName}{};
     virtual ~Item() = default;
     virtual std::unique_ptr<Item> clone() const = 0;
     std::string name() const;

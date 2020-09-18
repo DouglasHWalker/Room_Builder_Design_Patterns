@@ -6,8 +6,8 @@ namespace core::dungeon::magical {
 class MagicWall : public Wall
 {
 public:
-    MagicWall(const Room::Direction &direction){
-        _direction = direction;
+    MagicWall(const Room::Direction &newDirection) {
+        _direction = newDirection;
     }
     std::string description() const override;
 };

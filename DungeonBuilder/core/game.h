@@ -11,19 +11,19 @@ namespace core {
 class Game
 {
 public:
-    static Game* instance(){
-        if(theInstance == nullptr){
+    static Game* instance() {
+        if(theInstance == nullptr) {
             theInstance = new Game;
         }
         return theInstance;
     }
-    Game(Game &other) = delete;
-    Game operator=(Game &other) = delete;
-    ~Game(){
+    ~Game() {
         delete _dungeonLevel;
         delete _dungeonBuilder;
         delete theInstance;
     }
+    Game(Game &other) = delete;
+    Game operator=(Game &other) = delete;
 
     void setDungeonType(core::dungeon::DungeonLevelBuilder* dungeonLevelBuilder);
     void createExampleLevel();
@@ -60,8 +60,8 @@ private:
     const double IMPASSABLE_CHANCE = 0.30;
     // helper methods for random level generation
     std::vector<std::tuple<std::shared_ptr<core::dungeon::Room>, core::dungeon::Room::Direction>> buildNeighbours(const int i, std::set<int> &builtRooms) const;
+    void buildRandomNeighbouringDoorways(std::shared_ptr<core::dungeon::Room> room, std::vector<std::tuple<std::shared_ptr<core::dungeon::Room>, core::dungeon::Room::Direction>> &neighbours);  // non-const changes _randomGenerator
     core::dungeon::DungeonLevelBuilder::MoveConstraints getRandomMovementConstraints(); // non-const changes _randomGenerator
-    void buildRandomNeighbouringDoorways(std::shared_ptr<core::dungeon::Room> room, std::vector<std::tuple<std::shared_ptr<core::dungeon::Room> , core::dungeon::Room::Direction>> &neighbours);  // non-const changes _randomGenerator
 };
 
 } // namespace core

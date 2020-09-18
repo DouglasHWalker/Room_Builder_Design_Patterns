@@ -16,7 +16,7 @@ bool Wall::isPassage() const{
     return false;
 }
 
-std::ostream& operator << (std::ostream& os, const Wall& edge){
+std::ostream& operator << (std::ostream& os, const Wall& edge) {
     return os << edge.description();
 }
 

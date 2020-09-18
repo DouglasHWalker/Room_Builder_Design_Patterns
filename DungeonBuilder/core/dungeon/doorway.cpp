@@ -7,7 +7,7 @@ bool Doorway::isPassage() const{
     return true;
 }
 
-void Doorway::connect(Doorway* const opposite){
+void Doorway::connect(Doorway* const opposite) {
     _opposite = opposite;
 }
 
@@ -19,11 +19,11 @@ bool Doorway::isExit() const{
     return _isExit;
 }
 
-void Doorway::setEntry(const bool isEntry){
+void Doorway::setEntry(const bool isEntry) {
     _isEntry = isEntry;
 }
 
-void Doorway::setExit(const bool isExit){
+void Doorway::setExit(const bool isExit) {
     _isExit = isExit;
 }
 

@@ -8,7 +8,7 @@ namespace core::creatures {
 class AbstractCreature
 {
 public:
-    AbstractCreature(std::string name) : _name{name}{}
+    AbstractCreature(std::string newName) : _name{newName}{}
     virtual ~AbstractCreature() = default;
     virtual std::unique_ptr<AbstractCreature> clone() const = 0;
     std::string name() const;
@@ -16,7 +16,7 @@ public:
     bool isBoss() const;
     void setIsBoss();
 
-    friend std::ostream& operator<< (std::ostream& os, const AbstractCreature& creature);
+    friend std::ostream &operator <<(std::ostream &os, const AbstractCreature &creature);
 
 protected:
     char _displayCharacter;

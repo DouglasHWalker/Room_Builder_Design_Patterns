@@ -8,7 +8,7 @@ namespace core::dungeon::common {
 class OneWayDoor: public Doorway
 {
 public:
-    OneWayDoor(const Room::Direction &direction): _direction{direction}{}
+    OneWayDoor(const Room::Direction &newDirection): _direction{newDirection}{}
     std::string description() const override;
     char displayCharacter() const override;
 private:

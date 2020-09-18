@@ -6,8 +6,8 @@ namespace core::dungeon::basic {
 class RockWall : public Wall
 {
 public:
-    RockWall(const Room::Direction &direction){
-        _direction = direction;
+    RockWall(const Room::Direction &newDirection) {
+        _direction = newDirection;
     }
     std::string description() const override;
 };

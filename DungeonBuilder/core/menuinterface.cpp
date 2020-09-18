@@ -53,7 +53,7 @@ void MenuInterface::displayMainMenu() const{
 bool MenuInterface::yesNoConfirmation() const{
     char input;
     _input >> input;
-    if(tolower(input) == 'y'){
+    if(tolower(input) == 'y') {
         return true;
     }
     return false;
@@ -75,7 +75,7 @@ void MenuInterface::generateRandomLevel() const{
     char levelType{inputLevelType()};
     // Create random level
     _display << "\nCreating " << levelName << "..." << std::endl;
-    if(levelType == 'b'){
+    if(levelType == 'b') {
         Game::instance()->setDungeonType(new BasicDungeonLevelBuilder());
     } else {
         Game::instance()->setDungeonType(new MagicalDungeonLevelBuilder());
@@ -146,7 +146,7 @@ void MenuInterface::describeLevel() const{
 void MenuInterface::displayLevel() const{
     // display level
     std::vector<std::string> vect = Game::instance()->displayLevel();
-    for (int i = 0; i < int(vect.size()); i++){
+    for (int i = 0; i < int(vect.size()); ++i) {
         _display << vect[i] << std::endl;
     }
     // prompt for enter key
@@ -161,7 +161,7 @@ void MenuInterface::describeRoom() const{
     int roomNumber{0};
     // input room number
     _display << "\nWhich room would you like to describe? " << "(1-" << maxRooms << ")" << std::endl;
-    for(_input >> roomNumber; _input.fail() or roomNumber < 1 or roomNumber > maxRooms; _input >> roomNumber){
+    for(_input >> roomNumber; _input.fail() or roomNumber < 1 or roomNumber > maxRooms; _input >> roomNumber) {
         _input.clear();
         _input.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
         _display << "Invalid integer, please choose a room number between "
@@ -187,7 +187,7 @@ std::string MenuInterface::inputLevelName() const{
         _display << "\nWhat would you like to call the level?" << std::endl;
         std::getline(_input, levelName);
         // validate input
-        if(levelName == ""){
+        if(levelName == "") {
             _display << "\nInput Invalid, Name cannot be blank." << std::endl;
         } else {
             validInput = true;
@@ -225,7 +225,7 @@ int MenuInterface::inputNumber(std::string &levelName) const{
     do{
         // get input and validate
         _display << "\nHow many rows in " << levelName << "?" << std::endl;
-        if(!(_input >> number) || number < 1 || number > 4){
+        if(!(_input >> number) || number < 1 || number > 4) {
             _display << "\nInput Invalid, Please enter a number between 1 & 4." << std::endl;
             // clear input screen discard previous input
             _input.clear();

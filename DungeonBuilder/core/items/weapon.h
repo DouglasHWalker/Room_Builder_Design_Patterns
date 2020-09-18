@@ -6,7 +6,7 @@ namespace core::items {
 class Weapon : public Item
 {
 public:
-    Weapon(const std::string &name): Item(name){
+    Weapon(const std::string &name): Item(name) {
         _displayCharacter = _DISPLAY_CHAR; // TODO: is this intasiated at the right level, could just use the super class 'L'
     };
     std::unique_ptr<Item> clone() const override{

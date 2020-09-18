@@ -6,7 +6,7 @@ namespace core::dungeon {
 class Doorway : public RoomEdge
 {
 public:
-    virtual ~Doorway(){
+    virtual ~Doorway() {
         delete _opposite;
     }
     virtual std::string description() const override = 0;

@@ -17,8 +17,8 @@ public:
      * @param r1 The direction to negate
      * @return South if r1 is north, east if r1 is west and vice-versa W->E S->N
      */
-    friend Room::Direction operator! (const Room::Direction& r1){
-        switch(r1){
+    friend Room::Direction operator! (const Room::Direction& r1) {
+        switch(r1) {
         case Room::Direction::North: return Room::Direction::South;
         case Room::Direction::South: return Room::Direction::North;
         case Room::Direction::East: return Room::Direction::West;

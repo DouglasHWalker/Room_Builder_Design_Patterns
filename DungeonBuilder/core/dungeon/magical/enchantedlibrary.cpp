@@ -10,16 +10,16 @@ std::string EnchantedLibrary::description() const {
        << "\nTo the SOUTH is " << *edgeAt(Room::Direction::South)
        << "\nTo the EAST is " << *edgeAt(Room::Direction::East)
        << "\nTo the WEST is " << *edgeAt(Room::Direction::West);
-    if(_item != nullptr){
+    if(_item != nullptr) {
         ss << "\nA " << *_item << " rests on a desk nearby.";
     }
-    if(_creature != nullptr){
+    if(_creature != nullptr) {
         ss << "\nA " << *_creature << " is snoring loudly amongst the volumes.";
     }
     return ss.str();
 }
 
-std::ostream& operator<<(std::ostream& os, const EnchantedLibrary& room){
+std::ostream& operator<<(std::ostream& os, const EnchantedLibrary& room) {
     return os << room.description();
 }
 

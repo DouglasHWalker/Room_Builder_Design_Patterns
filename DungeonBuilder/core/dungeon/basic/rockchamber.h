@@ -9,7 +9,7 @@ public:
     RockChamber(int id) : Room(id) {};
     std::string description() const override;
 
-    friend std::ostream& operator<<(std::ostream& os, const RockChamber& chamber);
+    friend std::ostream &operator<<(std::ostream &os, const RockChamber &chamber);
 };
 
 } // namespace core::dungeon::basic

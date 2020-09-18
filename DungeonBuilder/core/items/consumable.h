@@ -6,7 +6,7 @@ namespace core::items {
 class Consumable : public Item
 {
 public:
-    Consumable(const std::string &name): Item(name){
+    Consumable(const std::string &name): Item(name) {
         _displayCharacter = _DISPLAY_CHAR; // WARNING: is this instantiated at the correct level
     };
     std::unique_ptr<Item> clone() const override{

@@ -9,7 +9,7 @@ public:
     QuartzChamber(int id) : Room(id) {};
     std::string description() const override;
 
-    friend std::ostream& operator<<(std::ostream& os, const QuartzChamber& chamber);
+    friend std::ostream &operator<<(std::ostream &os, const QuartzChamber &chamber);
 };
 
 } // namespace core::dungeon::basic
