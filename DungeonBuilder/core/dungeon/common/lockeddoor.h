@@ -2,7 +2,10 @@
 #define LOCKEDDOOR_H
 #include "core/dungeon/doorway.h"
 namespace core::dungeon::common {
-
+/**
+ * @brief The LockedDoor class a type of Doorway which needs to be unlocked before it can be traversed
+ * A type of traversable RoomEdge
+ */
 class LockedDoor : public Doorway
 {
 public:

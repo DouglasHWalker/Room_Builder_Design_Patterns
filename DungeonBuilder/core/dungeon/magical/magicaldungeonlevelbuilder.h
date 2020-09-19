@@ -6,7 +6,8 @@
 #include "core/items/weapon.h"
 namespace core::dungeon::magical {
 /**
- * @brief The MagicalDungeonLevelBuilder class (@sa DungeonLevelBuilder) a type of dungeon level builder
+ * @brief The MagicalDungeonLevelBuilder class a type of DungeonLevelBuilder
+ * @sa DungeonLevelBuilder
  */
 class MagicalDungeonLevelBuilder : public DungeonLevelBuilder
 {

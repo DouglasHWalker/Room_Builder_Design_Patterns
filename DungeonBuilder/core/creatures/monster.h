@@ -5,7 +5,8 @@
 #include "abstractcreature.h"
 namespace core::creatures {
 /**
- * @brief The Monster class is a type of AbstractCreature (@sa core::creatures::AbstractCreature)
+ * @brief The Monster class is a type of AbstractCreature
+ * @sa core::creatures::AbstractCreature
  */
 class Monster : public AbstractCreature
 {

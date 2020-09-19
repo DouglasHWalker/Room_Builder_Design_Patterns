@@ -7,7 +7,8 @@
 
 namespace core::dungeon::basic {
 /**
- * @brief The BasicDungeonLevelBuilder class (@sa DungeonLevelBuilder) a type of dungeon level builder
+ * @brief The BasicDungeonLevelBuilder class a type of DungeonLevelBuilder
+ * @sa DungeonLevelBuilder
  */
 class BasicDungeonLevelBuilder : public DungeonLevelBuilder
 {

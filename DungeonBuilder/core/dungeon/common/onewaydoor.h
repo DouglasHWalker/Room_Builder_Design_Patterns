@@ -4,7 +4,10 @@
 #include "core/dungeon/doorway.h"
 #include "core/dungeon/room.h"
 namespace core::dungeon::common {
-
+/**
+ * @brief The OneWayDoor class a type of Doorway which can only be traversed in one direction
+ * A type of traversable RoomEdge
+ */
 class OneWayDoor: public Doorway
 {
 public:

@@ -70,7 +70,7 @@ void Game::createRandomLevel(const std::string &name, const int width, const int
 
     // ROOMS
     // build the dungeon rooms
-    std::set<int> builtRooms;
+    std::map<int, std::shared_ptr<Room>> builtRooms;
     int numRooms = width * height;
     // for every room
     for(int i{1}; i <= numRooms; ++i) {
@@ -79,22 +79,22 @@ void Game::createRandomLevel(const std::string &name, const int width, const int
         // if room has not yet been built, build it
         if(builtRooms.find(i) == builtRooms.end()) {
             room = _dungeonBuilder->buildRoom(i);
-            builtRooms.insert(i);
+            builtRooms.insert(std::make_pair(i, room));
         } else { // otherwise get the existing room
-            room = _dungeonBuilder->getDungeonLevel()->retrieveRoom(i);
+            room = builtRooms.at(i);
         }
         // if room has neighbours, i.e. level dimensions != 1x1
         if(numRooms != 1) {
             // build valid neighbours of current room
-            std::set<int> & builtRoomsRef = builtRooms;
-            std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> neighbours = buildNeighbours(i, builtRoomsRef);
+            std::map<int, std::shared_ptr<Room>> & builtRoomsRef = builtRooms;
+            std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> neighbours = buildNeighbours(i, width, height, builtRoomsRef);
             // build doorways randomly to the rooms neighbours
-            buildRandomNeighbouringDoorways(room, neighbours);
+            buildRandomNeighbouringDoorways(room, width, height, neighbours);
         }
     }
     // fill rooms with consumables and creatures
     for(int id{1}; id <= numRooms; ++id) {
-        std::shared_ptr<Room> room = _dungeonBuilder->getDungeonLevel()->retrieveRoom(id);
+        std::shared_ptr<Room> room = builtRooms.at(id);
         // CREATURES
         if(randomDouble() <= _CREATURE_CHANCE and id != entranceRoom) {
             _dungeonBuilder->buildCreature(room);
@@ -154,7 +154,7 @@ void Game::createRandomLevel(const std::string &name, const int width, const int
     _dungeonLevel = _dungeonBuilder->getDungeonLevel();
 }
 
-std::vector<std::string> Game::getDungeonLevelMap() const{
+std::vector<std::string> Game::displayLevel() const{
     return _dungeonLevel->display();
 }
 
@@ -179,15 +179,13 @@ namespace  {
 
 
 }
-std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> Game::buildNeighbours(const int roomId, std::set<int> &builtRooms) const{
+std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> Game::buildNeighbours(const int roomId, int width, int height, std::map<int, std::shared_ptr<Room>> &builtRooms) const{
     std::vector<std::tuple<int, Room::Direction>> validNeighbours;
     std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> neighbours;
-    int mapWidth = _dungeonBuilder->getDungeonLevel()->width();
-    int mapHeight = _dungeonBuilder->getDungeonLevel()->height();
-    int numRooms = mapWidth * mapHeight;
+    int numRooms = width * height;
     // determine which neighbours are valid
-    if(mapWidth != 1) {  // if not in a single column map, add horizontal neighbour
-        switch (roomId % mapWidth) {
+    if(width != 1) {  // if not in a single column map, add horizontal neighbour
+        switch (roomId % width) {
         case 0: // right column
             validNeighbours.push_back(std::make_pair(roomId - 1, Room::Direction::West)); // West neighbor
             break;
@@ -201,14 +199,14 @@ std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> Game::buildNeigh
         }
     }
     // room row
-    if(mapHeight != 1) {  // if not single row map, add vertical neighbour
-        if(roomId >= 1 and roomId <= mapWidth) { // first row,
-            validNeighbours.push_back(std::make_pair(roomId + mapWidth, Room::Direction::South)); // South neighbor
-        } else if(roomId >= numRooms - mapWidth and roomId <= numRooms) {  // last row
-            validNeighbours.push_back(std::make_pair(roomId - mapWidth, Room::Direction::North)); // North neighbor
+    if(height != 1) {  // if not single row map, add vertical neighbour
+        if(roomId >= 1 and roomId <= width) { // first row,
+            validNeighbours.push_back(std::make_pair(roomId + width, Room::Direction::South)); // South neighbor
+        } else if(roomId >= numRooms - width and roomId <= numRooms) {  // last row
+            validNeighbours.push_back(std::make_pair(roomId - width, Room::Direction::North)); // North neighbor
         } else { // middle-row
-            validNeighbours.push_back(std::make_pair(roomId + mapWidth, Room::Direction::South)); // South neighbor
-            validNeighbours.push_back(std::make_pair(roomId - mapWidth, Room::Direction::North)); // North neighbor
+            validNeighbours.push_back(std::make_pair(roomId + width, Room::Direction::South)); // South neighbor
+            validNeighbours.push_back(std::make_pair(roomId - width, Room::Direction::North)); // North neighbor
         }
     }
     // build neighbours
@@ -218,9 +216,9 @@ std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> Game::buildNeigh
         int id = std::get<0>(validNeighbours[j]);
         if(builtRooms.find(id) == builtRooms.end()) {
             neighbour = _dungeonBuilder->buildRoom(id);
-            builtRooms.insert(id);
+            builtRooms.insert(std::make_pair(id, neighbour));
         } else { // otherwise get the existing neighbour
-            neighbour = _dungeonBuilder->getDungeonLevel()->retrieveRoom(id);
+            neighbour = builtRooms.at(id);
         }
         // add neighbour to list of rooms neighbours
         neighbours.push_back(std::make_pair(neighbour, std::get<1>(validNeighbours[j])));
@@ -263,7 +261,7 @@ DungeonLevelBuilder::MoveConstraints Game::getRandomMovementConstraints() {
     }
 }
 
-void Game::buildRandomNeighbouringDoorways(std::shared_ptr<Room> room, std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> &neighbours) {
+void Game::buildRandomNeighbouringDoorways(std::shared_ptr<Room> room, int width, int height, std::vector<std::tuple<std::shared_ptr<Room>, Room::Direction>> &neighbours) {
     int randDir = 0;
     // depending on the number of neighbours
     switch (neighbours.size()) {
@@ -271,7 +269,7 @@ void Game::buildRandomNeighbouringDoorways(std::shared_ptr<Room> room, std::vect
         _dungeonBuilder->buildDoorway(room, std::get<0>(neighbours[0]), std::get<1>(neighbours[0]), getRandomMovementConstraints());
         break;
     case 2: // if only 2 neighbours, we are in a corner, or a middle room for a single row or columnn map
-        if(_dungeonBuilder->getDungeonLevel()->height() == 1 || _dungeonBuilder->getDungeonLevel()->width() == 1) { // single row or column map, build both neighbours
+        if(width == 1 || height == 1) { // single row or column map, build both neighbours
             _dungeonBuilder->buildDoorway(room, std::get<0>(neighbours[0]), std::get<1>(neighbours[0]), getRandomMovementConstraints());
             _dungeonBuilder->buildDoorway(room, std::get<0>(neighbours[1]), std::get<1>(neighbours[1]), getRandomMovementConstraints());
         } else { // normal map

@@ -5,7 +5,7 @@
 namespace core::dungeon {
 /**
  * @brief The Wall class is the base class for other wall types.
- * It is a type of roomEdge (@sa core::dungeon::RoomEdge) which cannot be traversed.
+ * It is a type of roomEdge which cannot be traversed. @sa core::dungeon::RoomEdge
  */
 class Wall : public RoomEdge
 {

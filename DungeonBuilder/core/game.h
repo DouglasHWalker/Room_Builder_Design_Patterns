@@ -34,7 +34,8 @@ public:
     Game operator=(Game &other) = delete;
 
     /**
-     * @brief setDungeonType set Games' dungeon level builder to given concrete type
+     * \file core::game.h
+     * \brief setDungeonType set Games' dungeon level builder to given concrete type
      * @param dungeonLevelBuilder the dungeon level builder to set the Game's dungeon level builder to
      */
     void setDungeonType(core::dungeon::DungeonLevelBuilder* dungeonLevelBuilder);
@@ -51,7 +52,11 @@ public:
      * @param height of the dungeon level
      */
     void createRandomLevel(const std::string &name, const int width, const int height);
-    std::vector<std::string> getDungeonLevelMap() const;
+    /**
+     * @brief displayLevel gets the current dungeon level map representation
+     * @return the list of strings representing the dungeon level map
+     */
+    std::vector<std::string> displayLevel() const;
     /**
      * @brief randomDouble generates and random double between 0.0 and 1.0
      * @return a random double between 0.0 and 1.0 (inclusive)
@@ -122,16 +127,20 @@ private:
     /**
      * @brief buildNeighbours builds the neighbouring rooms to an existing room (roomId) if they do not already exist (builtRooms)
      * @param roomId the room to build the neighbours for
+     * @param width of the dungeonLevel
+     * @param height of the dungeonLevel
      * @param builtRooms the rooms that have already been built
      * @return a list of neighbouring rooms and there associated direction (North, East, S, W) to the current room (roomId)
      */
-    std::vector<std::tuple<std::shared_ptr<core::dungeon::Room>, core::dungeon::Room::Direction>> buildNeighbours(const int roomId, std::set<int> &builtRooms) const;
+    std::vector<std::tuple<std::shared_ptr<core::dungeon::Room>, core::dungeon::Room::Direction>> buildNeighbours(const int roomId, int width, int height, std::map<int, std::shared_ptr<core::dungeon::Room>> &builtRooms) const;
     /**
      * @brief buildRandomNeighbouringDoorways randomly determines and builds the doorways between a given room and its neighbours
      * @param room to build the doorways from, i.e. to its neighbours
+     * @param width of the dungeonLevel
+     * @param height of the dungeonLevel
      * @param neighbours the valid neighbouring rooms to build doorways to and their associated direction (North, East, S, W) from the given room
      */
-    void buildRandomNeighbouringDoorways(std::shared_ptr<core::dungeon::Room> room, std::vector<std::tuple<std::shared_ptr<core::dungeon::Room>, core::dungeon::Room::Direction>> &neighbours);  // non-const changes _randomGenerator
+    void buildRandomNeighbouringDoorways(std::shared_ptr<core::dungeon::Room> room, int width, int height, std::vector<std::tuple<std::shared_ptr<core::dungeon::Room>, core::dungeon::Room::Direction>> &neighbours);  // non-const changes _randomGenerator
     /**
      * @brief getRandomMovementConstraints creates a set of random movement constraints for doorways based on
      * the predetermined chances for traversable, locked, impassable

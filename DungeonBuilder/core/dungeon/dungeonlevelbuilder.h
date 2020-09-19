@@ -69,7 +69,7 @@ public:
      */
     virtual void buildCreature(const std::shared_ptr<Room> room) const {};
     DungeonLevel* getDungeonLevel() {
-        return _dungeonLevel;
+        return std::move(_dungeonLevel);
     }
 
 protected:

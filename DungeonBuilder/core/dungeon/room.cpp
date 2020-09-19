@@ -9,8 +9,8 @@ Room::Room(int id) : _id{id} {
     _edges = std::array<std::shared_ptr<RoomEdge>, 4>();
 }
 
-std::array<std::string, 5> Room::display() const{
-    std::array<std::string, 5> output = std::array<std::string, 5>();
+std::array<std::string, 6> Room::display() const{
+    std::array<std::string, 6> output = std::array<std::string, 6>();
     // Create North Row string
     std::string northRow{"+----"};
     // northern RoodEdge
@@ -42,6 +42,8 @@ std::array<std::string, 5> Room::display() const{
     // South RoomEdge
     southRow += edgeAt(Direction::South)->displayCharacter();
     southRow += "----+  ";
+    // Create Spacer row
+    std::string spacerRow = edgeAt(Room::Direction::South)->isPassage() ? "     |       " : "             ";
     // Create Blank Row
     std::string blankRow{"|         |  "};
 
@@ -51,6 +53,7 @@ std::array<std::string, 5> Room::display() const{
     output[2] = middleRow;
     output[3] = blankRow;
     output[4] = southRow;
+    output[5] = spacerRow;
 
     return output;
 }

@@ -11,7 +11,7 @@ class Room
 {
 public:
     Room(int id);
-    ~Room() = default;
+    virtual ~Room() = default;
     enum class Direction : unsigned int { North, South, East, West };
     //
     /**
@@ -36,7 +36,7 @@ public:
      * @brief display the map of a single room
      * @return a list of strings representing the map of a single room
      */
-    std::array<std::string, 5> display() const;
+    std::array<std::string, 6> display() const;
     int id() const;
     std::unique_ptr<core::items::Item> item(); // non-const pointer transfer owenership
     void setItem(const std::unique_ptr<core::items::Item> newItem); // non-const pointer transfer owenership

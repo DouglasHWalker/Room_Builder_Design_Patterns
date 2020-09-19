@@ -3,7 +3,7 @@
 #include "item.h"
 namespace core::items {
 /**
- * @brief The Consumable class a type of Item (@sa core::items::Item) which can be described to the user/player
+ * @brief The Consumable class a type of Item @sa core::items::Item
  */
 class Consumable : public Item
 {

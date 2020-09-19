@@ -145,12 +145,12 @@ void MenuInterface::describeLevel() const{
 
 void MenuInterface::displayLevel() const{
     // display level
-    std::vector<std::string> vect = Game::instance()->getDungeonLevelMap();
+    std::vector<std::string> vect = Game::instance()->displayLevel();
     for (int i = 0; i < int(vect.size()); ++i) {
         _display << vect[i] << std::endl;
     }
     // prompt for enter key
-    _display << "\nPress Enter to continue...\t" << std::endl;
+    _display << "Press Enter to continue...\t" << std::endl;
     std::string input;
     _input.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
     std::getline(_input, input);

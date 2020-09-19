@@ -3,7 +3,10 @@
 #include "core/dungeon/doorway.h"
 #include "core/dungeon/room.h"
 namespace core::dungeon::common {
-
+/**
+ * @brief The OpenDoorway class a type of Doorway which can be traversed in both directions
+ * A type of traversable RoomEdge
+ */
 class OpenDoorway : public Doorway
 {
 public:

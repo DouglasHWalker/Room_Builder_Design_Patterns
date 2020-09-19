@@ -3,8 +3,9 @@
 #include "core/dungeon/wall.h"
 namespace core::dungeon::basic {
 /**
- * @brief The RockWall class is a type of wall (@sa core::dungeon::Wall).
- * It is a type of roomEdge (@sa core::dungeon::RoomEdge) which cannot be traversed.
+ * @brief The RockWall class is a type of Wall.
+ * It is a type of RoomEdge which cannot be traversed.
+ * @sa core::dungeon::Wall @sa core::dungeon::RoomEdge
  */
 class RockWall : public Wall
 {

@@ -4,9 +4,9 @@
 namespace core::dungeon {
 /**
  * @brief The Doorway class representing a doorway in a room,
- * is a type of room edge @sa core:;dungeon::RoomEdge). Additonally,
- * handles doorway specific operations; connecting to an opposite doorway,
- * and determineing whether the doorway is an entry or exit.
+ * is a type of room edge. Additonally, handles doorway specific operations;
+ * connecting to an opposite doorway, and determineing whether the doorway
+ * is an entry or exit. @sa core:;dungeon::RoomEdge
  */
 class Doorway : public RoomEdge
 {
