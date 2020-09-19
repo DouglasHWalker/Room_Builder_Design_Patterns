@@ -6,9 +6,11 @@ using core::dungeon::DungeonLevelBuilder;
 using core::dungeon::Room;
 
 Game* Game::theInstance = nullptr;
+
 void Game::setDungeonType(DungeonLevelBuilder* dungeonLevelBuilder) {
     _dungeonBuilder = dungeonLevelBuilder;
 }
+
 void Game::createExampleLevel() {
     _dungeonBuilder->buildDungeonLevel(_EXAMPLE_TITLE, _EXAMPLE_WIDTH, _EXAMPLE_HEIGHT);
     // build all the dungeon rooms
@@ -94,7 +96,7 @@ void Game::createRandomLevel(const std::string &name, const int width, const int
     for(int id{1}; id <= numRooms; ++id) {
         std::shared_ptr<Room> room = _dungeonBuilder->getDungeonLevel()->retrieveRoom(id);
         // CREATURES
-        if(randomDouble() <= CREATURE_CHANCE and id != entranceRoom) {
+        if(randomDouble() <= _CREATURE_CHANCE and id != entranceRoom) {
             _dungeonBuilder->buildCreature(room);
         }
         // if exit room, add creature
@@ -102,7 +104,7 @@ void Game::createRandomLevel(const std::string &name, const int width, const int
             _dungeonBuilder->buildCreature(room);
         }
         // ITEMS
-        if(randomDouble() <= ITEM_CHANCE and id != entranceRoom) {
+        if(randomDouble() <= _ITEM_CHANCE and id != entranceRoom) {
             _dungeonBuilder->buildItem(room);
         }
         // if exit room,
@@ -152,11 +154,11 @@ void Game::createRandomLevel(const std::string &name, const int width, const int
     _dungeonLevel = _dungeonBuilder->getDungeonLevel();
 }
 
-std::vector<std::string> Game::displayLevel() const{
+std::vector<std::string> Game::getDungeonLevelMap() const{
     return _dungeonLevel->display();
 }
 
-std::string Game::describeLevel() const{
+std::string Game::getDungeonLevelDescription() const{
     return _dungeonLevel->description();
 }
 
@@ -164,7 +166,7 @@ int Game::getNumberOfRooms() const{
     return _dungeonLevel->width() * _dungeonLevel->height();
 }
 
-std::string Game::describeRoom(int roomNumber) const{
+std::string Game::getRoomDescription(int roomNumber) const{
     return _dungeonLevel->retrieveRoom(roomNumber)->description();
 }
 
@@ -230,12 +232,12 @@ DungeonLevelBuilder::MoveConstraints Game::getRandomMovementConstraints() {
     int constraints = 0;
     // generate origin constraints
     double random = randomDouble();
-    if(random <= IMPASSABLE_CHANCE) { constraints += 1; } // origin impassable
-    else if (random <= LOCKED_CHANCE + IMPASSABLE_CHANCE) { constraints += 2; } // origin locked
+    if(random <= _IMPASSABLE_CHANCE) { constraints += 1; } // origin impassable
+    else if (random <= _LOCKED_CHANCE + _IMPASSABLE_CHANCE) { constraints += 2; } // origin locked
     //  generate destination constraints
     random = randomDouble();
-    if(random <= IMPASSABLE_CHANCE) { constraints += 4; } // destination impassable
-    else if (random <= LOCKED_CHANCE + IMPASSABLE_CHANCE) { constraints += 8; } // destination locked
+    if(random <= _IMPASSABLE_CHANCE) { constraints += 4; } // destination impassable
+    else if (random <= _LOCKED_CHANCE + _IMPASSABLE_CHANCE) { constraints += 8; } // destination locked
 
     switch (constraints) {
     case 0: // both traversable

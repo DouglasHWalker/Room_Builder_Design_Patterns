@@ -4,7 +4,9 @@
 #include <memory>
 
 namespace core::items {
-
+/**
+ * @brief The Item class is the base class for all items in the game
+ */
 class Item
 {
 public:
@@ -17,7 +19,13 @@ public:
     friend std::ostream& operator <<(std::ostream& os, const Item& item);
 
 protected:
+    /**
+     * @brief _name of the item to use as the item description
+     */
     std::string _name;
+    /**
+     * @brief _displayCharacter to display on the level map
+     */
     char _displayCharacter;
 };
 

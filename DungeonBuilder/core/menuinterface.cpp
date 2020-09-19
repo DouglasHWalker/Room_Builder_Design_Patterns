@@ -70,8 +70,8 @@ void MenuInterface::generateRandomLevel() const{
     // get random dungeon settings from user
     _input.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::string levelName{inputLevelName()};
-    int rows{inputNumber(levelName)};
-    int cols{inputNumber(levelName)};
+    int rows{getRowOrColInput(levelName)};
+    int cols{getRowOrColInput(levelName)};
     char levelType{inputLevelType()};
     // Create random level
     _display << "\nCreating " << levelName << "..." << std::endl;
@@ -140,12 +140,12 @@ void MenuInterface::displayExplorationMenu() const{
 }
 
 void MenuInterface::describeLevel() const{
-    _display << Game::instance()->describeLevel() << std::endl;
+    _display << Game::instance()->getDungeonLevelDescription() << std::endl;
 }
 
 void MenuInterface::displayLevel() const{
     // display level
-    std::vector<std::string> vect = Game::instance()->displayLevel();
+    std::vector<std::string> vect = Game::instance()->getDungeonLevelMap();
     for (int i = 0; i < int(vect.size()); ++i) {
         _display << vect[i] << std::endl;
     }
@@ -170,7 +170,7 @@ void MenuInterface::describeRoom() const{
     }
     // display room
     _display << "Room " << roomNumber << " is..." << std::endl;
-    _display << Game::instance()->describeRoom(roomNumber) << std::endl;
+    _display << Game::instance()->getRoomDescription(roomNumber) << std::endl;
     // prompt for enter key
     _display << "\nPress Enter to continue...\t" << std::endl;
     std::string input;
@@ -219,7 +219,7 @@ char MenuInterface::inputLevelType() const{
     return levelType;
 }
 
-int MenuInterface::inputNumber(std::string &levelName) const{
+int MenuInterface::getRowOrColInput(std::string &levelName) const{
     int number;
     bool validInput = false;
     do{

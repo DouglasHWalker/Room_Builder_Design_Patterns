@@ -4,7 +4,9 @@
 #include <ostream>
 #include <memory>
 namespace core::creatures {
-
+/**
+ * @brief The AbstractCreature class is the base class for all creatures in the game
+ */
 class AbstractCreature
 {
 public:
@@ -21,7 +23,13 @@ public:
 protected:
     char _displayCharacter;
 private:
+    /**
+     * @brief _name the name of the creature
+     */
     std::string _name;
+    /**
+     * @brief _isBoss is this creature a boss creature
+     */
     bool _isBoss = false;
 };
 

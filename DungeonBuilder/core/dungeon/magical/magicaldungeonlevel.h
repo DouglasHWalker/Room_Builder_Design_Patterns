@@ -2,7 +2,9 @@
 #define MAGICALDUNGEONLEVEL_H
 #include "core/dungeon/dungeonlevel.h"
 namespace core::dungeon::magical {
-
+/**
+ * @brief The MagicalDungeonLevel class represnting a type of dungeon level (@sa core::dungeon::DungeonLevel)
+ */
 class MagicalDungeonLevel : public DungeonLevel
 {
 public:

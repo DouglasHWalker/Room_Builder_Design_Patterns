@@ -2,7 +2,10 @@
 #define ROOMEDGE_H
 #include <ostream>
 namespace core::dungeon {
-
+/**
+ * @brief The RoomEdge class is a single edge (North, South, E, W) of a room.
+ * It is the base class for all edge types
+ */
 class RoomEdge
 {
 public:

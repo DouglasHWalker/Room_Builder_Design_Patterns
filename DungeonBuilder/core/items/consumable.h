@@ -2,7 +2,9 @@
 #define CONSUMABLE_H
 #include "item.h"
 namespace core::items {
-
+/**
+ * @brief The Consumable class a type of Item (@sa core::items::Item) which can be described to the user/player
+ */
 class Consumable : public Item
 {
 public:

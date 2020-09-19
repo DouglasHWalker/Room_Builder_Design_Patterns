@@ -2,7 +2,10 @@
 #define QUARTZCHAMBER_H
 #include "core/dungeon/room.h"
 namespace core::dungeon::basic {
-
+/**
+ * @brief The QuartzChamber class is a type of room (@sa core::dungeon::Room).
+ * It represents an entire room and its components (edges, item, creature) in the game
+ */
 class QuartzChamber : public Room
 {
 public:
