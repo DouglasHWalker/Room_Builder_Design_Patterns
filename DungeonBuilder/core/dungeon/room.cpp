@@ -5,6 +5,7 @@ using core::creatures::AbstractCreature;
 using core::items::Item;
 
 Room::Room(int id) : _id{id} {
+    // intialise _edges array to size of 4
     _edges = std::array<std::shared_ptr<RoomEdge>, 4>();
 }
 
@@ -12,10 +13,12 @@ std::array<std::string, 5> Room::display() const{
     std::array<std::string, 5> output = std::array<std::string, 5>();
     // Create North Row string
     std::string northRow{"+----"};
+    // northern RoodEdge
     northRow += edgeAt(Direction::North)->displayCharacter();
     northRow += "----+  ";
     // Create Middle Row
     std::string middleRow{};
+    // Western RoomEdge
     middleRow += edgeAt(Direction::West)->displayCharacter();
     middleRow += "   ";
     // if room does not have creature
@@ -27,13 +30,16 @@ std::array<std::string, 5> Room::display() const{
         // if creature is boss add asterix
         middleRow += _creature->isBoss() ? '*' : ' ';
     }
+    // if room has an item add item character
     middleRow += _item != nullptr ? _item->displayCharacter() : ' ';
     middleRow +=  "   ";
+    // East RoomEdge
     middleRow += edgeAt(Direction::East)->displayCharacter();
-    // if middle row has passage, add to output
+    // if middle row has passage, add to passage spcaer to output
     middleRow += edgeAt(Direction::East)->isPassage() ? "--" : "  ";
     // Create South Row
     std::string southRow{"+----"};
+    // South RoomEdge
     southRow += edgeAt(Direction::South)->displayCharacter();
     southRow += "----+  ";
     // Create Blank Row

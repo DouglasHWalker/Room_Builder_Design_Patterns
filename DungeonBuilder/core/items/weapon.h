@@ -15,7 +15,7 @@ public:
         return std::make_unique<Weapon>(*this);
     };
 private:
-    const char _DISPLAY_CHAR = 'W';
+    const char _DISPLAY_CHAR = 'L';
 };
 
 } // namespace core::items

@@ -41,9 +41,9 @@ std::shared_ptr<Room> BasicDungeonLevelBuilder::buildRoom(const int id) const{
 void BasicDungeonLevelBuilder::buildDoorway(const std::shared_ptr<Room> origin, const std::shared_ptr<Room> destination,
                                             const Room::Direction &direction, const MoveConstraints &constraints) const{
     // if doorway does not already exist here
-    if(not origin->edgeAt(direction)->isPassage()) { // the doorways to build
-        std::shared_ptr<Doorway> originDoorway; // origin
-        std::shared_ptr<Doorway> destinationDoorway; // destination, in opposite direction
+    if(not origin->edgeAt(direction)->isPassage()) {
+        std::shared_ptr<Doorway> originDoorway;
+        std::shared_ptr<Doorway> destinationDoorway;
         // determine the door type
         switch (constraints) {
         case MoveConstraints::None:
@@ -141,7 +141,9 @@ void BasicDungeonLevelBuilder::buildItem(const std::shared_ptr<Room> room) const
     const double rand = Game::instance()->randomDouble();
     std::unique_ptr<Item> item;
     int randItem = std::rand() % 3;
-    if(rand <= _WEAPON_CHANCE) { // weapon
+    // if rand is less than weapon chance, build weapon
+    if(rand <= _WEAPON_CHANCE) {
+        // build random weapon
         switch (randItem) {
         case 0: item = _boomerang_proto->clone();
             break;
@@ -150,7 +152,8 @@ void BasicDungeonLevelBuilder::buildItem(const std::shared_ptr<Room> room) const
         case 2: item = _shortSword_proto->clone();
             break;
         }
-    } else { // Consumable
+    } else { // otherwise, build consumable
+        // build random consumable
         switch (randItem) {
         case 0: item = _molotov_proto->clone();
             break;
@@ -166,12 +169,10 @@ void BasicDungeonLevelBuilder::buildCreature(const std::shared_ptr<Room> room) c
     std::unique_ptr<AbstractCreature> creature;
     const int randCreature = std::rand() % 6;
     switch (randCreature) {
-    case 0:
-        creature = _werewolf_proto->clone(); // ~16% chance
+    case 0: creature = _werewolf_proto->clone(); // ~16% chance
         break;
     case 1:
-    case 2:
-        creature = _evilWizard_proto->clone(); // ~32% chance
+    case 2: creature = _evilWizard_proto->clone(); // ~32% chance
         break;
     default: creature = _goblin_proto->clone(); // ~52% chance
         break;

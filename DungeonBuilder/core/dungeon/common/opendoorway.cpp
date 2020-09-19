@@ -6,16 +6,10 @@ std::string OpenDoorway::description() const {
 }
 char OpenDoorway::displayCharacter() const {
     switch(_direction) {
-    case Room::Direction::North:
-        return '^';
-    case Room::Direction::South:
-        return 'v';
-    case Room::Direction::East:
-        return '>';
-    case Room::Direction::West:
-        return '<';
-    default:
-        break;
+    case Room::Direction::North: return '^';
+    case Room::Direction::South: return 'v';
+    case Room::Direction::East: return '>';
+    case Room::Direction::West: return '<';
     }
 }
 

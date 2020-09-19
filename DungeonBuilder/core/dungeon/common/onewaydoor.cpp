@@ -23,16 +23,10 @@ char OneWayDoor::displayCharacter() const {
     }
     // otherwise
     switch(_direction) {
-    case Room::Direction::North:
-        return 'v';
-    case Room::Direction::South:
-        return '^';
-    case Room::Direction::East:
-        return '<';
-    case Room::Direction::West:
-        return '>';
-    default:
-        break;
+    case Room::Direction::North: return 'v';
+    case Room::Direction::South: return '^';
+    case Room::Direction::East: return '<';
+    case Room::Direction::West: return '>';
     }
 }
 

@@ -15,7 +15,7 @@ public:
         return std::make_unique<Consumable>(*this);
     };
 private:
-    const char _DISPLAY_CHAR = 'C';
+    const char _DISPLAY_CHAR = 'L';
 };
 
 } // namespace core::items

@@ -167,12 +167,10 @@ void MagicalDungeonLevelBuilder::buildCreature(std::shared_ptr<Room> room) const
     std::unique_ptr<AbstractCreature> creature;
     int randCreature = std::rand() % 6;
     switch (randCreature) {
-    case 0:
-        creature = _dragon_proto->clone(); // ~16% chance
+    case 0: creature = _dragon_proto->clone(); // ~16% chance
         break;
     case 1:
-    case 2:
-        creature = _evilWizard_proto->clone(); // ~32% chance
+    case 2: creature = _evilWizard_proto->clone(); // ~32% chance
         break;
     default: creature = _goblin_proto->clone(); // ~52% chance
         break;
