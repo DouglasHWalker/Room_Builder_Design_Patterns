@@ -1,4 +1,4 @@
-# Design Pattern C++ Exercise
+# Design Patterns
 
 Build Rooms and Objects within using Various Design Patterns
 - Creational
