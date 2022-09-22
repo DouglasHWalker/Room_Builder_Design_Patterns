@@ -1,2 +1,1 @@
-# DungeonBuilder
-Dungeon Builder Assignment: Software Development with C++
+# Welcome to the console app
